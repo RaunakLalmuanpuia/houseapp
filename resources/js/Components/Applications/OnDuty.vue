@@ -34,7 +34,7 @@ defineProps({
                     <!--                    <span class="bg-zinc-200 text-zinc-700 px-2 py-1 rounded-full text-sm">Estimated Amount</span>-->
                 </div>
 
-                <p class="text-lg">{{ application.department }},,</p>
+                <p class="text-lg">{{ application.department }},</p>
                 <p class="text-lg">{{ application.designation }}</p>
                 <p class="text-lg font-medium">{{ application.contact }}</p>
             </div>
@@ -115,7 +115,7 @@ defineProps({
                     <td class="py-2 px-4 border-b text-left">{{member.designation}}</td>
                     <td class="py-2 px-4 border-b text-left">{{member.department}}</td>
                     <td class="py-2 px-4 border-b text-left">{{member.contact}}</td>
-                    <td class="py-2 px-4 border-b text-left">
+                    <td class="py-2 px-4 border-b">
                         <a href="#" class="text-blue-500"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M7.79297 21.25H16.209C17.1372 21.25 18.0275 20.8813 18.6838 20.2249C19.3402 19.5685 19.709 18.6783 19.709 17.75V12.22C19.7093 11.2919 19.341 10.4016 18.685 9.745L12.716 3.775C12.3909 3.45 12.0051 3.19221 11.5804 3.01634C11.1558 2.84047 10.7006 2.74997 10.241 2.75H7.79297C6.86471 2.75 5.97447 3.11875 5.3181 3.77513C4.66172 4.4315 4.29297 5.32174 4.29297 6.25V17.75C4.29297 18.6783 4.66172 19.5685 5.3181 20.2249C5.97447 20.8813 6.86471 21.25 7.79297 21.25Z" stroke="black" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M11.6895 3.10999V8.76999C11.6895 9.30042 11.9002 9.80913 12.2752 10.1842C12.6503 10.5593 13.159 10.77 13.6895 10.77H19.3515" stroke="black" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>

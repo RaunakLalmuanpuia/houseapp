@@ -62,20 +62,21 @@ function nextStudyTour() {
 
                 </div>
                 <div @click="nextNotOnDuty" class="bg-green-100 p-4 cursor-pointer hover:bg-green-200 transition rounded-[14px]">
-                    <h2 class="font-semibold">NOT ON DUTY</h2>
-                    <p class="text-muted-foreground">Officials traveling for personal reasons</p>
+                    <h2 class="mt-6 text-[18px] font-bold leading-[24px] tracking-[0.15px] text-[#409B16]">NOT ON DUTY</h2>
+                    <p class="text-[12px] font-medium text-[#409B16]">Officials traveling for personal reasons</p>
                 </div>
+
                 <div class="bg-blue-100 p-4 cursor-pointer hover:bg-blue-200 transition rounded-[14px]">
-                    <h2 class="font-semibold text-blue-600">MEDICAL</h2>
-                    <p class="text-muted-foreground">Patients referred for treatment</p>
+                    <h2 class="mt-6 text-[18px] font-bold leading-[24px] tracking-[0.15px] text-[#0073FF]">MEDICAL</h2>
+                    <p class="text-[12px] font-medium text-[#0073FF]">Patients referred for treatment</p>
                 </div>
                 <div @click="nextNonOfficial" class="bg-yellow-100 p-4 cursor-pointer hover:bg-yellow-200 transition rounded-[14px]">
-                    <h2 class="font-semibold text-orange-600">PRIVATE</h2>
-                    <p class="text-muted-foreground">Non-official personal stay</p>
+                    <h2 class="mt-6 text-[18px] font-bold leading-[24px] tracking-[0.15px] text-[#FF8C00]">PRIVATE</h2>
+                    <p class="text-[12px] font-medium text-[#FF8C00]">Non-official personal stay</p>
                 </div>
                 <div @click="nextStudyTour" class="bg-red-100 p-4 cursor-pointer hover:bg-red-200 transition rounded-[14px]">
-                    <h2 class="font-semibold text-red-800">STUDY TOUR</h2>
-                    <p class="text-muted-foreground">Educational group travel</p>
+                    <h2 class="mt-6 text-[18px] font-bold leading-[24px] tracking-[0.15px] text-[#DD4939]">STUDY TOUR</h2>
+                    <p class="text-[12px] font-medium text-[#DD4939]">Educational group travel</p>
                 </div>
             </div>
         </div>
