@@ -23,7 +23,7 @@ const switchToTeam = (team) => {
 };
 
 const logout = () => {
-    router.post(route('logout'));
+    router.post(route('login.destroy'));
 };
 </script>
 

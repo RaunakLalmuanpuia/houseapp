@@ -20,12 +20,20 @@
                 <div class="flex space-x-4">
                     <a href="#" class="text-muted-foreground hover:text-muted">About Us</a>
                     <a href="#" class="text-muted-foreground hover:text-muted">Contact Us</a>
-                    <a href="#" class="text-muted-foreground hover:text-muted">Login for Officials</a>
+                    <button  @click="login" class="text-muted-foreground hover:text-muted">Login for Officials</button>
                 </div>
             </div>
         </div>
 
     </div>
 </template>
+
+<script setup>
+import {router} from "@inertiajs/vue3";
+
+const login = () =>{
+    router.visit(route('login'));
+}
+</script>
 
 
