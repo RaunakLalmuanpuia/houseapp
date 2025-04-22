@@ -1,20 +1,27 @@
 
 <template>
-
-
     <div class="min-h-screen flex flex-col">
         <Header/>
         <div class="flex-grow flex flex-col items-center w-[400px] mx-auto p-3">
             <InformationStep class="w-full" />
 
-            <p v-if="Object.keys(page.props.errors).length">
-                <b>Please correct the following error(s):</b>
-                <ul class="text-red-500 text-sm mt-2">
-                    <li v-for="(message, field) in page.props.errors" :key="field">
-                        {{ message }}
-                    </li>
-                </ul>
-            </p>
+            <div
+                v-if="showError"
+                class="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white p-4 rounded-lg shadow-lg w-[90%] max-w-md z-50"
+            >
+                <div class="flex justify-between items-start">
+                    <div>
+                        <b class="block">Please correct the following error(s):</b>
+                        <ul class="text-sm mt-2 list-disc list-inside">
+                            <li v-for="(message, field) in page.props.errors" :key="field">
+                                {{ message }}
+                            </li>
+                        </ul>
+                    </div>
+                    <button @click="showError = false" class="ml-4 text-white font-bold text-xl leading-none">&times;</button>
+                </div>
+            </div>
+
 
             <div class="p-6 bg-card rounded-lg shadow-md w-full">
 
@@ -123,11 +130,13 @@ import InformationStep from "@/Components/Common/InformationStep.vue";
 
 
 import {useForm, usePage} from '@inertiajs/vue3';
-import { defineProps, watch } from 'vue';
+import {defineProps, ref, watch} from 'vue';
 import { useFlamApplicationStore } from '@/Store/useFlamApplicationStore.js'
 import { router } from '@inertiajs/vue3'
 const page = usePage()
 const application = useFlamApplicationStore()
+
+const showError = ref(false)
 function validateForm() {
     if (!application.applicant_name || !application.gender || !application.designation || !application.contact) {
         return false;
@@ -156,6 +165,14 @@ function next() {
     router.visit(route('apply.flam.step-three'))
 }
 
+
+watch(
+    () => page.props.errors,
+    (errors) => {
+        showError.value = Object.keys(errors).length > 0
+    },
+    { immediate: true }
+)
 function back() {
     router.visit('/apply/step-one')
 }
@@ -163,5 +180,12 @@ function back() {
 
 
 <style scoped>
-
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.3s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
 </style>

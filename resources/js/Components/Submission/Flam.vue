@@ -16,10 +16,7 @@ defineProps({
                 <h2 class="text-lg font-semibold">FLAM</h2>
                 <p class="text-sm">Former Legislators Association of Mizoram</p>
             </div>
-            <div>
-                <p class="text-l font-bold text-right">Estimated Amount</p>
-                <p class="text-xl font-bold text-right">$1800</p>
-            </div>
+
         </div>
 
         <div class="p-4 text-left space-y-2">

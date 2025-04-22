@@ -80,7 +80,6 @@ defineProps({
                     <th class="py-2 px-4 border-b text-left">GENDER</th>
                     <th class="py-2 px-4 border-b text-left">DESIGNATION</th>
                     <th class="py-2 px-4 border-b text-left">CONTACT NO.</th>
-                    <th class="py-2 px-4 border-b text-left">DOCUMENT</th>
                 </tr>
                 </thead>
                 <tbody>

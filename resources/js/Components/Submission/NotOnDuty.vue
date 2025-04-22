@@ -16,10 +16,7 @@ defineProps({
                 <h2 class="text-lg font-semibold">NOT ON DUTY</h2>
                 <p class="text-sm">Officials traveling for personal reasons</p>
             </div>
-            <div>
-                <p class="text-l font-bold text-right">Estimated Amount</p>
-                <p class="text-xl font-bold text-right">$1800</p>
-            </div>
+
         </div>
 
         <div class="p-4 text-left space-y-2">

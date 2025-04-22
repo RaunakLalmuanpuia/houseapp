@@ -3,14 +3,22 @@
         <Header/>
         <div class="flex-grow flex flex-col items-center w-[400px] mx-auto p-3">
             <InformationStep class="w-full" />
-            <p v-if="Object.keys(page.props.errors).length">
-                <b>Please correct the following error(s):</b>
-                <ul class="text-red-500 text-sm mt-2">
-                    <li v-for="(message, field) in page.props.errors" :key="field">
-                        {{ message }}
-                    </li>
-                </ul>
-            </p>
+            <div
+                v-if="showError"
+                class="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white p-4 rounded-lg shadow-lg w-[90%] max-w-md z-50"
+            >
+                <div class="flex justify-between items-start">
+                    <div>
+                        <b class="block">Please correct the following error(s):</b>
+                        <ul class="text-sm mt-2 list-disc list-inside">
+                            <li v-for="(message, field) in page.props.errors" :key="field">
+                                {{ message }}
+                            </li>
+                        </ul>
+                    </div>
+                    <button @click="showError = false" class="ml-4 text-white font-bold text-xl leading-none">&times;</button>
+                </div>
+            </div>
             <div class="p-6 bg-card rounded-lg shadow-md w-full">
 
                 <h1 class="text-xl font-semibold text-primary">NOT ON DUTY</h1>
@@ -119,9 +127,12 @@ import InformationStep from "@/Components/Common/InformationStep.vue";
 
 import { useNotOnDutyApplicationStore } from '@/Store/useNotOnDutyApplicationStore.js'
 import {router, usePage} from '@inertiajs/vue3'
+import {ref, watch} from "vue";
 
 const application = useNotOnDutyApplicationStore()
 const page = usePage()
+
+const showError = ref(false)
 function next() {
     router.visit(route('apply.not-on-duty.step-three'))
 }
@@ -129,4 +140,11 @@ function next() {
 function back() {
     router.visit('/apply/step-one')
 }
+watch(
+    () => page.props.errors,
+    (errors) => {
+        showError.value = Object.keys(errors).length > 0
+    },
+    { immediate: true }
+)
 </script>

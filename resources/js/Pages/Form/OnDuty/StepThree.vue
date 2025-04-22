@@ -6,6 +6,7 @@ import DestinationStep from "@/Components/Common/DestinationStep.vue";
 
 import { useOnDutyApplicationStore } from '@/Store/useOnDutyApplicationStore.js'
 import {useForm, router, usePage} from '@inertiajs/vue3'
+import {ref, watch} from "vue";
 
 const application = useOnDutyApplicationStore()
 
@@ -15,6 +16,8 @@ const form = useForm({
 })
 
 const page = usePage()
+
+const showError = ref(false)
 function submit() {
     form.post(route('apply.on-duty.submit'), {
         onSuccess: () => {
@@ -25,6 +28,14 @@ function submit() {
 function back() {
     router.visit(route('apply.on-duty.step-two'))
 }
+
+watch(
+    () => page.props.errors,
+    (errors) => {
+        showError.value = Object.keys(errors).length > 0
+    },
+    { immediate: true }
+)
 </script>
 
 <template>
@@ -35,14 +46,22 @@ function back() {
         <div class="flex-grow flex flex-col items-center w-[400px] p-3 mx-auto">
             <DestinationStep class="w-full" />
 
-            <p v-if="Object.keys(page.props.errors).length">
-                <b>Please correct the following error(s):</b>
-                <ul class="text-red-500 text-sm mt-2">
-                    <li v-for="(message, field) in page.props.errors" :key="field">
-                        {{ message }}
-                    </li>
-                </ul>
-            </p>
+            <div
+                v-if="showError"
+                class="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white p-4 rounded-lg shadow-lg w-[90%] max-w-md z-50"
+            >
+                <div class="flex justify-between items-start">
+                    <div>
+                        <b class="block">Please correct the following error(s):</b>
+                        <ul class="text-sm mt-2 list-disc list-inside">
+                            <li v-for="(message, field) in page.props.errors" :key="field">
+                                {{ message }}
+                            </li>
+                        </ul>
+                    </div>
+                    <button @click="showError = false" class="ml-4 text-white font-bold text-xl leading-none">&times;</button>
+                </div>
+            </div>
             <div class="p-6 bg-card rounded-lg shadow-md w-full">
                 <h2 class="text-lg font-semibold">Kal Duhna Hmun</h2>
                 <p class="text-muted-foreground">Mizoram House Kal duhna</p>

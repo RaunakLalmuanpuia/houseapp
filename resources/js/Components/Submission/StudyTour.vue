@@ -16,10 +16,7 @@ defineProps({
                 <h2 class="text-lg font-semibold">STUDY TOUR</h2>
                 <p class="text-sm">Educational group travel</p>
             </div>
-            <div>
-                <p class="text-l font-bold text-right">Estimated Amount</p>
-                <p class="text-xl font-bold text-right">$1800</p>
-            </div>
+
         </div>
 
         <div class="p-4">
