@@ -12,6 +12,8 @@ use App\Http\Controllers\StudyTourController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\AuthController;
 
+use App\Http\Controllers\AdminApplicationController;
+
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -103,6 +105,15 @@ Route::group(['prefix'=>'status'], function () {
     Route::get('{applicationId}/view', [StatusController::class, 'show'])->name('status.show-application');
 
 });
+
+// Admin Applications
+Route::group(['prefix'=>'admin'], function () {
+    Route::get('/applications/incoming', [AdminApplicationController::class, 'incoming'])->name('admin.application.incoming');
+//    Route::get('{applicationId}', [StatusController::class, 'getStatus'])->name('status.application');
+//    Route::get('{applicationId}/view', [StatusController::class, 'show'])->name('status.show-application');
+
+});
+
 
 
 Route::group([], function () {
