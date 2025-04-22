@@ -31,7 +31,9 @@ Route::middleware([
     })->name('dashboard');
 });
 
+Route::get('/apply/step-one', [FlamController::class, 'stepOne'])->name('apply.step-one');
 
+//Flam
 Route::group(['prefix'=>'flam'], function () {
 //    Route::get('/apply/step-one', [FlamController::class, 'stepOne'])->name('apply.step-one');
     Route::get('/apply/step-two', [FlamController::class, 'stepTwo'])->name('apply.flam.step-two');
@@ -41,13 +43,7 @@ Route::group(['prefix'=>'flam'], function () {
     Route::post('/apply/submit', [FlamController::class, 'submit'])->name('apply.flam.submit');
     Route::get('submission', [FlamController::class, 'submission'])->name('apply.flam.submission');
 });
-
-
-Route::get('/apply/step-one', [FlamController::class, 'stepOne'])->name('apply.step-one');
-
-
-
-
+//On Duty
 Route::group(['prefix'=>'on-duty'], function () {
     Route::get('/apply/step-one', [OnDutyController::class, 'stepOne'])->name('apply.step-one');
     Route::get('/apply/step-two', [OnDutyController::class, 'stepTwo'])->name('apply.on-duty.step-two');
@@ -58,8 +54,7 @@ Route::group(['prefix'=>'on-duty'], function () {
 
     Route::get('submission', [OnDutyController::class, 'submission'])->name('apply.on-duty.submission');
 });
-
-
+//Not on Duty
 Route::group(['prefix'=>'not-on-duty'], function () {
     Route::get('/apply/step-one', [NotOnDutyController::class, 'stepOne'])->name('apply.step-one');
     Route::get('/apply/step-two', [NotOnDutyController::class, 'stepTwo'])->name('apply.not-on-duty.step-two');
@@ -70,8 +65,7 @@ Route::group(['prefix'=>'not-on-duty'], function () {
 
     Route::get('submission', [NotOnDutyController::class, 'submission'])->name('apply.not-on-duty.submission');
 });
-
-
+//Private
 Route::group(['prefix'=>'non-official'], function () {
     Route::get('/apply/step-one', [NonOfficialController::class, 'stepOne'])->name('apply.step-one');
     Route::get('/apply/step-two', [NonOfficialController::class, 'stepTwo'])->name('apply.non-official.step-two');
@@ -81,9 +75,7 @@ Route::group(['prefix'=>'non-official'], function () {
     Route::post('/apply/submit', [NonOfficialController::class, 'submit'])->name('apply.non-official.submit');
     Route::get('submission', [NonOfficialController::class, 'submission'])->name('apply.non-official.submission');
 });
-
-
-
+//Study Tour
 Route::group(['prefix'=>'study-tour'], function () {
     Route::get('/apply/step-one', [StudyTourController::class, 'stepOne'])->name('apply.step-one');
     Route::get('/apply/step-two', [StudyTourController::class, 'stepTwo'])->name('apply.study-tour.step-two');
@@ -95,6 +87,7 @@ Route::group(['prefix'=>'study-tour'], function () {
     Route::get('submission', [StudyTourController::class, 'submission'])->name('apply.study-tour.submission');
 });
 
+// Check application status
 Route::group(['prefix'=>'status'], function () {
     Route::get('index', [StatusController::class, 'index'])->name('status.index');
     Route::get('{applicationId}', [StatusController::class, 'getStatus'])->name('status.application');

@@ -92,7 +92,7 @@ class StatusController extends Controller
 
             // Optionally always load family members
             $application->load('familyMembers');
-
+//        dd($application);
             return Inertia::render('Status/Show', [
                 'application' => $application
             ]);

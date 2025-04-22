@@ -5,15 +5,15 @@ defineProps({
 </script>
 
 <template>
-<!--    {{application}}-->
+    <!--    {{application}}-->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32" >
         <!-- Div 1 -->
         <div class="rounded-lg shadow-md mt-4">
-            <div class="p-4 rounded-lg shadow-md" style="background: #E8E5FF">
+            <div class="p-4 rounded-lg shadow-md" style="background: #EAFFE0">
                 <div class="flex justify-between items-center">
                     <div>
-                        <h2 class="text-primary font-bold text-xl">ON DUTY</h2>
-                        <p class="text-muted-foreground">Officials traveling for work</p>
+                        <h2 class="text-primary font-bold text-xl">NOT ON DUTY</h2>
+                        <p class="text-muted-foreground">Officials traveling for personal reasons</p>
                     </div>
                     <div class="text-right">
                         <span class="text-muted">Application ID</span><br />
@@ -70,31 +70,10 @@ defineProps({
             </div>
         </div>
 
-        <!-- Div 2 -->
-        <div>
-            <div class="p-4 space-y-4">
-<!--                <div class="border border-zinc-300 rounded-lg p-4">-->
-<!--                    <span class="bg-zinc-200 text-zinc-700 px-2 py-1 rounded-full text-sm">Estimated Amount</span>-->
-<!--                    <div class="text-xl font-bold">₹ 1,800</div>-->
-<!--                </div>-->
-                <div class="border border-zinc-300 rounded-lg p-4">
-                    <span class="bg-zinc-200 text-zinc-700 px-2 py-1 rounded-full text-sm">Document Upload</span>
-                    <div class="flex items-center mt-2">
-                        <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M4.79297 19.25H13.209C14.1372 19.25 15.0275 18.8813 15.6838 18.2249C16.3402 17.5685 16.709 16.6783 16.709 15.75V10.22C16.7093 9.29186 16.341 8.40159 15.685 7.745L9.71597 1.775C9.39094 1.45 9.00508 1.19221 8.58041 1.01634C8.15575 0.840469 7.70061 0.749967 7.24097 0.75H4.79297C3.86471 0.75 2.97447 1.11875 2.3181 1.77513C1.66172 2.4315 1.29297 3.32174 1.29297 4.25V15.75C1.29297 16.6783 1.66172 17.5685 2.3181 18.2249C2.97447 18.8813 3.86471 19.25 4.79297 19.25Z" stroke="black" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M8.68945 1.11V6.77C8.68945 7.30043 8.90017 7.80914 9.27524 8.18421C9.65031 8.55929 10.159 8.77 10.6895 8.77H16.3515" stroke="black" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M4.25 14.5V13.5M4.25 13.5V11.5H5.25C5.51522 11.5 5.76957 11.6054 5.95711 11.7929C6.14464 11.9804 6.25 12.2348 6.25 12.5C6.25 12.7652 6.14464 13.0196 5.95711 13.2071C5.76957 13.3946 5.51522 13.5 5.25 13.5H4.25ZM12.25 14.5V13.25M12.25 13.25V11.5H13.75M12.25 13.25H13.75M8.25 14.5V11.5H8.75C9.14782 11.5 9.52936 11.658 9.81066 11.9393C10.092 12.2206 10.25 12.6022 10.25 13C10.25 13.3978 10.092 13.7794 9.81066 14.0607C9.52936 14.342 9.14782 14.5 8.75 14.5H8.25Z" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
 
-                        <span class="text-zinc-700 px-2">Approval from Administrative Head</span>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
-<!--{{application}}-->
     <!--    Other Official Table-->
-    <div v-if="application.on_duty_details.length !== 0" class="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 mt-4">
+    <div v-if="application.not_on_duty_details.length !== 0" class="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 mt-4">
         <h2 class="text-2xl font-bold mb-4">Another Officials</h2>
         <div class="overflow-x-auto">
             <table class="min-w-full bg-white border border-zinc-300">
@@ -105,24 +84,15 @@ defineProps({
                     <th class="py-2 px-4 border-b text-left">DESIGNATION</th>
                     <th class="py-2 px-4 border-b text-left">DEPARTMENT</th>
                     <th class="py-2 px-4 border-b text-left">CONTACT NO.</th>
-                    <th class="py-2 px-4 border-b text-left">DOCUMENT</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr class="bg-zinc-100" v-for="member in application.on_duty_details" :key="member.id" >
+                <tr class="bg-zinc-100" v-for="member in application.not_on_duty_details" :key="member.id" >
                     <td class="py-2 px-4 border-b text-left">{{member.name}}</td>
                     <td class="py-2 px-4 border-b text-left">{{member.gender}}</td>
                     <td class="py-2 px-4 border-b text-left">{{member.designation}}</td>
                     <td class="py-2 px-4 border-b text-left">{{member.department}}</td>
                     <td class="py-2 px-4 border-b text-left">{{member.contact}}</td>
-                    <td class="py-2 px-4 border-b">
-                        <a href="#" class="text-blue-500"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M7.79297 21.25H16.209C17.1372 21.25 18.0275 20.8813 18.6838 20.2249C19.3402 19.5685 19.709 18.6783 19.709 17.75V12.22C19.7093 11.2919 19.341 10.4016 18.685 9.745L12.716 3.775C12.3909 3.45 12.0051 3.19221 11.5804 3.01634C11.1558 2.84047 10.7006 2.74997 10.241 2.75H7.79297C6.86471 2.75 5.97447 3.11875 5.3181 3.77513C4.66172 4.4315 4.29297 5.32174 4.29297 6.25V17.75C4.29297 18.6783 4.66172 19.5685 5.3181 20.2249C5.97447 20.8813 6.86471 21.25 7.79297 21.25Z" stroke="black" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M11.6895 3.10999V8.76999C11.6895 9.30042 11.9002 9.80913 12.2752 10.1842C12.6503 10.5593 13.159 10.77 13.6895 10.77H19.3515" stroke="black" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M7.25 16.5V15.5M7.25 15.5V13.5H8.25C8.51522 13.5 8.76957 13.6054 8.95711 13.7929C9.14464 13.9804 9.25 14.2348 9.25 14.5C9.25 14.7652 9.14464 15.0196 8.95711 15.2071C8.76957 15.3946 8.51522 15.5 8.25 15.5H7.25ZM15.25 16.5V15.25M15.25 15.25V13.5H16.75M15.25 15.25H16.75M11.25 16.5V13.5H11.75C12.1478 13.5 12.5294 13.658 12.8107 13.9393C13.092 14.2206 13.25 14.6022 13.25 15C13.25 15.3978 13.092 15.7794 12.8107 16.0607C12.5294 16.342 12.1478 16.5 11.75 16.5H11.25Z" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        </a>
-                    </td>
                 </tr>
 
                 </tbody>
