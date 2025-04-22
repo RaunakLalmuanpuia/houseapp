@@ -13,38 +13,41 @@ defineProps({
 </script>
 
 <template>
-    <Header/>
+    <div class="min-h-screen flex flex-col">
+        <Header />
 
+        <!-- Main content that should grow and push the footer down -->
+        <div class="flex-grow">
+            <OnDuty
+                v-if="application.type === 'ON DUTY'"
+                :application="application"
+            />
 
-    <OnDuty
-        v-if="application.type === 'ON DUTY'"
-        :application="application"
-    />
+            <Flam
+                v-if="application.type === 'FLAM'"
+                :application="application"
+            />
 
-    <Flam
-        v-if="application.type === 'FLAM'"
-        :application="application"
-    />
+            <NotOnDuty
+                v-if="application.type === 'NOT ON DUTY'"
+                :application="application"
+            />
 
-    <NotOnDuty
-        v-if="application.type === 'NOT ON DUTY'"
-        :application="application"
-    />
-<!--<div>{{application}}</div>-->
-    <NonOfficial
-        v-if="application.type === 'PRIVATE'"
-        :application="application"
-    />
+            <NonOfficial
+                v-if="application.type === 'PRIVATE'"
+                :application="application"
+            />
 
+            <StudyTour
+                v-if="application.type === 'STUDY TOUR'"
+                :application="application"
+            />
+        </div>
 
-    <StudyTour
-        v-if="application.type === 'STUDY TOUR'"
-        :application="application"
-    />
-
-
-    <Footer/>
+        <Footer />
+    </div>
 </template>
+
 
 <style scoped>
 

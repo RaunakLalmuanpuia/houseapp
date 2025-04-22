@@ -1,59 +1,28 @@
 <template>
+    <div class="min-h-screen flex flex-col">
+        <Header/>
+        <div class="flex-grow flex flex-col items-center w-[400px] mx-auto p-3">
+            <InformationStep class="w-full" />
+            <p v-if="Object.keys(page.props.errors).length">
+                <b>Please correct the following error(s):</b>
+                <ul class="text-red-500 text-sm mt-2">
+                    <li v-for="(message, field) in page.props.errors" :key="field">
+                        {{ message }}
+                    </li>
+                </ul>
+            </p>
+            <div class="p-6 bg-card rounded-lg shadow-md w-full">
 
-    <Header/>
-    <div class="flex flex-col items-center w-[400px] mx-auto p-3">
-        <InformationStep class="w-full" />
-        <p v-if="Object.keys(page.props.errors).length">
-            <b>Please correct the following error(s):</b>
-            <ul class="text-red-500 text-sm mt-2">
-                <li v-for="(message, field) in page.props.errors" :key="field">
-                    {{ message }}
-                </li>
-            </ul>
-        </p>
-        <div class="p-6 bg-card rounded-lg shadow-md w-full">
+                <h1 class="text-xl font-semibold text-primary">ON DUTY</h1>
+                <p class="text-muted-foreground">Officials travelling for work</p>
+                <h2 class="mt-4 text-lg font-medium">Kal turte Information</h2>
 
-            <h1 class="text-xl font-semibold text-primary">ON DUTY</h1>
-            <p class="text-muted-foreground">Officials travelling for work</p>
-            <h2 class="mt-4 text-lg font-medium">Kal turte Information</h2>
-
-            <label class="block mt-4 text-sm font-medium text-primary">Applicant Name</label>
-            <input v-model="application.applicant_name" type="text" placeholder="Diltu Hming" class="mt-1 p-2 border border-border rounded w-full" />
-            <p class="text-muted-foreground text-xs">Must be FLAM member</p>
-
-            <label class="block mt-4 text-sm font-medium text-primary">Gender</label>
-            <select v-model="application.gender" class="mt-1 p-2 border border-border rounded w-full">
-                <option>Select</option>
-                <option>Male</option>
-                <option>Female</option>
-                <option>Other</option>
-            </select>
-
-            <label class="block mt-4 text-sm font-medium text-primary">Designation</label>
-            <input v-model="application.designation"  type="text" placeholder="Diltu Hnathawh" class="mt-1 p-2 border border-border rounded w-full" />
-
-
-            <label class="block mt-4 text-sm font-medium text-primary">Department</label>
-            <input v-model="application.department"  type="text" placeholder="Diltu Hnathawh" class="mt-1 p-2 border border-border rounded w-full" />
-
-            <label class="block mt-4 text-sm font-medium text-primary">Contact Number</label>
-            <input v-model="application.contact" type="text" placeholder="Phone Number" class="mt-1 p-2 border border-border rounded w-full" />
-
-            <label class="block mt-4 text-sm font-medium text-primary">Approval</label>
-            <input
-                type="file"
-                @change="(e) => application.setDepartmentApproval(e.target.files[0])"
-                class="mt-1 p-2 border border-border rounded w-full"
-            />
-
-
-            <div v-for="(on_duty, index) in application.on_duty_details" :key="index">
                 <label class="block mt-4 text-sm font-medium text-primary">Applicant Name</label>
-                <input v-model="on_duty.name" type="text" placeholder="Diltu Hming" class="mt-1 p-2 border border-border rounded w-full" />
+                <input v-model="application.applicant_name" type="text" placeholder="Diltu Hming" class="mt-1 p-2 border border-border rounded w-full" />
                 <p class="text-muted-foreground text-xs">Must be FLAM member</p>
 
                 <label class="block mt-4 text-sm font-medium text-primary">Gender</label>
-                <select v-model="on_duty.gender" class="mt-1 p-2 border border-border rounded w-full">
+                <select v-model="application.gender" class="mt-1 p-2 border border-border rounded w-full">
                     <option>Select</option>
                     <option>Male</option>
                     <option>Female</option>
@@ -61,64 +30,98 @@
                 </select>
 
                 <label class="block mt-4 text-sm font-medium text-primary">Designation</label>
-                <input v-model="on_duty.designation"  type="text" placeholder="Diltu Hnathawh" class="mt-1 p-2 border border-border rounded w-full" />
+                <input v-model="application.designation"  type="text" placeholder="Diltu Hnathawh" class="mt-1 p-2 border border-border rounded w-full" />
+
 
                 <label class="block mt-4 text-sm font-medium text-primary">Department</label>
-                <input v-model="on_duty.department"  type="text" placeholder="Diltu Hnathawh" class="mt-1 p-2 border border-border rounded w-full" />
+                <input v-model="application.department"  type="text" placeholder="Diltu Hnathawh" class="mt-1 p-2 border border-border rounded w-full" />
 
                 <label class="block mt-4 text-sm font-medium text-primary">Contact Number</label>
-                <input v-model="on_duty.contact" type="text" placeholder="Phone Number" class="mt-1 p-2 border border-border rounded w-full" />
-
+                <input v-model="application.contact" type="text" placeholder="Phone Number" class="mt-1 p-2 border border-border rounded w-full" />
 
                 <label class="block mt-4 text-sm font-medium text-primary">Approval</label>
                 <input
                     type="file"
-                    @change="(e) => application.setOnDutyApproval(index, e.target.files[0])"
+                    @change="(e) => application.setDepartmentApproval(e.target.files[0])"
                     class="mt-1 p-2 border border-border rounded w-full"
                 />
-                <button @click.prevent="application.removeOnDuty(index)">Remove</button>
-            </div>
+
+
+                <div v-for="(on_duty, index) in application.on_duty_details" :key="index">
+                    <label class="block mt-4 text-sm font-medium text-primary">Applicant Name</label>
+                    <input v-model="on_duty.name" type="text" placeholder="Diltu Hming" class="mt-1 p-2 border border-border rounded w-full" />
+                    <p class="text-muted-foreground text-xs">Must be FLAM member</p>
+
+                    <label class="block mt-4 text-sm font-medium text-primary">Gender</label>
+                    <select v-model="on_duty.gender" class="mt-1 p-2 border border-border rounded w-full">
+                        <option>Select</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Other</option>
+                    </select>
+
+                    <label class="block mt-4 text-sm font-medium text-primary">Designation</label>
+                    <input v-model="on_duty.designation"  type="text" placeholder="Diltu Hnathawh" class="mt-1 p-2 border border-border rounded w-full" />
+
+                    <label class="block mt-4 text-sm font-medium text-primary">Department</label>
+                    <input v-model="on_duty.department"  type="text" placeholder="Diltu Hnathawh" class="mt-1 p-2 border border-border rounded w-full" />
+
+                    <label class="block mt-4 text-sm font-medium text-primary">Contact Number</label>
+                    <input v-model="on_duty.contact" type="text" placeholder="Phone Number" class="mt-1 p-2 border border-border rounded w-full" />
+
+
+                    <label class="block mt-4 text-sm font-medium text-primary">Approval</label>
+                    <input
+                        type="file"
+                        @change="(e) => application.setOnDutyApproval(index, e.target.files[0])"
+                        class="mt-1 p-2 border border-border rounded w-full"
+                    />
+                    <button @click.prevent="application.removeOnDuty(index)">Remove</button>
+                </div>
 
 
 
-            <h2 class="mt-4 text-lg font-medium">Family Member</h2>
-            <p class="text-muted-foreground text-xs">Must be FLAM member</p>
+                <h2 class="mt-4 text-lg font-medium">Family Member</h2>
+                <p class="text-muted-foreground text-xs">Must be FLAM member</p>
 
-            <div v-for="(family, index) in application.family_details" :key="index">
+                <div v-for="(family, index) in application.family_details" :key="index">
 
-                <label class="block mt-4 text-sm font-medium text-primary">Name</label>
-                <input v-model="family.name" type="text" placeholder="Name" class="mt-1 p-2 border border-border rounded w-full" />
+                    <label class="block mt-4 text-sm font-medium text-primary">Name</label>
+                    <input v-model="family.name" type="text" placeholder="Name" class="mt-1 p-2 border border-border rounded w-full" />
 
-                <label class="block mt-4 text-sm font-medium text-primary">Relationship</label>
-                <select v-model="family.relation" class="mt-1 p-2 border border-border rounded w-full">
-                    <option>Select</option>
-                    <option>Wife</option>
-                    <option>Husband</option>
-                    <option>Children</option>
-                    <option>Other</option>
-                </select>
-                <button @click.prevent="application.removeFamilyMember(index)">Remove</button>
-            </div>
+                    <label class="block mt-4 text-sm font-medium text-primary">Relationship</label>
+                    <select v-model="family.relation" class="mt-1 p-2 border border-border rounded w-full">
+                        <option>Select</option>
+                        <option>Wife</option>
+                        <option>Husband</option>
+                        <option>Children</option>
+                        <option>Other</option>
+                    </select>
+                    <button @click.prevent="application.removeFamilyMember(index)">Remove</button>
+                </div>
 
-            <div class="flex justify-between mt-4">
-                <button class="bg-secondary text-secondary-foreground hover:bg-secondary/80 p-2 rounded" @click.prevent="application.addOnDuty">+ Add Other Official</button>
-                <button class="bg-secondary text-secondary-foreground hover:bg-secondary/80 p-2 rounded" @click.prevent="application.addFamilyMember()">+ Add Family</button>
-            </div>
-
-
+                <div class="flex justify-between mt-4">
+                    <button class="bg-secondary text-secondary-foreground hover:bg-secondary/80 p-2 rounded" @click.prevent="application.addOnDuty">+ Add Other Official</button>
+                    <button class="bg-secondary text-secondary-foreground hover:bg-secondary/80 p-2 rounded" @click.prevent="application.addFamilyMember()">+ Add Family</button>
+                </div>
 
 
-            <div class="flex justify-between mt-6">
-                <button  @click="back" class="bg-muted text-muted-foreground hover:bg-muted/80 p-2 rounded border">Back</button>
 
-                <button @click="next" class="bg-primary text-primary-foreground p-2 rounded-md">
-                    Save & Next
-                </button>
+
+                <div class="flex justify-between mt-6">
+                    <button  @click="back" class="bg-muted text-muted-foreground hover:bg-muted/80 p-2 rounded border">Back</button>
+
+                    <button @click="next" class="bg-primary text-primary-foreground p-2 rounded-md">
+                        Save & Next
+                    </button>
+                </div>
             </div>
         </div>
+
+        <Footer/>
+
     </div>
 
-    <Footer/>
 
 </template>
 <script setup>
