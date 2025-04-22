@@ -29,6 +29,7 @@ class OnDutyController extends Controller
 
     public function submit(Request $request)
     {
+//        dd($request->all());
         $validated = $request->validate([
             'type' => 'required|string',
             'status' => 'required|string',
@@ -79,21 +80,24 @@ class OnDutyController extends Controller
                 'department_approval' => $deptApprovalPath,
             ]);
 
-            // Store OnDutyDetails
-            foreach ($validated['on_duty_details'] as $detail) {
-                $approvalFile = $detail['approval'];
-                $approvalName = random_int(100000, 999999) . '.' . $approvalFile->getClientOriginalExtension();
-                $approvalPath = $approvalFile->storeAs('approvals/on_duty', $approvalName, 'public');
+            if (!empty($validated['on_duty_details'])){
+                foreach ($validated['on_duty_details'] as $detail) {
+                    $approvalFile = $detail['approval'];
+                    $approvalName = random_int(100000, 999999) . '.' . $approvalFile->getClientOriginalExtension();
+                    $approvalPath = $approvalFile->storeAs('approvals/on_duty', $approvalName, 'public');
 
-                $application->onDutyDetails()->create([
-                    'name' => $detail['name'],
-                    'gender' => $detail['gender'],
-                    'designation' => $detail['designation'],
-                    'department' => $detail['department'],
-                    'contact' => $detail['contact'],
-                    'department_approval' => $approvalPath,
-                ]);
+                    $application->onDutyDetails()->create([
+                        'name' => $detail['name'],
+                        'gender' => $detail['gender'],
+                        'designation' => $detail['designation'],
+                        'department' => $detail['department'],
+                        'contact' => $detail['contact'],
+                        'department_approval' => $approvalPath,
+                    ]);
+                }
             }
+            // Store OnDutyDetails
+
 
             // Store FamilyMembers (if any)
             if (!empty($validated['family_details'])) {
@@ -126,6 +130,7 @@ class OnDutyController extends Controller
 
     public function submission(Request $request)
     {
+
         $applicationId = $request->query('application');
 
         $application = Application::with('onDutyDetails')->findOrFail($applicationId);
@@ -137,7 +142,7 @@ class OnDutyController extends Controller
     function generateApplicationId(): string
     {
         do {
-            $id = str_pad(random_int(0, 999999999), 9, '0', STR_PAD_LEFT);
+            $id = str_pad(random_int(0, 999999999), 6, '0', STR_PAD_LEFT);
         } while (Application::where('application_id', $id)->exists());
 
         return $id;

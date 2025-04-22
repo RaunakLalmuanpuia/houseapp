@@ -30,7 +30,7 @@ class NotOnDutyController extends Controller
     {
 //        dd($request->all());
 
-        $validator = Validator::make($request->all(), [
+        $validated = $request->validate([
             'type' => 'required|string|in:NOT ON DUTY',
             'status' => 'required|string',
             'applicant_name' => 'required|string|max:255',
@@ -52,9 +52,6 @@ class NotOnDutyController extends Controller
             'family_details.*.relation' => 'required|string',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
 
         try {
             DB::beginTransaction();
@@ -103,6 +100,7 @@ class NotOnDutyController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
+
             return redirect()->route('home')->with('success', $e->getMessage());
 //            return response()->json(['error' => 'Failed to save application', 'details' => $e->getMessage()], 500);
         }

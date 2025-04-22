@@ -30,7 +30,7 @@ class NonOfficialController extends Controller
     {
 //        dd($request->all());
 
-        $validator = Validator::make($request->all(), [
+        $validated = $request->validate([
             'type' => 'required|string',
             'status' => 'required|string',
             'applicant_name' => 'required|string|max:255',
@@ -48,9 +48,7 @@ class NonOfficialController extends Controller
             'family_details.*.relation' => 'required|string',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
+
 
         try {
             DB::beginTransaction();

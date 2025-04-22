@@ -3,6 +3,14 @@
     <Header/>
     <div class="flex flex-col items-center w-[400px] mx-auto p-3">
         <InformationStep class="w-full" />
+        <p v-if="Object.keys(page.props.errors).length">
+            <b>Please correct the following error(s):</b>
+            <ul class="text-red-500 text-sm mt-2">
+                <li v-for="(message, field) in page.props.errors" :key="field">
+                    {{ message }}
+                </li>
+            </ul>
+        </p>
         <div class="p-6 bg-card rounded-lg shadow-md w-full">
 
             <h1 class="text-xl font-semibold text-primary">ON DUTY</h1>
@@ -119,13 +127,14 @@ import Footer from "@/Components/Common/Footer.vue";
 import InformationStep from "@/Components/Common/InformationStep.vue";
 
 
-import { useForm } from '@inertiajs/vue3';
+import {useForm, usePage} from '@inertiajs/vue3';
 import { defineProps, watch } from 'vue';
 import { useOnDutyApplicationStore } from '@/Store/useOnDutyApplicationStore.js'
 import { router } from '@inertiajs/vue3'
 
 const application = useOnDutyApplicationStore()
 
+const page = usePage()
 function next() {
     router.visit(route('apply.on-duty.step-three'))
 }

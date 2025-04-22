@@ -36,7 +36,7 @@ class FlamController extends Controller
             'contact' => 'required|string',
             'location' => 'required|string',
             'start_date' => 'required|date',
-            'end_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
             'flam_details' => 'nullable|array',
             'flam_details.*.flam_name' => 'required|string',
             'flam_details.*.gender' => 'required|string',
@@ -50,14 +50,17 @@ class FlamController extends Controller
         $validated['application_id'] = $this->generateApplicationId();
         $application = Application::create($validated);
 
-        foreach ($validated['flam_details'] as $flam) {
-            $application->flamDetails()->create($flam);
+        if (!empty($validated['flam_details'])) {
+            foreach ($validated['flam_details'] as $flam) {
+                $application->flamDetails()->create($flam);
+            }
         }
 
-        foreach ($validated['family_details'] as $family) {
-            $application->familyMembers()->create($family);
+        if (!empty($validated['family_details'])) {
+            foreach ($validated['family_details'] as $family) {
+                $application->familyMembers()->create($family);
+            }
         }
-
 //        return redirect()->route('home')->with('success', 'Application submitted!');
         return redirect()->route('apply.flam.submission', ['application' => $application->id]);
     }

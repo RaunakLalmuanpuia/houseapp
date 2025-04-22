@@ -5,10 +5,10 @@ import DestinationStep from "@/Components/Common/DestinationStep.vue";
 
 
 import { useStudyTourApplicationStore } from '@/Store/useStudyTourApplicationStore.js'
-import { useForm, router } from '@inertiajs/vue3'
+import {useForm, router, usePage} from '@inertiajs/vue3'
 
 const application = useStudyTourApplicationStore()
-
+const page = usePage()
 
 const form = useForm({
     ...application.$state,
@@ -32,6 +32,14 @@ function back() {
 
     <div class="flex flex-col items-center w-[400px] p-3 mx-auto">
         <DestinationStep class="w-full" />
+        <p v-if="Object.keys(page.props.errors).length">
+            <b>Please correct the following error(s):</b>
+            <ul class="text-red-500 text-sm mt-2">
+                <li v-for="(message, field) in page.props.errors" :key="field">
+                    {{ message }}
+                </li>
+            </ul>
+        </p>
         <div class="p-6 bg-card rounded-lg shadow-md w-full">
             <h2 class="text-lg font-semibold">Kal Duhna Hmun</h2>
             <p class="text-muted-foreground">Mizoram House Kal duhna</p>

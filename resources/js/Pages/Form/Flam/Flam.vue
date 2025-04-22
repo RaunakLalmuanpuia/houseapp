@@ -4,18 +4,32 @@
     <Header/>
     <div class="flex flex-col items-center w-[400px] mx-auto p-3">
         <InformationStep class="w-full" />
+
+        <p v-if="Object.keys(page.props.errors).length">
+            <b>Please correct the following error(s):</b>
+            <ul class="text-red-500 text-sm mt-2">
+                <li v-for="(message, field) in page.props.errors" :key="field">
+                    {{ message }}
+                </li>
+            </ul>
+        </p>
+
         <div class="p-6 bg-card rounded-lg shadow-md w-full">
 
-            <h1 class="text-xl font-semibold text-primary">FLAM</h1>
-            <p class="text-muted-foreground">Former Legislators Association of Mizoram</p>
+            <div>
+                <h1 class="text-xl font-semibold text-primary">FLAM</h1>
+                <p class="text-muted-foreground">Former Legislators Association of Mizoram</p>
+            </div>
+
+
             <h2 class="mt-4 text-lg font-medium">Kal turte Information</h2>
 
             <label class="block mt-4 text-sm font-medium text-primary">Applicant Name</label>
-            <input v-model="application.applicant_name" type="text" placeholder="Diltu Hming" class="mt-1 p-2 border border-border rounded w-full" />
+            <input v-model="application.applicant_name" required  type="text" placeholder="Diltu Hming" class="mt-1 p-2 border border-border rounded w-full" />
             <p class="text-muted-foreground text-xs">Must be FLAM member</p>
 
             <label class="block mt-4 text-sm font-medium text-primary">Gender</label>
-            <select v-model="application.gender" class="mt-1 p-2 border border-border rounded w-full">
+            <select v-model="application.gender"  required  class="mt-1 p-2 border border-border rounded w-full">
                 <option>Select</option>
                 <option>Male</option>
                 <option>Female</option>
@@ -23,19 +37,23 @@
             </select>
 
             <label class="block mt-4 text-sm font-medium text-primary">Designation</label>
-            <input v-model="application.designation"  type="text" placeholder="Diltu Hnathawh" class="mt-1 p-2 border border-border rounded w-full" />
+            <input v-model="application.designation" required   type="text" placeholder="Diltu Hnathawh" class="mt-1 p-2 border border-border rounded w-full" />
 
             <label class="block mt-4 text-sm font-medium text-primary">Contact Number</label>
-            <input v-model="application.contact" type="text" placeholder="Phone Number" class="mt-1 p-2 border border-border rounded w-full" />
+            <input v-model="application.contact" type="text" required placeholder="Phone Number" class="mt-1 p-2 border border-border rounded w-full" />
 
 
             <div v-for="(flam, index) in application.flam_details" :key="index">
+
+                <h2 class="mt-4 text-lg font-medium">FLAM Member</h2>
+                <p class="text-muted-foreground text-xs">Must be FLAM member</p>
+
                 <label class="block mt-4 text-sm font-medium text-primary">Applicant Name</label>
-                <input v-model="flam.flam_name" type="text" placeholder="Diltu Hming" class="mt-1 p-2 border border-border rounded w-full" />
+                <input v-model="flam.flam_name" required  type="text" placeholder="Diltu Hming" class="mt-1 p-2 border border-border rounded w-full" />
                 <p class="text-muted-foreground text-xs">Must be FLAM member</p>
 
                 <label class="block mt-4 text-sm font-medium text-primary">Gender</label>
-                <select v-model="flam.gender" class="mt-1 p-2 border border-border rounded w-full">
+                <select v-model="flam.gender" required  class="mt-1 p-2 border border-border rounded w-full">
                     <option>Select</option>
                     <option>Male</option>
                     <option>Female</option>
@@ -43,26 +61,26 @@
                 </select>
 
                 <label class="block mt-4 text-sm font-medium text-primary">Designation</label>
-                <input v-model="flam.designation"  type="text" placeholder="Diltu Hnathawh" class="mt-1 p-2 border border-border rounded w-full" />
+                <input v-model="flam.designation" required   type="text" placeholder="Diltu Hnathawh" class="mt-1 p-2 border border-border rounded w-full" />
 
                 <label class="block mt-4 text-sm font-medium text-primary">Contact Number</label>
-                <input v-model="flam.contact" type="text" placeholder="Phone Number" class="mt-1 p-2 border border-border rounded w-full" />
+                <input v-model="flam.contact" type="text" required  placeholder="Phone Number" class="mt-1 p-2 border border-border rounded w-full" />
 
                 <button @click.prevent="application.removeFlam(index)">Remove</button>
             </div>
 
 
 
-            <h2 class="mt-4 text-lg font-medium">Family Member</h2>
-            <p class="text-muted-foreground text-xs">Must be FLAM member</p>
+
 
             <div v-for="(family, index) in application.family_details" :key="index">
-
+                <h2 class="mt-4 text-lg font-medium">Family Member</h2>
+                <p class="text-muted-foreground text-xs">Must be FLAM Relative</p>
                 <label class="block mt-4 text-sm font-medium text-primary">Name</label>
-                <input v-model="family.name" type="text" placeholder="Name" class="mt-1 p-2 border border-border rounded w-full" />
+                <input v-model="family.name" required  type="text" placeholder="Name" class="mt-1 p-2 border border-border rounded w-full" />
 
                 <label class="block mt-4 text-sm font-medium text-primary">Relationship</label>
-                <select v-model="family.relation" class="mt-1 p-2 border border-border rounded w-full">
+                <select v-model="family.relation"  required  class="mt-1 p-2 border border-border rounded w-full">
                     <option>Select</option>
                     <option>Wife</option>
                     <option>Husband</option>
@@ -99,15 +117,38 @@ import Footer from "@/Components/Common/Footer.vue";
 import InformationStep from "@/Components/Common/InformationStep.vue";
 
 
-import { useForm } from '@inertiajs/vue3';
+import {useForm, usePage} from '@inertiajs/vue3';
 import { defineProps, watch } from 'vue';
 import { useFlamApplicationStore } from '@/Store/useFlamApplicationStore.js'
 import { router } from '@inertiajs/vue3'
-
+const page = usePage()
 const application = useFlamApplicationStore()
+function validateForm() {
+    if (!application.applicant_name || !application.gender || !application.designation || !application.contact) {
+        return false;
+    }
 
+    for (const flam of application.flam_details) {
+        if (!flam.flam_name || !flam.gender || !flam.designation || !flam.contact) {
+            return false;
+        }
+    }
+
+    for (const family of application.family_details) {
+        if (!family.name || !family.relation) {
+            return false;
+        }
+    }
+
+    return true;
+}
 function next() {
-    router.visit('/apply/step-three')
+    if (!validateForm()) {
+        alert("Please fill all required fields before proceeding.");
+        return;
+    }
+
+    router.visit(route('apply.flam.step-three'))
 }
 
 function back() {

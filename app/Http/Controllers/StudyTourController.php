@@ -32,8 +32,8 @@ class StudyTourController extends Controller
 
     public function submit(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'type' => 'required|string|in:STUDY_TOUR',
+        $validated = $request->validate([
+            'type' => 'required|string|in:STUDY TOUR',
             'status' => 'required|string',
             'applicant_name' => 'required|string|max:255',
             'gender' => 'required|string|in:Male,Female,Other',
@@ -49,9 +49,9 @@ class StudyTourController extends Controller
             'study_tour_details.institute_approval' => 'required|file|mimes:pdf|max:2048', // Max 2MB
         ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
+//        if ($validator->fails()) {
+//            return response()->json(['errors' => $validator->errors()], 422);
+//        }
 
         try {
             DB::beginTransaction();
