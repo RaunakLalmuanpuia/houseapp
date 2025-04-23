@@ -17,7 +17,7 @@ defineProps({
         <Header />
 
         <!-- Main content that should grow and push the footer down -->
-        <div class="flex-grow">
+        <div class="flex-1 overflow-auto">
             <OnDuty
                 v-if="application.type === 'ON DUTY'"
                 :application="application"
@@ -43,9 +43,9 @@ defineProps({
                 :application="application"
             />
         </div>
-
-        <Footer />
     </div>
+        <Footer />
+
 </template>
 
 

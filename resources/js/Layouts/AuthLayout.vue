@@ -70,10 +70,10 @@
                     <p class="uppercase font-semibold mb-3 text-gray-400 tracking-wide">Application Form</p>
                     <ul class="space-y-2">
                         <li>
-                            <a :href="route('admin.application.incoming')"
+                            <a :href="route('admin.application.index_incoming')"
                                :class="[
                                 'flex items-center gap-3',
-                                route().current('admin.application.incoming') ? 'bg-blue-100 text-blue-700 font-semibold rounded px-3 py-2' : 'font-semibold'
+                                route().current('admin.application.index_incoming') ? 'bg-blue-100 text-blue-700 font-semibold rounded px-3 py-2' : 'font-semibold'
                               ]">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M6.66699 8.66667C6.66699 7.40933 6.66699 6.78133 7.05766 6.39067C7.44833 6 8.07633 6 9.33366 6H14.667C15.9243 6 16.5523 6 16.943 6.39067C17.3337 6.78133 17.3337 7.40933 17.3337 8.66667V14C17.3337 15.8853 17.3337 16.8287 16.7477 17.414C16.1623 18 15.219 18 13.3337 18H10.667C8.78166 18 7.83833 18 7.25299 17.414C6.66699 16.8287 6.66699 15.8853 6.66699 14V8.66667Z" stroke="#080808"/>
@@ -84,7 +84,11 @@
                             </a>
                         </li>
                         <li>
-                            <a class="flex items-center gap-3 hover:text-gray-700" href="#">
+                            <a :href="route('admin.application.index_approved')"
+                               :class="[
+                                'flex items-center gap-3',
+                                route().current('admin.application.index_approved') ? 'bg-blue-100 text-blue-700 font-semibold rounded px-3 py-2' : 'font-semibold'
+                              ]">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M17.3337 12.3333V9.66667C17.3337 8.40933 17.3337 7.78133 16.943 7.39067C16.5523 7 15.9243 7 14.667 7H9.33366C8.07633 7 7.44833 7 7.05766 7.39067C6.66699 7.78133 6.66699 8.40933 6.66699 9.66667V15C6.66699 16.8853 6.66699 17.8287 7.25299 18.414C7.83833 19 8.78166 19 10.667 19H12.0003" stroke="#080808" stroke-linecap="round"/>
                                     <path d="M10 16.9997V18.9997M10 10.333H14M10 12.9997H14" stroke="#080808" stroke-linecap="round"/>
@@ -95,7 +99,11 @@
                             </a>
                         </li>
                         <li>
-                            <a class="flex items-center gap-3 hover:text-gray-700" href="#">
+                            <a :href="route('admin.application.index_rejected')"
+                               :class="[
+                                'flex items-center gap-3',
+                                route().current('admin.application.index_rejected') ? 'bg-blue-100 text-blue-700 font-semibold rounded px-3 py-2' : 'font-semibold'
+                              ]">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M7.33 11.3333V8.66667C7.33 7.40933 7.33 6.78133 7.72079 6.39067C8.11158 6 8.73977 6 9.9975 6H15.3325C16.5902 6 17.2184 6 17.6092 6.39067C18 6.78133 18 7.40933 18 8.66667V14C18 15.8853 18 16.8287 17.4138 17.414C16.8283 18 15.8847 18 13.9988 18H12.665" stroke="#080808" stroke-linecap="round"/>
                                     <path d="M14.666 16.0007V18.0007M14.666 9.33398H10.6648M14.666 12.0007H10.6648" stroke="#080808" stroke-linecap="round"/>

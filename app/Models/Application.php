@@ -21,7 +21,9 @@ class Application extends Model
         'contact',
         'location',
         'start_date',
-        'end_date'];
+        'end_date',
+        'status_changed_at',
+        'reject_reason'];
 
     public function flamDetails() {
         return $this->hasMany(FlamDetail::class);

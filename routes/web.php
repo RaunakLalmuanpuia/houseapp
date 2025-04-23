@@ -108,9 +108,16 @@ Route::group(['prefix'=>'status'], function () {
 
 // Admin Applications
 Route::group(['prefix'=>'admin'], function () {
-    Route::get('/applications/incoming', [AdminApplicationController::class, 'incoming'])->name('admin.application.incoming');
+    Route::get('/applications/incoming', [AdminApplicationController::class, 'indexIncoming'])->name('admin.application.index_incoming');
+    Route::get('/applications/approved', [AdminApplicationController::class, 'indexApproved'])->name('admin.application.index_approved');
+    Route::get('/applications/rejected', [AdminApplicationController::class, 'indexRejected'])->name('admin.application.index_rejected');
+
+    Route::get('/applications/{application}/view', [AdminApplicationController::class, 'viewApplication'])->name('admin.application.view');
 //    Route::get('{applicationId}', [StatusController::class, 'getStatus'])->name('status.application');
 //    Route::get('{applicationId}/view', [StatusController::class, 'show'])->name('status.show-application');
+
+    Route::post('/applications/{application}/approve', [AdminApplicationController::class, 'approve'])->name('admin.application.approve');
+    Route::post('/applications/{application}/reject', [AdminApplicationController::class, 'reject'])->name('admin.application.reject');
 
 });
 

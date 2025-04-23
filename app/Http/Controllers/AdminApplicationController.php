@@ -10,7 +10,7 @@ class AdminApplicationController extends Controller
 {
     //
 
-    public function incoming(Request $request){
+    public function indexIncoming(Request $request){
 
 //       dd($request->all());
         $search = $request->get('search');
@@ -39,6 +39,133 @@ class AdminApplicationController extends Controller
 
         ]);
 
+    }
+
+    public function indexApproved(Request $request){
+
+//       dd($request->all());
+        $search = $request->get('search');
+        $perPage = $request->get('perPage', 10); // Default to 2 if not provided
+        $type = $request->get('type');
+        $pendingApplications = Application::where('status', 'Approved')
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('type', 'like', "%{$search}%")
+                        ->orWhere('application_id', 'like', "%{$search}%")
+                        ->orWhere('applicant_name', 'like', "%{$search}%")
+                        ->orWhere('contact', 'like', "%{$search}%")
+                        ->orWhere('location', 'like', "%{$search}%");
+                });
+            })
+            ->when($type, function ($query, $type) {
+                $query->where('type', $type);
+            })
+            ->paginate($perPage);
+
+        return Inertia::render('Application/Approved', [
+            'application' => $pendingApplications,
+            'search' => $search,
+            'perPage' => $perPage,
+            'type' => $type,
+
+        ]);
+
+    }
+
+    public function indexRejected(Request $request){
+
+//       dd($request->all());
+        $search = $request->get('search');
+        $perPage = $request->get('perPage', 10); // Default to 2 if not provided
+        $type = $request->get('type');
+        $pendingApplications = Application::where('status', 'Rejected')
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('type', 'like', "%{$search}%")
+                        ->orWhere('application_id', 'like', "%{$search}%")
+                        ->orWhere('applicant_name', 'like', "%{$search}%")
+                        ->orWhere('contact', 'like', "%{$search}%")
+                        ->orWhere('location', 'like', "%{$search}%");
+                });
+            })
+            ->when($type, function ($query, $type) {
+                $query->where('type', $type);
+            })
+            ->paginate($perPage);
+
+        return Inertia::render('Application/Rejected', [
+            'application' => $pendingApplications,
+            'search' => $search,
+            'perPage' => $perPage,
+            'type' => $type,
+
+        ]);
+
+    }
+
+
+
+    public function viewApplication(Application $application)
+    {
+//        dd($applicationId);
+        try {
+
+            switch ($application->type) {
+                case 'ON DUTY':
+                    $application->load('onDutyDetails');
+                    break;
+                case 'NOT ON DUTY':
+                    $application->load('notOnDutyDetails');
+                    break;
+                case 'PRIVATE':
+                    $application->load('nonOfficialDetails');
+                    break;
+                case 'STUDY TOUR':
+                    $application->load('studyTourDetails');
+                    break;
+                case 'FLAM':
+                    $application->load('flamDetails');
+                    break;
+            }
+
+            // Optionally always load family members
+            $application->load('familyMembers');
+
+            return Inertia::render('Application/Show', [
+                'application' => $application
+            ]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            // Return a custom error response if application not found
+            return response()->json([
+                'err' => 'Application not found'
+            ], 404);
+        }
+    }
+
+    public function approve(Application $application){
+
+        $application->update([
+            'status' => 'Approved',
+            'status_changed_at' => now(),
+        ]);
+
+        return redirect()->back();
+
+    }
+
+    public function reject(Request $request, Application $application)
+    {
+        $request->validate([
+            'reject_reason' => 'required|string|max:200',
+        ]);
+
+        $application->update([
+            'status' => 'Rejected',
+            'status_changed_at' => now(),
+            'reject_reason' => $request->input('reject_reason'),
+        ]);
+
+        return redirect()->back()->with('message', 'Application rejected successfully.');
     }
 
 }
