@@ -27,54 +27,53 @@ const card6 = ref({ number: 13094, label: 'STUDY TOUR' });
             </h2>
         </template>
 
-        <div id="app" class="max-w-full">
-            <div class="flex flex-wrap gap-6 mb-6">
-                <div class="flex flex-col rounded-xl bg-[#fff3e6] p-6 min-w-[180px]">
-                    <span class="text-orange-600 font-extrabold text-lg leading-none">106</span>
-                    <span class="text-orange-500 mt-1 text-sm font-normal">Incoming</span>
+        <div class="ml-6">
+            <section class="flex flex-wrap gap-4 mb-4 text-[12px] font-semibold">
+                <div class="w-[190px] h-[78px] bg-[#FFF4E5] text-[#F59E0B] rounded-md px-3 py-2 flex flex-col justify-center">
+                    <span class="text-[15px] font-bold leading-none">106</span>
+                    <span class="font-normal">Incoming</span>
                 </div>
-                <div class="flex flex-col rounded-xl bg-[#e8f9f0] p-6 min-w-[180px]">
-                    <span class="text-green-700 font-extrabold text-lg leading-none">2,098</span>
-                    <span class="text-green-600 mt-1 text-sm font-normal">Approved</span>
+                <div class="w-[190px] h-[78px] bg-[#D9F7EE] text-[#10B981] rounded-md px-3 py-2 flex flex-col justify-center">
+                    <span class="text-[15px] font-bold leading-none">2,098</span>
+                    <span class="font-normal">Approved</span>
                 </div>
-                <div class="flex flex-col rounded-xl bg-[#ffeaea] p-6 min-w-[180px]">
-                    <span class="text-red-400 font-extrabold text-lg leading-none">98</span>
-                    <span class="text-red-400 mt-1 text-sm font-normal">Rejected</span>
+                <div class="w-[190px] h-[78px] bg-[#FEE2E2] text-[#EF4444] rounded-md px-3 py-2 flex flex-col justify-center">
+                    <span class="text-[15px] font-bold leading-none">98</span>
+                    <span class="font-normal">Rejected</span>
                 </div>
-                <div class="flex flex-col rounded-xl bg-[#e6f3ff] p-6 min-w-[180px]">
-                    <span class="text-blue-500 font-extrabold text-lg leading-none">23,23,098</span>
-                    <span class="text-blue-500 mt-1 text-sm font-normal">All Application</span>
+                <div class="w-[190px] h-[78px] bg-[#DBF2FF] text-[#3B82F6] rounded-md px-3 py-2 flex flex-col justify-center">
+                    <span class="text-[15px] font-bold leading-none">23,23,098</span>
+                    <span class="font-normal">All Application</span>
                 </div>
-            </div>
+            </section>
 
-            <hr class="border-gray-300 mb-6" />
-
-            <div class="flex flex-wrap gap-6">
-                <div class="flex flex-col rounded-xl bg-[#fff3e6] p-6 min-w-[140px]">
-                    <span class="text-[#5c3e1f] font-extrabold text-lg leading-none">106</span>
-                    <span class="text-[#5c3e1f] mt-1 text-sm font-normal">FLAM</span>
-                </div>
-                <div class="flex flex-col rounded-xl bg-[#e1dfff] p-6 min-w-[140px]">
-                    <span class="text-[#1e1a6f] font-extrabold text-lg leading-none">19,876</span>
-                    <span class="text-[#1e1a6f] mt-1 text-sm font-normal">ON DUTY</span>
-                </div>
-                <div class="flex flex-col rounded-xl bg-[#e6ffdb] p-6 min-w-[140px]">
-                    <span class="text-[#3a7a0a] font-extrabold text-lg leading-none">9,876</span>
-                    <span class="text-[#3a7a0a] mt-1 text-sm font-normal">NOT ON DUTY</span>
-                </div>
-                <div class="flex flex-col rounded-xl bg-[#d9ecff] p-6 min-w-[140px]">
-                    <span class="text-[#1e73e8] font-extrabold text-lg leading-none">5,000</span>
-                    <span class="text-[#1e73e8] mt-1 text-sm font-normal">MEDICAL</span>
-                </div>
-                <div class="flex flex-col rounded-xl bg-[#fff3e6] p-6 min-w-[140px]">
-                    <span class="text-orange-600 font-extrabold text-lg leading-none">2,006</span>
-                    <span class="text-orange-500 mt-1 text-sm font-normal">PRIVATE</span>
-                </div>
-                <div class="flex flex-col rounded-xl bg-[#ffeaea] p-6 min-w-[140px]">
-                    <span class="text-red-400 font-extrabold text-lg leading-none">13,094</span>
-                    <span class="text-red-400 mt-1 text-sm font-normal">STUDY TOUR</span>
-                </div>
-            </div>
+            <!-- Top stats row 2 -->
+                    <section class="flex flex-wrap gap-2 mb-6 text-[12px] font-semibold">
+                        <div class="w-[150px] h-[78px] bg-[#F9F0D9] text-[#B27F00] rounded-md px-3 py-2 flex flex-col justify-center">
+                            <span class="text-[15px] font-bold leading-none">106</span>
+                            <span class="font-normal">FLAM</span>
+                        </div>
+                        <div class="w-[150px] h-[78px] bg-[#D9D9F9] text-[#3B3B8F] rounded-md px-3 py-2 flex flex-col justify-center">
+                            <span class="text-[15px] font-bold leading-none">19,876</span>
+                            <span class="font-normal">ON DUTY</span>
+                        </div>
+                        <div class="w-[150px] h-[78px] bg-[#D9F9D9] text-[#3B8F3B] rounded-md px-3 py-2 flex flex-col justify-center">
+                            <span class="text-[15px] font-bold leading-none">9,876</span>
+                            <span class="font-normal">NOT ON DUTY</span>
+                        </div>
+                        <div class="w-[150px] h-[78px] bg-[#D9E9F9] text-[#3B8FF9] rounded-md px-3 py-2 flex flex-col justify-center">
+                            <span class="text-[15px] font-bold leading-none">5,000</span>
+                            <span class="font-normal">MEDICAL</span>
+                        </div>
+                        <div class="w-[150px] h-[78px] bg-[#F9E9D9] text-[#B27F00] rounded-md px-3 py-2 flex flex-col justify-center">
+                            <span class="text-[15px] font-bold leading-none">2,006</span>
+                            <span class="font-normal">PRIVATE</span>
+                        </div>
+                        <div class="w-[150px] h-[78px] bg-[#F9D9D9] text-[#B23B3B] rounded-md px-3 py-2 flex flex-col justify-center">
+                            <span class="text-[15px] font-bold leading-none">13,094</span>
+                            <span class="font-normal">STUDY TOUR</span>
+                        </div>
+                    </section>
         </div>
 
         <div class="py-12">
