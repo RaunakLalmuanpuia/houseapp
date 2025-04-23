@@ -55,39 +55,41 @@ const viewApplication = (applicationId) => {
 
         <!-- Main Content: make it grow -->
         <div class="flex-grow flex flex-col items-center">
-            <div class="w-full max-w-[412px] bg-[#654829] border border-[#EEE] rounded-[10px] shadow-lg p-6 mt-4 mx-auto overflow-hidden">
-                <p class="text-[18px] sm:text-[20px] font-semibold leading-[20px] tracking-[0.25px] text-white font-['Noto_Sans'] text-center">
-                    Check for Status
-                </p>
-
-                <div class="mt-4 py-4">
-                    <label class="block text-[14px] font-medium leading-[20px] tracking-[0.1px] text-white py-2" for="application-id">
-                        Application ID
-                    </label>
-
-                    <input v-model="applicationId"
-                           type="text" id="application-id" placeholder="Enter Application ID"
-                           class="w-full p-2 border border-[#DCDCDC] rounded-[4px]
-           bg-[rgba(255,255,255,0.08)] text-[#EEE] font-['Noto_Sans'] text-[14px]
-           font-normal leading-[20px] tracking-[0.25px] placeholder:text-[#EEE]" />
-                </div>
-
-                <div class="flex flex-col sm:flex-row justify-between mt-4 gap-4">
-                    <button @click="viewApplication(applicationId)"
-                            class="flex justify-center items-center gap-2 w-full sm:w-auto min-w-[104px] px-4 py-2
-             border border-[#EFF6FF] rounded-lg bg-secondary text-[#EFF6FF]
-             hover:bg-secondary/80 text-center font-['Noto_Sans'] text-[14px]
-             font-medium leading-[20px] tracking-[0.1px]">
-                        View
-                    </button>
-
-                    <button @click="fetchApplication(applicationId)"
-                            class="flex justify-center items-center gap-2 px-6 py-2 w-full sm:w-auto min-w-[104px]
-             bg-white text-[#2B2B2B] border border-[#EFF6FF] rounded-lg
-             hover:bg-gray-100 text-center font-['Noto_Sans'] text-[14px]
-             font-medium leading-[20px] tracking-[0.1px]">
-                        Submit
-                    </button>
+            <div
+                class="bg-[#6B4A2B] rounded-xl p-8 w-full max-w-md text-white mt-4"
+                style="font-feature-settings: 'liga' 0"
+            >
+                <h2 class="text-center text-2xl font-semibold mb-8">Check for Status</h2>
+                <div class="space-y-6">
+                    <div>
+                        <label
+                            for="applicationId"
+                            class="block mb-2 text-base font-normal text-white"
+                        >Application ID</label>
+                        <input
+                            v-model="applicationId"
+                            id="applicationId"
+                            type="text"
+                            placeholder="Enter Application ID"
+                            class="w-full rounded-md border border-white bg-transparent px-4 py-2 placeholder-white placeholder-opacity-70 text-white focus:outline-none focus:ring-1 focus:ring-white"
+                        />
+                    </div>
+                    <div class="flex space-x-6">
+                        <button
+                            @click="viewApplication(applicationId)"
+                            type="button"
+                            class="w-32 border border-white rounded-lg py-3 text-white text-lg font-normal"
+                        >
+                            View
+                        </button>
+                        <button
+                            @click="fetchApplication(applicationId)"
+                            type="submit"
+                            class="flex-1 bg-white rounded-lg py-3 text-[#1F1F1F] text-lg font-normal"
+                        >
+                            Submit
+                        </button>
+                    </div>
                 </div>
             </div>
 

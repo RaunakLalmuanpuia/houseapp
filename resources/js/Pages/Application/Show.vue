@@ -31,21 +31,21 @@
 
     <div class="bg-white mt-4 flex justify-center items-center ">
         <div class="flex space-x-4">
-        <button
-            @click="showRejectDialog = true"
-            class="px-6 py-2 rounded-lg border border-gray-300 text-gray-800 text-base font-normal"
-            type="button"
-        >
-            Reject
-        </button>
-        <button
-            @click="handleApprove"
-            class="px-6 py-2 rounded-lg bg-black text-white text-base font-normal"
-            type="button"
-        >
-            Approve
-        </button>
-    </div>
+            <button
+                @click="showRejectDialog = true"
+                class="px-6 py-2 rounded-lg border border-gray-300 text-gray-800 text-base font-normal"
+                type="button"
+            >
+                Reject
+            </button>
+            <button
+                @click="handleApprove"
+                class="px-6 py-2 rounded-lg bg-black text-white text-base font-normal"
+                type="button"
+            >
+                Approve
+            </button>
+         </div>
     </div>
 
 
