@@ -14,6 +14,8 @@ use App\Http\Controllers\AuthController;
 
 use App\Http\Controllers\AdminApplicationController;
 
+use App\Http\Controllers\ReportController;
+
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -121,6 +123,11 @@ Route::group(['prefix'=>'admin'], function () {
 
 });
 
+Route::group(['prefix'=>'admin'], function () {
+    Route::get('/report', [ReportController::class, 'index'])->name('admin.report.index');
+
+
+});
 
 
 Route::group([], function () {
