@@ -129,8 +129,7 @@ Route::group(['prefix'=>'admin'], function () {
 
 Route::group(['prefix'=>'admin'], function () {
     Route::get('/report', [ReportController::class, 'index'])->name('admin.report.index');
-
-
+    Route::get('/json-index', [ReportController::class, 'jsonIndex'])->name('admin.report.json-index');
 });
 
 

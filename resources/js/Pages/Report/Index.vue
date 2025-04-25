@@ -1,34 +1,41 @@
 <script setup>
 import AuthLayout from "@/Layouts/AuthLayout.vue";
-import {reactive, ref} from "vue";
+import {reactive, ref, onMounted} from "vue";
 import {router} from "@inertiajs/vue3";
 
 defineOptions({layout:AuthLayout})
 
+const application = ref({ data: [] });
 
-const props = defineProps(['application','search', 'perPage','type']);
-const search = ref('');
+const links = ref();
 
 const state = reactive({
-    search: props.search || '',
-    perPage: props.perPage ? parseInt(props.perPage) : 10,
-    type: props.type,
+    perPage: 10,
+    search: '',
+    filters: {
+        status: '',
+        category: '',
+        start_date: '',
+        end_date: '',
+        mizoram_house: '',
+        gender: ''
+    }
 });
 
-const handleSearch = () => {
-    router.get(route('admin.report.index'), {
-        search: state.search,
-        type: state.type,   // Send the selected type filter
-        perPage: state.perPage,
-    }, {
-        preserveState: true,
-        replace: true,
-    });
-};
+const openDropdownId = ref(null)
+
 
 const clearSearch = () => {
     state.search = '';
-    handleSearch();
+    state.filters = {
+        status: '',
+        category: '',
+        start_date: '',
+        end_date: '',
+        mizoram_house: '',
+        gender: ''
+    };
+    application.value = []; // clear the current report data
 };
 const navigateToPage = (url) => {
     // Append the perPage parameter to pagination URLs
@@ -39,97 +46,150 @@ const navigateToPage = (url) => {
         });
     }
 };
+const generateReport = () => {
+    handleSearch({ ...state.filters, search: state.search, perPage:state.perPage });
+};
 
-const openDropdownId = ref(null)
+const handleSearch = (val) => {
+    onRequest({
+        filter: val
+    });
+};
+
+function onRequest(props) {
+    const filter = props.filter;
+
+    axios.get(route('admin.report.json-index'), {
+        params: {
+            ...filter
+        }
+    }).then(res => {
+        console.log(res.data);
+        const { list } = res.data;
+
+        application.value = list.data;
+        links.value = list.links;
+
+        // console.log(list.data);
+    }).catch(err => {
+        console.log( err?.response?.data?.message);
+        // q.notify({ type: 'negative', message: err?.response?.data?.message });
+    }).finally(() => {
+        // loading.value = false;
+    });
+}
+
+
+// onMounted(() => {
+//     onRequest({
+//         filter: {
+//             ...state.filters,
+//             search: state.search
+//         }
+//     });
+// });
+
 </script>
 
 <template>
     <div class="bg-[#f7f7f7] p-6 ml-5">
-    <div class="max-w-full bg-[#f7f7f7] rounded-md p-2">
-        <h2 class="heading-bar font-semibold text-base mb-6 inline-block">Report</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-6 max-w-full ml-12 mr-12">
-            <div class="flex flex-col">
-                <label for="status" class="text-sm font-semibold mb-1 text-black">Status</label>
-                <select
-                    id="status"
-                    class="text-sm text-gray-400 placeholder-gray-400 border border-gray-300 rounded-md py-2 px-3 cursor-pointer"
-                    aria-label="Status"
-                >
-                    <option selected disabled class="text-gray-400">Approved</option>
-                </select>
-            </div>
-
-            <div class="flex flex-col">
-                <label for="category" class="text-sm font-semibold mb-1 text-black">Category</label>
-                <select
-                    id="category"
-                    class="text-sm text-gray-400 placeholder-gray-400 border border-gray-300 rounded-md py-2 px-3 cursor-pointer"
-                    aria-label="Category"
-                >
-                    <option selected disabled class="text-gray-400">All</option>
-                </select>
-            </div>
-
-            <div class="flex flex-col">
-                <label for="start-date" class="text-sm font-semibold mb-1 text-black">Start Date (From)</label>
-                <div class="relative">
-                    <input
-                        type="date"
-                        id="start-date"
-                        placeholder="Select Date"
-                        class="text-sm text-gray-400 placeholder-gray-400 border border-gray-300 rounded-md py-2 px-3 w-full cursor-pointer"
-                        aria-label="Start Date From"
-                    />
-                    <i class="far fa-calendar-alt absolute right-3 top-1/2 -translate-y-1/2 text-black pointer-events-none"></i>
+        <div class="max-w-full bg-[#f7f7f7] rounded-md p-2">
+            <h2 class="heading-bar font-semibold text-base mb-6 inline-block">Report</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-6 max-w-full ml-12 mr-12">
+                <div class="flex flex-col">
+                    <label for="status" class="text-sm font-semibold mb-1 text-black">Status</label>
+                    <select
+                        v-model="state.filters.status"
+                        id="status"
+                        class="text-sm text-gray-400 placeholder-gray-400 border border-gray-300 rounded-md py-2 px-3 cursor-pointer"
+                        aria-label="Status"
+                    >
+                        <option class="text-gray-400">Approved</option>
+                        <option class="text-gray-400">Rejected</option>
+                        <option class="text-gray-400">Pending</option>
+                    </select>
                 </div>
-            </div>
 
-            <div class="flex flex-col">
-                <label for="end-date" class="text-sm font-semibold mb-1 text-black">End Date (Till)</label>
-                <div class="relative">
-                    <input
-                        type="date"
-                        id="end-date"
-                        placeholder="Select Date"
-                        class="text-sm text-gray-400 placeholder-gray-400 border border-gray-300 rounded-md py-2 px-3 w-full cursor-pointer"
-                        aria-label="End Date Till"
-                    />
-                    <i class="far fa-calendar-alt absolute right-3 top-1/2 -translate-y-1/2 text-black pointer-events-none"></i>
+                <div class="flex flex-col">
+                    <label for="category" class="text-sm font-semibold mb-1 text-black">Category</label>
+                    <select
+                        v-model="state.filters.category"
+                        id="category"
+                        class="text-sm text-gray-400 placeholder-gray-400 border border-gray-300 rounded-md py-2 px-3 cursor-pointer"
+                        aria-label="Category"
+                    >
+                        <option   class="text-gray-400">All</option>
+                        <option   class="text-gray-400">FLAM</option>
+                        <option   class="text-gray-400">ON DUTY</option>
+                    </select>
                 </div>
-            </div>
 
-            <div class="flex flex-col">
-                <label for="mizoram-house" class="text-sm font-semibold mb-1 text-black">Mizoram House</label>
-                <select
-                    id="mizoram-house"
-                    class="text-sm text-gray-400 placeholder-gray-400 border border-gray-300 rounded-md py-2 px-3 cursor-pointer"
-                    aria-label="Mizoram House"
-                >
-                    <option selected disabled class="text-gray-400">All</option>
-                </select>
-            </div>
+                <div class="flex flex-col">
+                    <label for="start-date" class="text-sm font-semibold mb-1 text-black">Start Date (From)</label>
+                    <div class="relative">
+                        <input
+                            v-model="state.filters.start_date"
+                            type="date"
+                            id="start-date"
+                            placeholder="Select Date"
+                            class="text-sm text-gray-400 placeholder-gray-400 border border-gray-300 rounded-md py-2 px-3 w-full cursor-pointer"
+                            aria-label="Start Date From"
+                        />
+                        <i class="far fa-calendar-alt absolute right-3 top-1/2 -translate-y-1/2 text-black pointer-events-none"></i>
+                    </div>
+                </div>
 
-            <div class="flex flex-col">
-                <label for="gender" class="text-sm font-semibold mb-1 text-black">Gender</label>
-                <select
-                    id="gender"
-                    class="text-sm text-gray-400 placeholder-gray-400 border border-gray-300 rounded-md py-2 px-3 cursor-pointer"
-                    aria-label="Gender"
-                >
-                    <option selected disabled class="text-gray-400">Both (male & female)</option>
-                </select>
-            </div>
+                <div class="flex flex-col">
+                    <label for="end-date" class="text-sm font-semibold mb-1 text-black">End Date (Till)</label>
+                    <div class="relative">
+                        <input
+                            v-model="state.filters.end_date"
+                            type="date"
+                            id="end-date"
+                            placeholder="Select Date"
+                            class="text-sm text-gray-400 placeholder-gray-400 border border-gray-300 rounded-md py-2 px-3 w-full cursor-pointer"
+                            aria-label="End Date Till"
+                        />
+                        <i class="far fa-calendar-alt absolute right-3 top-1/2 -translate-y-1/2 text-black pointer-events-none"></i>
+                    </div>
+                </div>
 
-            <div class="lg:col-span-2 flex items-end justify-start lg:justify-end">
-                <button
-                    type="submit"
-                    class="bg-black text-white text-sm font-normal rounded-md py-3 px-8 w-full max-w-[220px]"
-                >
-                    Generate Report
-                </button>
+                <div class="flex flex-col">
+                    <label for="mizoram-house" class="text-sm font-semibold mb-1 text-black">Mizoram House</label>
+                    <select
+                        id="mizoram-house"
+                        class="text-sm text-gray-400 placeholder-gray-400 border border-gray-300 rounded-md py-2 px-3 cursor-pointer"
+                        aria-label="Mizoram House"
+                    >
+                        <option selected disabled class="text-gray-400">All</option>
+                    </select>
+                </div>
+
+                <div class="flex flex-col">
+                    <label for="gender" class="text-sm font-semibold mb-1 text-black">Gender</label>
+                    <select
+                        v-model="state.filters.gender"
+                        id="gender"
+                        class="text-sm text-gray-400 placeholder-gray-400 border border-gray-300 rounded-md py-2 px-3 cursor-pointer"
+                        aria-label="Gender"
+                    >
+                        <option   class="text-gray-400">Both (male & female)</option>
+                        <option   class="text-gray-400">Male</option>
+                        <option   class="text-gray-400">Female</option>
+                    </select>
+                </div>
+
+                <div class="lg:col-span-2 flex items-end justify-start lg:justify-end">
+                    <button
+                        @click="generateReport"
+                        type="submit"
+                        class="bg-black text-white text-sm font-normal rounded-md py-3 px-8 w-full max-w-[220px]"
+                    >
+                        Generate Report
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
     </div>
 
 
@@ -142,7 +202,7 @@ const openDropdownId = ref(null)
                 </h1>
                 <nav class="flex gap-6 mt-4 sm:mt-0 text-gray-900 text-sm font-normal">
                     <button
-                        v-if="application.data.length != 0"
+                        v-if="application.length > 0"
                         type="button"
                         class="flex items-center gap-2 hover:text-gray-700 focus:outline-none"
                     >
@@ -153,7 +213,7 @@ const openDropdownId = ref(null)
                         Print
                     </button>
                     <button
-                        v-if="application.data.length != 0"
+                        v-if="application.length > 0"
                         type="button"
                         class="flex items-center gap-2 hover:text-gray-700 focus:outline-none"
                     >
@@ -164,7 +224,7 @@ const openDropdownId = ref(null)
                         Export
                     </button>
                     <button
-                        v-if="application.data.length != 0"
+                        v-if="application.length > 0"
                         type="button"
                         class="flex items-center gap-2 hover:text-gray-700 focus:outline-none"
                     >
@@ -194,7 +254,7 @@ const openDropdownId = ref(null)
                     </div>
                 </nav>
             </header>
-            <section v-if="application.data.length != 0" class="overflow-x-auto overflow-y-auto">
+            <section v-if="application.length > 0" class="overflow-x-auto overflow-y-auto">
                 <table class="w-full border-collapse min-w-[900px]">
                     <thead>
                     <tr class="bg-gray-700 text-white text-xs font-bold text-left">
@@ -214,7 +274,7 @@ const openDropdownId = ref(null)
                     </thead>
                     <tbody class="text-xs text-gray-900">
                     <tr
-                        v-for="(item, index) in application.data"
+                        v-for="(item, index) in application"
                         :key="item.id"
                         :class="index % 2 === 1 ? 'bg-gray-50 border-b border-gray-100' : 'border-b border-gray-200'"
                     >
@@ -303,6 +363,7 @@ const openDropdownId = ref(null)
                     </tbody>
                 </table>
             </section>
+
             <section v-else class="flex items-center justify-center">
                 <div class="bg-white flex items-center justify-center">
                     <div class="text-center">
@@ -335,7 +396,11 @@ const openDropdownId = ref(null)
                 </div>
             </section>
 
-            <footer v-if="application.data.length != 0" class="mt-6 flex items-center justify-end gap-4 text-xs text-gray-600 select-none">
+<!--            {{application}}-->
+
+            {{links}}
+
+            <footer v-if="application.length > 0" class="mt-6 flex items-center justify-end gap-4 text-xs text-gray-600 select-none">
                 <span>Records per page:</span>
                 <div class="relative inline-block text-left">
                     <select
