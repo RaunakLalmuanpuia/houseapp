@@ -156,12 +156,13 @@
                                                       fill="black"/>
                                             </svg>
 
-                                            <button
-                                                @click="$inertia.get(route('admin.application.view', item))"
-                                                class="text-sm text-gray-700"
-                                            >
-                                                View Details
-                                            </button>
+                                            <a :href="route('admin.application.view', item)" class="text-sm text-gray-700">View Details</a>
+<!--                                            <button-->
+<!--                                                @click="$inertia.get(route('admin.application.view', item))"-->
+<!--                                                -->
+<!--                                            >-->
+<!--                                                View Details-->
+<!--                                            </button>-->
                                         </div>
                                         <div class="flex items-center space-x-2 px-4 py-2 hover:bg-gray-100 cursor-pointer">
                                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">

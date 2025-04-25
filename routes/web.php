@@ -12,6 +12,8 @@ use App\Http\Controllers\StudyTourController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\AuthController;
 
+use App\Http\Controllers\FaqController;
+
 use App\Http\Controllers\AdminApplicationController;
 
 use App\Http\Controllers\ReportController;
@@ -139,5 +141,14 @@ Route::group([], function () {
 //    Route::post('forgot-password/set-password', [AuthController::class, 'changePassword'])->name('forgot.password');
     Route::post('login', [AuthController::class, 'store'])->name('login.store');
     Route::delete('logout', [AuthController::class, 'destroy'])->name('login.destroy');
+
+});
+
+
+Route::group(['prefix'=>'admin'], function () {
+    Route::get('/faq', [FaqController::class, 'index'])->name('admin.faq.index');
+    Route::post('/faqs', [FaqController::class, 'store'])->name('admin.faq.store');
+    Route::put('/faqs/{faq}', [FaqController::class, 'update'])->name('admin.faq.update');
+    Route::delete('/faqs/{faq}', [FaqController::class, 'destroy'])->name('admin.faq.destroy');
 
 });
