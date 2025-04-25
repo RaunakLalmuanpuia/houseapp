@@ -17,6 +17,8 @@ use App\Http\Controllers\FaqController;
 use App\Http\Controllers\AdminApplicationController;
 
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\NoticeController;
+
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -152,3 +154,12 @@ Route::group(['prefix'=>'admin'], function () {
     Route::delete('/faqs/{faq}', [FaqController::class, 'destroy'])->name('admin.faq.destroy');
 
 });
+
+
+Route::group(['prefix'=>'admin'], function () {
+    Route::get('/notice', [NoticeController::class, 'index'])->name('admin.notice.index');
+    Route::post('/notice', [NoticeController::class, 'store'])->name('admin.notice.store');
+    Route::put('/notice/{notice}', [NoticeController::class, 'update'])->name('admin.notice.update');
+    Route::delete('/notice/{notice}', [NoticeController::class, 'destroy'])->name('admin.notice.destroy');
+});
+

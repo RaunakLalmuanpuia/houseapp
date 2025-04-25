@@ -153,7 +153,12 @@
                             </a>
                         </li>
                         <li>
-                            <a class="flex items-center gap-3 hover:text-gray-700" href="#">
+
+                            <a :href="route('admin.notice.index')"
+                               :class="[
+                                'flex items-center gap-3',
+                                route().current('admin.notice.index') ? 'bg-blue-100 text-blue-700 font-semibold rounded px-3 py-2' : 'font-semibold'
+                              ]">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <g clip-path="url(#clip0_530_6894)">
                                         <path d="M16.667 16H7.33366C6.96547 16 6.66699 16.2985 6.66699 16.6667C6.66699 17.0349 6.96547 17.3333 7.33366 17.3333H16.667C17.0352 17.3333 17.3337 17.0349 17.3337 16.6667C17.3337 16.2985 17.0352 16 16.667 16Z" fill="black"/>
