@@ -20,6 +20,7 @@
                 <div
                     ref="scrollContainer"
                     class="flex space-x-5 overflow-x-auto scrollbar-hide w-full snap-x snap-mandatory scroll-smooth px-[8px]"
+                    :class="{ 'justify-start pl-22': rooms.length < 3, 'justify-center': rooms.length >= 3 }"
                 >
                     <!-- Start Spacer -->
                     <div class="flex-shrink-0 w-[8px]"></div>
