@@ -18,7 +18,7 @@ use App\Http\Controllers\AdminApplicationController;
 
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\NoticeController;
-
+use App\Http\Controllers\HouseController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -161,4 +161,9 @@ Route::group(['prefix'=>'admin'], function () {
     Route::put('/notice/{notice}', [NoticeController::class, 'update'])->name('admin.notice.update');
     Route::delete('/notice/{notice}', [NoticeController::class, 'destroy'])->name('admin.notice.destroy');
 });
+
+
+// Fetch all houses with their room types and room rates
+Route::get('/houses', [HouseController::class, 'index'])->name('house.index');
+
 
