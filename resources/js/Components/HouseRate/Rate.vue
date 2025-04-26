@@ -54,7 +54,7 @@
             <button
                 v-if="rooms.length > 3"
                 aria-label="Next"
-                class="absolute right-[-30px] z-20 bg-white w-12 h-12 rounded-full flex items-center justify-center shadow-md hover:shadow-lg"
+                class="absolute right-[-40px] z-20 bg-white w-12 h-12 rounded-full flex items-center justify-center shadow-md hover:shadow-lg"
                 @click="scrollRight"
             >
                 <i class="fas fa-chevron-right text-black"></i>
