@@ -194,10 +194,10 @@ Route::group(['prefix'=>'admin'], function () {
 
 // Room tyoe
 Route::group(['prefix'=>'admin'], function () {
-    Route::get('/room_type', [RoomTypeController::class, 'index'])->name('admin.rate.index');
-    Route::post('/room_type', [RoomTypeController::class, 'store'])->name('admin.rate.store');
-    Route::put('/room_type/{house}/{roomType}', [RoomTypeController::class, 'update'])->name('admin.rate.update');
-    Route::delete('/room_type/{house}/{roomType}', [RoomTypeController::class, 'destroy'])->name('admin.rate.destroy');
+    Route::get('/room_type', [RoomTypeController::class, 'index'])->name('admin.room_type.index');
+    Route::post('/room_type', [RoomTypeController::class, 'store'])->name('admin.room_type.store');
+    Route::put('/room_type/{house}/{roomType}', [RoomTypeController::class, 'update'])->name('admin.room_type.update');
+    Route::delete('/room_type/{house}/{roomType}', [RoomTypeController::class, 'destroy'])->name('admin.room_type.destroy');
 });
 
 
