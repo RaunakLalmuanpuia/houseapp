@@ -7,7 +7,7 @@
 
             <!-- Previous Button -->
             <button
-                v-if="rooms.length > 3"
+                v-if="rooms.length > 4"
                 aria-label="Previous"
                 class="absolute left-[-40px] z-20 bg-white w-12 h-12 rounded-full flex items-center justify-center shadow-md hover:shadow-lg"
                 @click="scrollLeft"
@@ -52,7 +52,7 @@
 
             <!-- Next Button -->
             <button
-                v-if="rooms.length > 3"
+                v-if="rooms.length > 4"
                 aria-label="Next"
                 class="absolute right-[-40px] z-20 bg-white w-12 h-12 rounded-full flex items-center justify-center shadow-md hover:shadow-lg"
                 @click="scrollRight"

@@ -19,6 +19,7 @@ use App\Http\Controllers\AdminApplicationController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\HouseController;
+use App\Http\Controllers\RateController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -154,12 +155,20 @@ Route::group(['prefix'=>'admin'], function () {
 
 });
 
-
+//Notice
 Route::group(['prefix'=>'admin'], function () {
     Route::get('/notice', [NoticeController::class, 'index'])->name('admin.notice.index');
     Route::post('/notice', [NoticeController::class, 'store'])->name('admin.notice.store');
     Route::put('/notice/{notice}', [NoticeController::class, 'update'])->name('admin.notice.update');
     Route::delete('/notice/{notice}', [NoticeController::class, 'destroy'])->name('admin.notice.destroy');
+});
+
+//Rate
+Route::group(['prefix'=>'admin'], function () {
+    Route::get('/rate', [RateController::class, 'index'])->name('admin.rate.index');
+    Route::post('/rate', [RateController::class, 'store'])->name('admin.rate.store');
+    Route::put('/rate/{roomRate}', [RateController::class, 'update'])->name('admin.rate.update');
+    Route::delete('/rate/{roomRate}', [RateController::class, 'destroy'])->name('admin.rate.destroy');
 });
 
 
