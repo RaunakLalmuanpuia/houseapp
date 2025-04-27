@@ -20,6 +20,8 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\HouseController;
 use App\Http\Controllers\RateController;
+use App\Http\Controllers\SettingsController;
+
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -169,6 +171,11 @@ Route::group(['prefix'=>'admin'], function () {
     Route::post('/rate', [RateController::class, 'store'])->name('admin.rate.store');
     Route::put('/rate/{roomRate}', [RateController::class, 'update'])->name('admin.rate.update');
     Route::delete('/rate/{roomRate}', [RateController::class, 'destroy'])->name('admin.rate.destroy');
+});
+
+
+Route::group(['prefix'=>'admin'], function () {
+    Route::get('/settings', [SettingsController::class, 'index'])->name('admin.settings.index');
 });
 
 
