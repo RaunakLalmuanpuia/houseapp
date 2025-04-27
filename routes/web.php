@@ -21,6 +21,8 @@ use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\HouseController;
 use App\Http\Controllers\RateController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\RoomTypeController;
+
 
 
 Route::get('/', function () {
@@ -174,9 +176,30 @@ Route::group(['prefix'=>'admin'], function () {
 });
 
 
+
+
+// Settings
 Route::group(['prefix'=>'admin'], function () {
     Route::get('/settings', [SettingsController::class, 'index'])->name('admin.settings.index');
 });
+
+//House
+Route::group(['prefix'=>'admin'], function () {
+    Route::get('/house', [HouseController::class, 'house_index'])->name('admin.house.house-index');
+    Route::post('/house', [HouseController::class, 'store'])->name('admin.house.store');
+    Route::put('/house/{house}', [HouseController::class, 'update'])->name('admin.house.update');
+    Route::delete('/house/{house}', [HouseController::class, 'destroy'])->name('admin.house.destroy');
+});
+
+
+// Room tyoe
+Route::group(['prefix'=>'admin'], function () {
+    Route::get('/room_type', [RoomTypeController::class, 'index'])->name('admin.rate.index');
+    Route::post('/room_type', [RoomTypeController::class, 'store'])->name('admin.rate.store');
+    Route::put('/room_type/{house}/{roomType}', [RoomTypeController::class, 'update'])->name('admin.rate.update');
+    Route::delete('/room_type/{house}/{roomType}', [RoomTypeController::class, 'destroy'])->name('admin.rate.destroy');
+});
+
 
 
 // Fetch all houses with their room types and room rates

@@ -105,41 +105,14 @@
                         <i class="fas fa-ellipsis-v cursor-pointer"></i>
                     </td>
                 </tr>
-                <tr class="bg-gray-50 border-b border-gray-100">
-                    <td class="py-2 px-3">25</td>
-                    <td class="py-2 px-3">Salt Lake, Kolkata</td>
-                    <td class="py-2 px-3 text-center">
-                        <i class="fas fa-ellipsis-v cursor-pointer"></i>
-                    </td>
-                </tr>
                 <tr class="bg-white border-b border-gray-100">
-                    <td class="py-2 px-3">24</td>
+                    <td class="py-2 px-3">26</td>
                     <td class="py-2 px-3">Salt Lake, Kolkata</td>
                     <td class="py-2 px-3 text-center">
                         <i class="fas fa-ellipsis-v cursor-pointer"></i>
                     </td>
                 </tr>
-                <tr class="bg-gray-50 border-b border-gray-100">
-                    <td class="py-2 px-3">23</td>
-                    <td class="py-2 px-3">Salt Lake, Kolkata</td>
-                    <td class="py-2 px-3 text-center">
-                        <i class="fas fa-ellipsis-v cursor-pointer"></i>
-                    </td>
-                </tr>
-                <tr class="bg-white border-b border-gray-100">
-                    <td class="py-2 px-3">22</td>
-                    <td class="py-2 px-3">Salt Lake, Kolkata</td>
-                    <td class="py-2 px-3 text-center">
-                        <i class="fas fa-ellipsis-v cursor-pointer"></i>
-                    </td>
-                </tr>
-                <tr class="bg-gray-50 border-b border-gray-100">
-                    <td class="py-2 px-3">21</td>
-                    <td class="py-2 px-3">Bengaluru</td>
-                    <td class="py-2 px-3 text-center">
-                        <i class="fas fa-ellipsis-v cursor-pointer"></i>
-                    </td>
-                </tr>
+
                 </tbody>
             </table>
 

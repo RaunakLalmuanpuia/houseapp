@@ -109,6 +109,8 @@ const updateFaq =(item) => {
     })
 }
 
+
+
 const deleteFaqDialog = (item) => {
     showDeleteDialog.value = true
     openDropdownId.value = null

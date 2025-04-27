@@ -49,4 +49,86 @@ class HouseController extends Controller
         ]);
     }
 
+
+    public function house_index(Request $request)
+    {
+        $filter = $request->get('filter');
+        $rowsPerPage = $request->get('rowsPerPage', 10); // <-- Correct
+        $page = $request->get('page', 1); // <-- Get page from request
+
+        $query = House::query()->orderBy('name');
+
+        if ($filter) {
+            $query->where('name', 'like', "%{$filter}%");
+        }
+
+        $list = $query->paginate($rowsPerPage, ['*'], 'page', $page); // <-- Important
+
+        return response()->json([
+            'list' => $list
+        ]);
+    }
+
+    /**
+     * Store a newly created house in storage.
+     */
+    public function store(Request $request)
+    {
+//        dd($request->all());
+        $request->validate([
+            'name' => 'required|string|max:255|unique:houses,name',
+        ]);
+
+        $house = House::create([
+            'name' => $request->name,
+        ]);
+
+        return redirect()->back();
+
+//        return response()->json([
+//            'success' => true,
+//            'message' => 'House created successfully',
+//            'data' => $house
+//        ]);
+    }
+
+    /**
+     * Update the specified house in storage.
+     */
+    public function update(Request $request, House $house)
+    {
+
+//        dd($house);
+        $request->validate([
+            'name' => 'required|string|max:255|unique:houses,name,' . $house->id,
+        ]);
+
+        $house->update([
+            'name' => $request->name,
+        ]);
+
+
+        return redirect()->back();
+//        return response()->json([
+//            'success' => true,
+//            'message' => 'House updated successfully',
+//            'data' => $house
+//        ]);
+    }
+
+    /**
+     * Remove the specified house from storage.
+     */
+    public function destroy(House $house)
+    {
+        $house->delete();
+
+        return redirect()->back();
+
+//        return response()->json([
+//            'success' => true,
+//            'message' => 'House deleted successfully'
+//        ]);
+    }
+
 }
