@@ -1,233 +1,44 @@
-<script setup>
 
-import {onMounted, ref} from "vue";
-import {router, useForm} from "@inertiajs/vue3";
-
-
-
-const form = useForm({
-    name:'',
-})
-
-const editForm = useForm({
-    name:'',
-})
-
-const houses = ref();
-
-const links = ref();
-
-const filter = ref('');
-const pagination = ref({
-    sortBy: 'name',
-    descending: false,
-    page: 1,
-    rowsPerPage: 4,
-    rowsNumber: 0
-});
-
-const openDropdownId = ref(null)
-const showEditDialog = ref(false)
-const showDeleteDialog = ref(false)
-const selectedHouse = ref({}) // optional, used for display if needed
-
-
-const showCreatePopup = ref(false)
-const showDeletePopup = ref(false)
-const showUpdatePopup = ref(false)
-
-const handleEdit = (item) => {
-    selectedHouse.value = item
-    editForm.name = item.name
-    showEditDialog.value = true
-    openDropdownId.value = null
-}
-
-
-
-function handleSearch(val) {
-    getHouse({ pagination: pagination.value, filter: val });
-}
-
-function getHouse(props) {
-    console.log("adas");
-    const { page, rowsPerPage, sortBy, descending } = props.pagination;
-    const filter = props.filter;
-
-    axios.get(route('admin.house.house-index'), {
-        params: {
-            filter,
-            page,
-            rowsPerPage,
-            sortBy,
-            descending
-        }
-    }).then(res => {
-        const { list } = res.data;
-        const { data, per_page, current_page, total } = list;
-        houses.value = data;
-        pagination.value.page = current_page;
-        pagination.value.rowsNumber = total;
-        pagination.value.rowsPerPage = per_page;
-    }).catch(err => {
-        console.error(err?.response?.data?.message);
-    }).finally(() => {
-
-    });
-}
-
-
-
-const addHouse = e => {
-    form.post(route('admin.house.store'), {
-        onStart: () => {
-            showEditDialog.value = false;
-        },
-
-        onSuccess: (response) => {
-            getHouse({ pagination: pagination.value, filter: filter.value });
-            showCreatePopup.value = true
-        },
-        onError: (errors) => {
-            if (errors) {
-                if (typeof errors === 'string') {
-                    // If backend sends a simple string error
-                    alert(errors);
-                } else if (typeof errors === 'object') {
-                    // If it's a validation bag or object
-                    const firstError = Object.values(errors)[0];
-                    if (Array.isArray(firstError)) {
-                        alert(firstError[0]); // validation errors usually come as arrays
-                    } else {
-                        alert(firstError);
-                    }
-                } else {
-                    alert('An unexpected error occurred.');
-                }
-            }
-            showCreatePopup.value = false;
-        },
-        onFinish: params => q.loading.hide()
-        })
-
-}
-const updateHouse =(item) => {
-    editForm.put(route('admin.house.update', item), {
-        onStart: () => {
-            showEditDialog.value = false;
-        },
-        onFinish: () => {
-            // showRejectDialog.value = false
-            // showRejectPopup.value = true
-        },
-        onError: (errors) => {
-            if (errors) {
-                if (typeof errors === 'string') {
-                    // If backend sends a simple string error
-                    alert(errors);
-                } else if (typeof errors === 'object') {
-                    // If it's a validation bag or object
-                    const firstError = Object.values(errors)[0];
-                    if (Array.isArray(firstError)) {
-                        alert(firstError[0]); // validation errors usually come as arrays
-                    } else {
-                        alert(firstError);
-                    }
-                } else {
-                    alert('An unexpected error occurred.');
-                }
-            }
-        },
-        onSuccess: (response) => {
-            getHouse({ pagination: pagination.value, filter: filter.value });
-            showUpdatePopup.value = true
-        }
-    })
-}
-const deleteHouseDialog = (item) => {
-    showDeleteDialog.value = true
-    openDropdownId.value = null
-    selectedHouse.value = item
-}
-const deleteHouse = (item) => {
-
-    router.delete(route('admin.house.destroy', item), {
-        onSuccess: () => {
-            getHouse({ pagination: pagination.value, filter: filter.value });
-            showDeleteDialog.value = false
-            showDeletePopup.value = true
-
-            // auto-hide after 3 seconds
-            // setTimeout(() => {
-            //     showApprovePopup.value = false
-            // }, 3000)
-        },
-        onError: (errors) => {
-            if (errors) {
-                if (typeof errors === 'string') {
-                    // If backend sends a simple string error
-                    alert(errors);
-                } else if (typeof errors === 'object') {
-                    // If it's a validation bag or object
-                    const firstError = Object.values(errors)[0];
-                    if (Array.isArray(firstError)) {
-                        alert(firstError[0]); // validation errors usually come as arrays
-                    } else {
-                        alert(firstError);
-                    }
-                } else {
-                    alert('An unexpected error occurred.');
-                }
-            }
-        },
-    })
-}
-onMounted(() => {
-    getHouse({ pagination: pagination.value, filter: filter.value });
-});
-</script>
 
 <template>
     <section class="flex-grow space-y-8">
         <!-- Add Room Type form -->
-        <div
-            class="border border-gray-200 rounded-xl p-6 max-w-4xl"
-            aria-label="Add Room Type"
-        >
+        <div class="border border-gray-200 rounded-xl p-6 max-w-4xl" aria-label="Add Room Type">
             <h3 class="font-bold text-lg mb-6">Add Mizoram House</h3>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-                <div>
-                    <label
-                        for="roomTypeName"
-                        class="block text-sm font-normal mb-1 text-black"
-                    >Name</label
-                    >
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-6 items-end">
+                <!-- Input: spans 2 columns -->
+                <div class="sm:col-span-2">
+                    <label for="roomTypeName" class="block text-sm font-normal mb-1 text-black">Name</label>
                     <input
                         v-model="form.name"
                         id="roomTypeName"
                         name="roomTypeName"
                         type="text"
                         placeholder="Name of Room Type"
-                        class="w-full rounded border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                        class="w-full rounded border border-gray-300 text-black placeholder-gray-400 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                     />
                 </div>
-                <button
-                    @click="addHouse"
-                    type="submit"
-                    class="bg-black text-white rounded-md px-4 py-2 text-base font-normal"
-                >
-                    Submit
-                </button>
 
+                <!-- Button: spans 1 column -->
+                <div class="sm:col-span-1 flex justify-end">
+                    <button
+                        @click="addHouse"
+                        type="submit"
+                        class="bg-black text-white rounded border border-black px-12 py-3 text-base font-normal"
+                    >
+                        Submit
+                    </button>
+                </div>
             </div>
-
         </div>
+
+
 
         <!-- List of Room Type -->
         <section class="max-w-4xl space-y-4">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                 <h3 class="font-bold text-lg mb-3 sm:mb-0">List of Mizoram House</h3>
-                <form
+                <div
                     class="relative w-full max-w-xs sm:w-auto"
                     role="search"
                     aria-label="Search Room Types"
@@ -248,7 +59,7 @@ onMounted(() => {
                     >
                         <i class="fas fa-search"></i>
                     </button>
-                </form>
+                </div>
             </div>
 
             <table class="w-full border-collapse text-sm relative">
@@ -654,6 +465,194 @@ onMounted(() => {
     </div>
 </template>
 
+
+<script setup>
+
+import {onMounted, ref} from "vue";
+import {router, useForm} from "@inertiajs/vue3";
+
+
+
+const form = useForm({
+    name:'',
+})
+
+const editForm = useForm({
+    name:'',
+})
+
+const houses = ref();
+
+const links = ref();
+
+const filter = ref('');
+const pagination = ref({
+    sortBy: 'name',
+    descending: false,
+    page: 1,
+    rowsPerPage: 4,
+    rowsNumber: 0
+});
+
+const openDropdownId = ref(null)
+const showEditDialog = ref(false)
+const showDeleteDialog = ref(false)
+const selectedHouse = ref({}) // optional, used for display if needed
+
+
+const showCreatePopup = ref(false)
+const showDeletePopup = ref(false)
+const showUpdatePopup = ref(false)
+
+const handleEdit = (item) => {
+    selectedHouse.value = item
+    editForm.name = item.name
+    showEditDialog.value = true
+    openDropdownId.value = null
+}
+
+
+
+function handleSearch(val) {
+    getHouse({ pagination: pagination.value, filter: val });
+}
+
+function getHouse(props) {
+    const { page, rowsPerPage, sortBy, descending } = props.pagination;
+    const filter = props.filter;
+
+    axios.get(route('admin.house.house-index'), {
+        params: {
+            filter,
+            page,
+            rowsPerPage,
+            sortBy,
+            descending
+        }
+    }).then(res => {
+        const { list } = res.data;
+        const { data, per_page, current_page, total } = list;
+        houses.value = data;
+        pagination.value.page = current_page;
+        pagination.value.rowsNumber = total;
+        pagination.value.rowsPerPage = per_page;
+    }).catch(err => {
+        console.error(err?.response?.data?.message);
+    }).finally(() => {
+    });
+}
+
+
+
+const addHouse = e => {
+    form.post(route('admin.house.store'), {
+        onStart: () => {
+            showEditDialog.value = false;
+        },
+
+        onSuccess: (response) => {
+            getHouse({ pagination: pagination.value, filter: filter.value });
+            showCreatePopup.value = true;
+            form.reset();
+        },
+        onError: (errors) => {
+            if (errors) {
+                if (typeof errors === 'string') {
+                    // If backend sends a simple string error
+                    alert(errors);
+                } else if (typeof errors === 'object') {
+                    // If it's a validation bag or object
+                    const firstError = Object.values(errors)[0];
+                    if (Array.isArray(firstError)) {
+                        alert(firstError[0]); // validation errors usually come as arrays
+                    } else {
+                        alert(firstError);
+                    }
+                } else {
+                    alert('An unexpected error occurred.');
+                }
+            }
+            showCreatePopup.value = false;
+        },
+        onFinish: params => q.loading.hide()
+    })
+
+}
+const updateHouse =(item) => {
+    editForm.put(route('admin.house.update', item), {
+        onStart: () => {
+            showEditDialog.value = false;
+        },
+        onFinish: () => {
+            // showRejectDialog.value = false
+            // showRejectPopup.value = true
+        },
+        onError: (errors) => {
+            if (errors) {
+                if (typeof errors === 'string') {
+                    // If backend sends a simple string error
+                    alert(errors);
+                } else if (typeof errors === 'object') {
+                    // If it's a validation bag or object
+                    const firstError = Object.values(errors)[0];
+                    if (Array.isArray(firstError)) {
+                        alert(firstError[0]); // validation errors usually come as arrays
+                    } else {
+                        alert(firstError);
+                    }
+                } else {
+                    alert('An unexpected error occurred.');
+                }
+            }
+        },
+        onSuccess: (response) => {
+            getHouse({ pagination: pagination.value, filter: filter.value });
+            showUpdatePopup.value = true
+        }
+    })
+}
+const deleteHouseDialog = (item) => {
+    showDeleteDialog.value = true
+    openDropdownId.value = null
+    selectedHouse.value = item
+}
+const deleteHouse = (item) => {
+
+    router.delete(route('admin.house.destroy', item), {
+        onSuccess: () => {
+            getHouse({ pagination: pagination.value, filter: filter.value });
+            showDeleteDialog.value = false
+            showDeletePopup.value = true
+
+            // auto-hide after 3 seconds
+            // setTimeout(() => {
+            //     showApprovePopup.value = false
+            // }, 3000)
+        },
+        onError: (errors) => {
+            if (errors) {
+                if (typeof errors === 'string') {
+                    // If backend sends a simple string error
+                    alert(errors);
+                } else if (typeof errors === 'object') {
+                    // If it's a validation bag or object
+                    const firstError = Object.values(errors)[0];
+                    if (Array.isArray(firstError)) {
+                        alert(firstError[0]); // validation errors usually come as arrays
+                    } else {
+                        alert(firstError);
+                    }
+                } else {
+                    alert('An unexpected error occurred.');
+                }
+            }
+        },
+    })
+}
+onMounted(() => {
+    getHouse({ pagination: pagination.value, filter: filter.value });
+});
+</script>
 <style scoped>
 
 </style>
