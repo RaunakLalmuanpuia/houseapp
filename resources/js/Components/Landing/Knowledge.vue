@@ -44,13 +44,13 @@ const selectedComponent = computed(() => {
         </div>
 
         <!-- FLEX ROW -->
-        <div class="flex flex-col md:flex-row justify-center items-stretch gap-2 md:gap-4 p-6 h-[600px] w-full max-w-5xl">
+        <div class="flex flex-col md:flex-row justify-center items-stretch gap-2 md:gap-4 p-6 w-full max-w-5xl">
             <!-- LEFT SIDE -->
-            <div class="w-full max-w-md p-4 flex flex-col h-full">
+            <div class="w-full md:max-w-md p-4 flex flex-col">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 flex-grow">
-                    <!-- On Duty & Not On Duty Option -->
+                    <!-- Options -->
                     <div
-                        class="p-4 border rounded-lg bg-card text-foreground"
+                        class="p-4 border rounded-lg bg-card text-foreground cursor-pointer"
                         :class="{'border-red-500': selectedOption === 'onDutyNotOnDuty'}"
                         @click="selectOption('onDutyNotOnDuty')"
                     >
@@ -59,9 +59,8 @@ const selectedComponent = computed(() => {
                         </p>
                     </div>
 
-                    <!-- Medical Study Tour Private Option -->
                     <div
-                        class="p-4 border rounded-lg bg-card text-foreground"
+                        class="p-4 border rounded-lg bg-card text-foreground cursor-pointer"
                         :class="{'border-red-500': selectedOption === 'medicalStudyPrivate'}"
                         @click="selectOption('medicalStudyPrivate')"
                     >
@@ -70,9 +69,8 @@ const selectedComponent = computed(() => {
                         </p>
                     </div>
 
-                    <!-- General Requirements Option (Spans two columns on larger screens) -->
                     <div
-                        class="col-span-1 md:col-span-2 p-4 border rounded-lg bg-card text-foreground"
+                        class="col-span-1 md:col-span-2 p-4 border rounded-lg bg-card text-foreground cursor-pointer"
                         :class="{'border-red-500': selectedOption === 'general'}"
                         @click="selectOption('general')"
                     >
@@ -81,9 +79,8 @@ const selectedComponent = computed(() => {
                         </p>
                     </div>
 
-                    <!-- Special Concessions & Conditions Option -->
                     <div
-                        class="p-4 border rounded-lg bg-card text-foreground"
+                        class="p-4 border rounded-lg bg-card text-foreground cursor-pointer"
                         :class="{'border-red-500': selectedOption === 'specialConcessions'}"
                         @click="selectOption('specialConcessions')"
                     >
@@ -92,9 +89,8 @@ const selectedComponent = computed(() => {
                         </p>
                     </div>
 
-                    <!-- Before Entering Mizoram House Option -->
                     <div
-                        class="p-4 border rounded-lg bg-card text-foreground"
+                        class="p-4 border rounded-lg bg-card text-foreground cursor-pointer"
                         :class="{'border-red-500': selectedOption === 'beforeEntering'}"
                         @click="selectOption('beforeEntering')"
                     >
@@ -105,18 +101,18 @@ const selectedComponent = computed(() => {
                 </div>
             </div>
 
-
             <!-- RIGHT SIDE -->
-            <div class="w-full max-w-md p-6 bg-card rounded-lg shadow-md flex flex-col h-[528px] border border-red-500 mt-3 ">
-                <div class="flex-grow overflow-auto">
+            <div class="w-full md:max-w-md p-4 flex flex-col bg-card rounded-lg shadow-md border border-red-500 h-[500px]">
+                <div class="flex-grow overflow-y-auto">
                     <!-- Render the selected component dynamically -->
                     <component :is="selectedComponent" />
                 </div>
             </div>
-        </div>
 
+        </div>
     </div>
 </template>
+
 
 <style scoped>
 
