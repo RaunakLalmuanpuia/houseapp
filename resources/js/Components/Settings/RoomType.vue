@@ -79,9 +79,6 @@ function getRoomType(props) {
         }
     }).then(res => {
         const { list, house  } = res.data;
-
-
-        console.log(house)
         const { data, per_page, current_page, total } = list;
         roomType.value = data;
         houses.value = house;

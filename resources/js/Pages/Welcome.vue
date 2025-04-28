@@ -1,13 +1,60 @@
 <script setup>
-import { Head, Link } from '@inertiajs/vue3';
+import {Head, Link, router} from '@inertiajs/vue3';
 import Header from "@/Components/Common/Header.vue";
 import Footer from "@/Components/Common/Footer.vue";
+import Rate from "@/Components/HouseRate/Rate.vue";
+import {onMounted, ref} from "vue";
 
 defineProps({
     canLogin: Boolean,
     canRegister: Boolean,
     laravelVersion: String,
     phpVersion: String,
+});
+
+const allHouse = ref();
+const house = ref();
+const rooms = ref();
+
+
+const filter = ref('');
+
+function handleSearch(val) {
+    getHouseRate({ filter: val });
+}
+
+function clearSearch() {
+    filter.value = ''; // Clear the search value
+    // Reset the pagination if needed (e.g., set page to 1 after clearing search)
+    getHouseRate({  filter: '' }); // Clear the filter in the API request
+}
+function getHouseRate(props) {
+    const filter = props.filter;
+
+    axios.get(route('house.index'), {
+        params: {
+            filter,
+        }
+    }).then(res => {
+        const { allHouseData, houseData, roomsData } = res.data;
+
+        allHouse.value = allHouseData;
+        house.value = houseData;
+        rooms.value = roomsData;
+
+
+    }).catch(err => {
+        console.error(err?.response?.data?.message);
+    }).finally(() => {
+    });
+}
+
+const selectHouse = (houseName) => {
+    getHouseRate({ filter: houseName });
+};
+
+onMounted(() => {
+    getHouseRate({filter: filter.value });
 });
 </script>
 
@@ -16,33 +63,101 @@ defineProps({
 
     <Header/>
 
-    <div style="background: #1F3652;" class=" p-8 flex flex-col md:flex-row text-white">
-        <div class="md:w-1/2">
-            <p class="text-white font-sans text-[25px] font-[600] leading-normal">
-                Chibai! Kan lo lawm a che!
-            </p>
 
-            <p class="text-white font-sans text-[14px] font-normal leading-[20px] tracking-[0.25px]">
-                Effortless Reservations, Peaceful Stays<br />Mizoram House for You
-            </p>
+    <div class="bg-[#1F3652] relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 py-20 flex flex-col md:flex-row items-center md:items-start justify-between gap-4 md:gap-20">
+            <div class="flex-1 w-full md:max-w-xl text-white">
+                <h1 class="text-3xl md:text-4xl font-extrabold leading-tight mb-4">
+                    Chibai! Kan lo lawm a che!
+                </h1>
+                <p class="text-base md:text-lg font-normal leading-relaxed max-w-md mb-20">
+                    Effortless Reservations, Peaceful Stays
+                    <br/>
+                    Mizoram House for You
+                </p>
+            </div>
+
+            <div class="flex gap-6">
+                <a class="flex flex-col justify-center rounded-xl bg-[#0059d9] px-8 py-10 w-40 md:w-48 text-white cursor-pointer hover:brightness-110 transition" href="#">
+                    <div class="flex items-center justify-between text-xl font-bold mb-1">
+                        <span>Form</span>
+                        <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4.6 6L0 1.4L1.4 0L7.4 6L1.4 12L0 10.6L4.6 6Z" fill="white"/>
+                        </svg>
+
+                    </div>
+                    <span class="text-sm font-normal">Reservation Form</span>
+                </a>
+
+                <a class="flex flex-col justify-center rounded-xl bg-[#df8a0f] px-8 py-10 w-40 md:w-48 text-white cursor-pointer hover:brightness-110 transition" href="#">
+                    <div class="flex items-center justify-between text-xl font-bold mb-1">
+                        <span>Status</span>
+                        <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4.6 6L0 1.4L1.4 0L7.4 6L1.4 12L0 10.6L4.6 6Z" fill="white"/>
+                        </svg>
+                    </div>
+                    <span class="text-sm font-normal">Check for Status</span>
+                </a>
+            </div>
+        </div>
+
+
+
+        <!-- Now shifted towards right -->
+        <img
+            src="/images/icons/dance.png"
+            alt="Outline drawing of people dancing"
+            class="absolute bottom-0 left-20 md:left-20 w-72 md:w-96 opacity-300  pointer-events-none select-none"
+        />
+    </div>
+
+    <div style="background-color:#EEF5FF">
+        <div class="flex flex-col items-center mt-2">
+            <h2 class="font-semibold text-black mb-3 mt-3">Mizoram House Rate-te</h2>
+            <div class="relative w-[280px] sm:w-[320px] md:w-[360px] lg:w-[400px]">
+                <input
+                    v-model="filter"
+                    type="search"
+                    placeholder="Search"
+                    @input="handleSearch(filter)"
+                    aria-label="Search"
+                    class="w-full rounded-md border border-gray-300 py-2 px-4 pr-10 text-gray-400 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400"
+                />
+                <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+                >
+                    <path
+                        d="M13.893 13.92L16.973 17M16 8.5C16 10.4891 15.2098 12.3968 13.8033 13.8033C12.3968 15.2098 10.4891 16 8.5 16C6.51088 16 4.60322 15.2098 3.1967 13.8033C1.79018 12.3968 1 10.4891 1 8.5C1 6.51088 1.79018 4.60322 3.1967 3.1967C4.60322 1.79018 6.51088 1 8.5 1C10.4891 1 12.3968 1.79018 13.8033 3.1967C15.2098 4.60322 16 6.51088 16 8.5Z"
+                        stroke="#61646B"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+                </svg>
+            </div>
+
+
+            <nav class="flex flex-wrap justify-center space-x-4 mt-4 text-gray-600 text-sm select-none">
+                <template v-for="houses in allHouse" :key="house.id">
+                    <a
+                        href="#"
+                        @click.prevent="selectHouse(houses.name)"
+                        class="hover:text-gray-800"
+                        :class="{ 'text-[#f15a29] font-semibold': houses.name === house.name }"
+                    >
+                        {{ houses.name }}
+                    </a>
+                </template>
+            </nav>
 
         </div>
-        <div class="md:w-1/2 mt-6 flex space-x-4 justify-end">
-            <div class="bg-blue-800 text-primary-foreground p-4 rounded-lg shadow-md flex flex-col justify-between">
-                <h2 class="text-xl font-semibold">Form</h2>
-                <p class="text-muted-foreground">Reservation Form</p>
-                <button class="mt-2 text-right">
-                    <span>&gt;</span>
-                </button>
-            </div>
-            <div class="bg-yellow-200 text-accent-foreground p-4 rounded-lg shadow-md flex flex-col justify-between">
-                <h2 class="text-xl font-semibold">Status</h2>
-                <p class="text-muted-foreground">Check for Status</p>
-                <button class="mt-2 text-right">
-                    <span>&gt;</span>
-                </button>
-            </div>
-        </div>
+
+        <Rate v-if="house && rooms" :house="house" :rooms="rooms" />
     </div>
 
 
@@ -268,3 +383,5 @@ defineProps({
     }
 }
 </style>
+
+
