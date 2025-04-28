@@ -551,7 +551,7 @@ const deleteRate = (item) => {
         </div>
     </div>
 
-    Update pop up
+<!--    Update pop up-->
     <div
         v-if="showUpdatePopup"
         class="fixed bottom-4 left-1/2 transform -translate-x-1/2 lg:-translate-x-[22%] z-50 w-[90%] sm:w-auto"

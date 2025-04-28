@@ -53,8 +53,8 @@ class HouseController extends Controller
     public function house_index(Request $request)
     {
         $filter = $request->get('filter');
-        $rowsPerPage = $request->get('rowsPerPage', 10); // <-- Correct
-        $page = $request->get('page', 1); // <-- Get page from request
+        $rowsPerPage = $request->get('rowsPerPage', 10);
+        $page = $request->get('page', 1);
 
         $query = House::query()->orderBy('name');
 
@@ -62,7 +62,7 @@ class HouseController extends Controller
             $query->where('name', 'like', "%{$filter}%");
         }
 
-        $list = $query->paginate($rowsPerPage, ['*'], 'page', $page); // <-- Important
+        $list = $query->paginate($rowsPerPage, ['*'], 'page', $page);
 
         return response()->json([
             'list' => $list

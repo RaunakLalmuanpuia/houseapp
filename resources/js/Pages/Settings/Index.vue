@@ -23,8 +23,8 @@ const isActive = (componentName) => currentComponent.value === componentName
 </script>
 
 <template>
-    <div class="bg-white font-sans text-black">
-        <div class="max-w-[1200px] mx-auto p-6">
+    <div class="bg-white text-black">
+        <div class="ml-6 mt-6">
             <h2 class="text-lg font-semibold flex items-center mb-6">
                 <span class="inline-block w-1.5 h-6 bg-black mr-2"></span>Settings
             </h2>
@@ -134,7 +134,7 @@ const isActive = (componentName) => currentComponent.value === componentName
                 </nav>
 
                 <!-- Right content -->
-                <div class="flex-1">
+                <div class="flex-1 w-full">
                     <component :is="components[currentComponent]" />
                 </div>
             </div>

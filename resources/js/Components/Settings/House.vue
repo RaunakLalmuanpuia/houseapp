@@ -14,7 +14,7 @@
                         id="roomTypeName"
                         name="roomTypeName"
                         type="text"
-                        placeholder="Name of Room Type"
+                        placeholder="Name of Mizoram House"
                         class="w-full rounded border border-gray-300 text-black placeholder-gray-400 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                     />
                 </div>
@@ -36,28 +36,26 @@
 
         <!-- List of Room Type -->
         <section class="max-w-4xl space-y-4">
+
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                 <h3 class="font-bold text-lg mb-3 sm:mb-0">List of Mizoram House</h3>
-                <div
-                    class="relative w-full max-w-xs sm:w-auto"
-                    role="search"
-                    aria-label="Search Room Types"
-                >
+                <div class="flex items-center space-x-2 border border-gray-300 rounded-full px-4 py-2 max-w-[300px] w-full">
                     <input
-
-                        @input="handleSearch($event.target.value)"
+                        v-model="filter"
                         type="search"
-                        name="search"
-                        id="search"
                         placeholder="Search"
-                        class="w-full sm:w-64 rounded-lg border border-gray-400 px-4 py-2 pr-10 text-gray-600 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
-                    />
-                    <button
-                        type="submit"
-                        class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-600 hover:text-black"
+                        @input="handleSearch(filter)"
+                        class="flex-grow text-sm text-gray-700 placeholder-gray-500 focus:outline-none border-none"
                         aria-label="Search"
-                    >
-                        <i class="fas fa-search"></i>
+                    />
+                    <button v-if="filter"
+                            @click="clearSearch" class="ml-1 text-gray-500 hover:text-red-500" title="Clear Search">
+                        ✕
+                    </button>
+                    <button @click="handleSearch(filter)" type="submit" class="ml-2 text-gray-600">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13.893 13.92L16.973 17M16 8.5C16 10.4891 15.2098 12.3968 13.8033 13.8033C12.3968 15.2098 10.4891 16 8.5 16C6.51088 16 4.60322 15.2098 3.1967 13.8033C1.79018 12.3968 1 10.4891 1 8.5C1 6.51088 1.79018 4.60322 3.1967 3.1967C4.60322 1.79018 6.51088 1 8.5 1C10.4891 1 12.3968 1.79018 13.8033 3.1967C15.2098 4.60322 16 6.51088 16 8.5Z" stroke="#61646B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
                     </button>
                 </div>
             </div>
@@ -76,7 +74,7 @@
                     :key="item.id"
                     class="bg-white border-b border-gray-100 relative"
                 >
-                    <td class="py-2 px-3">{{ index + 1 }}</td>
+                    <td class="py-2 px-3">{{ (pagination.page - 1) * pagination.rowsPerPage + (index + 1) }}</td>
                     <td class="py-2 px-3">{{ item?.name }}</td>
                     <td class="py-2 px-3 text-center relative">
                         <div class="inline-block relative">
@@ -192,41 +190,38 @@
             </table>
 
 
-            <nav
+            <div
                 class="flex items-center justify-end space-x-3 text-gray-500 text-sm select-none"
                 aria-label="Pagination"
             >
                 <span class="mr-2">Records per page:</span>
                 <select
                     aria-label="Records per page"
-                    class="border border-gray-300 rounded px-1.5 py-0.5 text-black cursor-pointer"
+                    class="border border-gray-300 rounded pl-2 pr-8  px-4 py-0.5 text-black cursor-pointer"
                     name="recordsPerPage"
                     id="recordsPerPage"
-                    @change="val => {
-                        pagination.value.rowsPerPage = parseInt(val.target.value);
-                        getHouse({pagination:pagination.value, filter:filter.value})
-                    }"
+                    v-model="pagination.rowsPerPage"
+                    @change="changeRecordsPerPage"
                 >
+                    <option value="5">5</option>
                     <option value="10">10</option>
-                    <option value="15">15</option>
                     <option value="20">20</option>
+                    <option value="50">50</option>
                 </select>
+
                 <button
-                    v-if="pagination && pagination.value"
-                    v-for="page in Math.ceil((pagination.value.rowsNumber || 1) / (pagination.value.rowsPerPage || 1))"
-                    :key="page"
-                    :class="[
-                        'border rounded px-3 py-1 font-semibold',
-                        pagination.value.page === page ? 'border-black text-black' : 'hover:text-black cursor-pointer'
-                    ]"
-                                    @click="() => {
-                        pagination.value.page = page;
-                        getHouse({pagination: pagination.value, filter: filter.value})
-                    }"
+                    v-for="pageNumber in pagination.totalPages"
+                    :key="pageNumber"
+                    @click="changePage(pageNumber)"
+                    :class="{
+                    'border border-black rounded px-3 py-1 font-semibold text-black': pagination.page === pageNumber,
+                    'hover:text-black cursor-pointer': pagination.page !== pageNumber
+                }"
                 >
-                    {{ page }}
+                    {{ pageNumber }}
                 </button>
-            </nav>
+            </div>
+
         </section>
     </section>
 
@@ -490,8 +485,9 @@ const pagination = ref({
     sortBy: 'name',
     descending: false,
     page: 1,
-    rowsPerPage: 4,
-    rowsNumber: 0
+    rowsPerPage: 5, // Default records per page
+    rowsNumber: 0,
+    totalPages: 0
 });
 
 const openDropdownId = ref(null)
@@ -516,7 +512,12 @@ const handleEdit = (item) => {
 function handleSearch(val) {
     getHouse({ pagination: pagination.value, filter: val });
 }
-
+function clearSearch() {
+    filter.value = ''; // Clear the search value
+    // Reset the pagination if needed (e.g., set page to 1 after clearing search)
+    pagination.value.page = 1;
+    getHouse({ pagination: pagination.value, filter: '' }); // Clear the filter in the API request
+}
 function getHouse(props) {
     const { page, rowsPerPage, sortBy, descending } = props.pagination;
     const filter = props.filter;
@@ -536,12 +537,21 @@ function getHouse(props) {
         pagination.value.page = current_page;
         pagination.value.rowsNumber = total;
         pagination.value.rowsPerPage = per_page;
+        pagination.value.totalPages = Math.ceil(total / per_page); // Calculate total pages
     }).catch(err => {
         console.error(err?.response?.data?.message);
     }).finally(() => {
     });
 }
+function changeRecordsPerPage() {
+    pagination.value.page = 1; // Reset to first page when records per page is changed
+    getHouse({ pagination: pagination.value, filter: filter.value });
+}
 
+function changePage(pageNumber) {
+    pagination.value.page = pageNumber;
+    getHouse({ pagination: pagination.value, filter: filter.value });
+}
 
 
 const addHouse = e => {
