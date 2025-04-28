@@ -10,13 +10,41 @@ use Inertia\Inertia;
 class RoomTypeController extends Controller
 {
     // Show all RoomTypes for a House
-    public function index(House $house)
-    {
-        $roomTypes = $house->roomTypes()->latest()->get();
+//    public function index(House $house)
+//    {
+//        $roomTypes = $house->roomTypes()->latest()->get();
+//
+//        return Inertia::render('RoomType/Index', [
+//            'house' => $house,
+//            'roomTypes' => $roomTypes,
+//        ]);
+//    }
 
-        return Inertia::render('RoomType/Index', [
-            'house' => $house,
-            'roomTypes' => $roomTypes,
+    public function index(Request $request)
+    {
+        $filter = $request->get('filter');
+        $rowsPerPage = $request->get('rowsPerPage', 10);
+        $page = $request->get('page', 1);
+
+        $query = RoomType::query()
+            ->with('house'); // Eager load house relation
+
+        if ($filter) {
+            $query->where(function ($q) use ($filter) {
+                $q->where('name', 'like', "%{$filter}%") // Search room type name
+                ->orWhereHas('house', function ($q2) use ($filter) {
+                    $q2->where('name', 'like', "%{$filter}%"); // Search house name
+                });
+            });
+        }
+
+        $list = $query->orderBy('name')
+            ->paginate($rowsPerPage, ['*'], 'page', $page);
+
+        $house = House::all();
+        return response()->json([
+            'list' => $list,
+            'house' => $house
         ]);
     }
 
