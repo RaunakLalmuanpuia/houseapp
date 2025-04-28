@@ -85,11 +85,6 @@ class HouseController extends Controller
 
         return redirect()->back();
 
-//        return response()->json([
-//            'success' => true,
-//            'message' => 'House created successfully',
-//            'data' => $house
-//        ]);
     }
 
     /**
@@ -109,26 +104,38 @@ class HouseController extends Controller
 
 
         return redirect()->back();
-//        return response()->json([
-//            'success' => true,
-//            'message' => 'House updated successfully',
-//            'data' => $house
-//        ]);
+
     }
 
     /**
      * Remove the specified house from storage.
      */
+
     public function destroy(House $house)
     {
+        // Check if the house has any associated room types
+        if ($house->roomTypes()->count() > 0) {
+
+            return redirect()->back()->withErrors(['error' => 'Cannot delete the house because it has associated room types.']);
+
+        }
+
+        // If no room types, check if any room types have associated room rates
+        $hasRoomRates = $house->roomTypes()->whereHas('roomRates')->exists();
+
+        if ($hasRoomRates) {
+
+            return redirect()->back()->withErrors(['error' => 'Cannot delete the house because some room types have associated room rates.']);
+
+        }
+
+        // If no issues, delete the house
         $house->delete();
 
+        // Return success response
         return redirect()->back();
-
-//        return response()->json([
-//            'success' => true,
-//            'message' => 'House deleted successfully'
-//        ]);
     }
+
+
 
 }

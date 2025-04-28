@@ -22,6 +22,7 @@ use App\Http\Controllers\HouseController;
 use App\Http\Controllers\RateController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\RoomTypeController;
+use App\Http\Controllers\RateCategoryController;
 
 
 
@@ -192,7 +193,17 @@ Route::group(['prefix'=>'admin'], function () {
 });
 
 
-// Room tyoe
+//Room Category
+Route::group(['prefix'=>'admin'], function () {
+    Route::get('/rate-category', [RateCategoryController::class, 'index'])->name('admin.rate-category.index');
+    Route::post('/rate-category', [RateCategoryController::class, 'store'])->name('admin.rate-category.store');
+    Route::put('/rate-category/{rateCategory}', [RateCategoryController::class, 'update'])->name('admin.rate-category.update');
+    Route::delete('/rate-category/{rateCategory}', [RateCategoryController::class, 'destroy'])->name('admin.rate-category.destroy');
+});
+
+
+
+// Room type
 Route::group(['prefix'=>'admin'], function () {
     Route::get('/room_type', [RoomTypeController::class, 'index'])->name('admin.room_type.index');
     Route::post('/room_type', [RoomTypeController::class, 'store'])->name('admin.room_type.store');
