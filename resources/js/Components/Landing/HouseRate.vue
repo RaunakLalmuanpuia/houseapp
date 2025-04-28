@@ -82,7 +82,7 @@ onMounted(() => {
             </div>
 
 
-            <nav class="flex flex-wrap justify-center space-x-4 mt-4 text-gray-600 text-sm select-none">
+            <nav class="flex flex-wrap justify-center space-x-4 mt-4 text-gray-600 text-sm select-none p-2">
                 <template v-for="houses in allHouse" :key="house.id">
                     <a
                         href="#"

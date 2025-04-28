@@ -2,24 +2,22 @@
     <div class="max-w-5xl mx-auto px-4 py-10">
         <h2 class="text-center font-bold text-black text-lg mb-6">{{ house.name }}</h2>
 
-        <!-- Scroll Container Wrapper -->
         <div class="relative w-full flex items-center justify-center">
 
             <!-- Previous Button -->
             <button
                 v-if="rooms.length > (isMobile ? 1 : 4)"
                 aria-label="Previous"
-                class="absolute left-[-40px] z-20 bg-white w-12 h-12 rounded-full flex items-center justify-center shadow-md hover:shadow-lg -translate-x-1/2"
+                class="absolute -left-4 sm:-left-8 md:-left-12 z-20 bg-white w-12 h-12 rounded-full flex items-center justify-center shadow-md hover:shadow-lg"
                 @click="scrollLeft"
             >
                 <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M7.54801 12.42L6.48701 13.48L0.708012 7.70301C0.614858 7.61044 0.540929 7.50037 0.490481 7.37912C0.440033 7.25787 0.414062 7.12784 0.414062 6.99651C0.414062 6.86518 0.440033 6.73515 0.490481 6.6139C0.540929 6.49265 0.614858 6.38258 0.708012 6.29001L6.48701 0.51001L7.54701 1.57001L2.12301 6.99501L7.54801 12.42Z" fill="black"/>
                 </svg>
-
             </button>
 
             <!-- Scrollable Items -->
-            <div class="relative w-full overflow-hidden">
+            <div class="relative w-full overflow-hidden px-8 md:px-0">
                 <div
                     ref="scrollContainer"
                     class="flex overflow-x-auto scrollbar-hide scroll-smooth items-stretch"
@@ -45,11 +43,13 @@
                 </div>
             </div>
 
+
+
             <!-- Next Button -->
             <button
                 v-if="rooms.length > (isMobile ? 1 : 4)"
                 aria-label="Next"
-                class="absolute right-[-40px] z-20 bg-white w-12 h-12 rounded-full flex items-center justify-center shadow-md hover:shadow-lg translate-x-1/2"
+                class="absolute -right-4 sm:-right-8 md:-right-14 z-20 bg-white w-12 h-12 rounded-full flex items-center justify-center shadow-md hover:shadow-lg"
                 @click="scrollRight"
             >
                 <svg width="12" height="24" viewBox="0 0 12 24" fill="none" xmlns="http://www.w3.org/2000/svg">
