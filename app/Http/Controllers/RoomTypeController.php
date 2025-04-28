@@ -55,10 +55,17 @@ class RoomTypeController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
-        $house->roomTypes()->create($validated);
-        return redirect()->back();
+        // Check if the house already has a room type with the same name
+        $exists = $house->roomTypes()->where('name', $validated['name'])->exists();
 
-//        return redirect()->back()->with('success', 'Room Type created successfully.');
+        if ($exists) {
+            return redirect()->back()->withErrors(['error' => 'This house already has a room type with the same name.']);
+
+        }
+
+        $house->roomTypes()->create($validated);
+
+        return redirect()->back()->with('success', 'Room Type created successfully.');
     }
 
     // Update an existing RoomType
@@ -68,11 +75,21 @@ class RoomTypeController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
-        if ($roomType->house_id !== $house->id) {
-            return redirect()->back()->withErrors('This room type does not belong to the selected house.');
+        // Check if in the selected house, another room type with same name exists (except the current one)
+        $exists = RoomType::where('house_id', $house->id)
+            ->where('name', $validated['name'])
+            ->where('id', '!=', $roomType->id)
+            ->exists();
+
+        if ($exists) {
+            return redirect()->back()->withErrors(['error' => 'A room type with this name already exists in the selected house.']);
         }
 
-        $roomType->update($validated);
+        // Update both name and house_id (whether house is old or new)
+        $roomType->update([
+            'name' => $validated['name'],
+            'house_id' => $house->id,
+        ]);
 
         return redirect()->back()->with('success', 'Room Type updated successfully.');
     }
@@ -80,12 +97,18 @@ class RoomTypeController extends Controller
     // Delete a RoomType
     public function destroy(House $house, RoomType $roomType)
     {
+//        dd($roomType);
+        // Make sure the roomType belongs to the house
         if ($roomType->house_id !== $house->id) {
-            return redirect()->back()->withErrors('This room type does not belong to the selected house.');
+            return redirect()->back()->withErrors(['error' => 'This room type does not belong to the selected house.']);
         }
-
+        // Optional: You can check if the roomType has related roomRates before deleting
+        if ($roomType->roomRates()->exists()) {
+            return redirect()->back()->withErrors(['error' => 'Cannot delete room type with associated room rates.']);
+        }
         $roomType->delete();
 
         return redirect()->back()->with('success', 'Room Type deleted successfully.');
     }
+
 }

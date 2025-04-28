@@ -19,9 +19,14 @@ const houses= ref();
 const selectedRoomType = ref({}) // optional, used for display if needed
 const selectedHouse= ref();
 
+
+const selectedEditHouse= ref();
+
+
 const links = ref();
 
 const filter = ref('');
+
 const pagination = ref({
     sortBy: 'name',
     descending: false,
@@ -32,21 +37,18 @@ const pagination = ref({
 });
 
 
-
-
 const openDropdownId = ref(null)
 const showEditDialog = ref(false)
 const showDeleteDialog = ref(false)
-
-
 
 
 const showCreatePopup = ref(false)
 const showDeletePopup = ref(false)
 const showUpdatePopup = ref(false)
 
-const handleEdit = (item) => {
+const handleEdit = (item, house) => {
     selectedRoomType.value = item
+    selectedEditHouse.value = house.id
     editForm.name = item.name
     showEditDialog.value = true
     openDropdownId.value = null
@@ -104,7 +106,7 @@ function changePage(pageNumber) {
 
 
 const addRoomType = (item) => {
-    form.post(route('admin.room_type.store',  ), {
+    form.post(route('admin.room_type.store', item ), {
         onStart: () => {
             showEditDialog.value = false;
         },
@@ -137,8 +139,8 @@ const addRoomType = (item) => {
     })
 
 }
-const updateRoomType =(item) => {
-    editForm.put(route('admin.rate-category.update', item), {
+const updateRoomType =(item, house) => {
+    editForm.put(route('admin.room_type.update', { house: house, roomType: item }), {
         onStart: () => {
             showEditDialog.value = false;
         },
@@ -170,13 +172,14 @@ const updateRoomType =(item) => {
         }
     })
 }
-const deleteRoomTypeDialog = (item) => {
+const deleteRoomTypeDialog = (item, house) => {
     showDeleteDialog.value = true
     openDropdownId.value = null
     selectedRoomType.value = item
+    selectedHouse.value = house.id
 }
-const deleteRoomType = (item) => {
-    router.delete(route('admin.rate-category.destroy', item), {
+const deleteRoomType = (item, house) => {
+    router.delete(route('admin.room_type.destroy', { house: house, roomType: item }), {
         onSuccess: () => {
             getRoomType({ pagination: pagination.value, filter: filter.value });
             showDeleteDialog.value = false
@@ -218,8 +221,8 @@ onMounted(() => {
 </script>
 
 <template>
-    <section class="flex-grow space-y-8">
-        {{houses}}
+    <section class="flex-grow space-y-8 mr-5">
+<!--        {{houses}}-->
         <!-- Add Room Type form -->
         <div
             class="border border-gray-200 rounded-xl p-6 max-w-4xl"
@@ -239,7 +242,7 @@ onMounted(() => {
                         name="roomTypeName"
                         type="text"
                         placeholder="Name of Room Type"
-                        class="w-full rounded border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                        class="w-full rounded border border-gray-300 placeholder-gray-400 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                     />
                 </div>
                 <div>
@@ -252,10 +255,9 @@ onMounted(() => {
                         v-model ='selectedHouse'
                         id="mizoramHouseSelect"
                         name="mizoramHouseSelect"
-                        class="w-full rounded border border-gray-300 text-gray-400 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                        class="w-full rounded border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                     >
                         <option disabled selected>Select</option>
-
                         <option
                             v-for="house in houses"
                             :key="house.id"
@@ -267,7 +269,7 @@ onMounted(() => {
                 </div>
             </div>
             <button
-                @click="addRoomType()"
+                @click="addRoomType(selectedHouse)"
                 type="submit"
                 class="bg-black text-white rounded-md px-8 py-3 text-base font-normal"
             >
@@ -388,7 +390,7 @@ onMounted(() => {
                                 class="absolute right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg w-[140px] text-xs font-normal text-gray-700 z-50"
                             >
                                 <button
-                                    @click.stop="handleEdit(item)"
+                                    @click.stop="handleEdit(item, item.house)"
                                     class="flex items-center gap-2 px-3 py-2 w-full hover:bg-gray-100"
                                 >
                                     <svg
@@ -408,7 +410,7 @@ onMounted(() => {
                                     Edit/Update
                                 </button>
                                 <button
-                                    @click="deleteCategoryDialog(item)"
+                                    @click="deleteRoomTypeDialog(item, item.house)"
                                     class="flex items-center gap-2 px-3 py-2 w-full hover:bg-gray-100 text-red-600"
                                 >
                                     <svg
@@ -436,7 +438,7 @@ onMounted(() => {
             </table>
 
             <div
-                class="flex items-center justify-end space-x-3 text-gray-500 text-sm select-none"
+                class="flex items-center justify-end space-x-3 text-gray-500 text-sm select-none "
                 aria-label="Pagination"
             >
                 <span class="mr-2">Records per page:</span>
@@ -498,9 +500,33 @@ onMounted(() => {
                         id="title"
                         name="title"
                         placeholder="Name of Room Type"
-                        class="block w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 text-sm"
+                        class="block w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 text-sm"
                     />
                 </div>
+
+                <div>
+                    <label
+                        for="mizoramHouseSelect"
+                        class="block text-sm font-normal mb-1 text-black"
+                    >Mizoram House</label
+                    >
+                    <select
+                        v-model="selectedEditHouse"
+                        id="mizoramHouseSelect"
+                        name="mizoramHouseSelect"
+                        class="w-full rounded border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                    >
+                        <option disabled selected>Select</option>
+                        <option
+                            v-for="house in houses"
+                            :key="house.id"
+                            :value="house.id"
+                        >
+                            {{ house.name }}
+                        </option>
+                    </select>
+                </div>
+
                 <div class="flex justify-start space-x-6 pt-2">
                     <button
                         @click="showEditDialog = false"
@@ -511,7 +537,7 @@ onMounted(() => {
                         Cancel
                     </button>
                     <button
-                        @click="updateRoomType(selectedRoomType)"
+                        @click="updateRoomType(selectedRoomType, selectedHouse)"
                         type="submit"
                         class="bg-black text-white text-sm font-normal px-6 py-2 rounded-md hover:opacity-90 focus:outline-none focus:ring-1 focus:ring-blue-600"
                     >
@@ -538,7 +564,7 @@ onMounted(() => {
                     Cancel
                 </button>
                 <button
-                    @click="deleteRoomType(selectedRoomType)"
+                    @click="deleteRoomType(selectedRoomType, selectedHouse)"
                     type="button"
                     class="bg-black text-white rounded-md px-6 py-2 text-sm font-normal hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900"
                 >

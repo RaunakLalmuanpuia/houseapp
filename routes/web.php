@@ -206,7 +206,7 @@ Route::group(['prefix'=>'admin'], function () {
 // Room type
 Route::group(['prefix'=>'admin'], function () {
     Route::get('/room_type', [RoomTypeController::class, 'index'])->name('admin.room_type.index');
-    Route::post('/room_type', [RoomTypeController::class, 'store'])->name('admin.room_type.store');
+    Route::post('/room_type/{house}', [RoomTypeController::class, 'store'])->name('admin.room_type.store');
     Route::put('/room_type/{house}/{roomType}', [RoomTypeController::class, 'update'])->name('admin.room_type.update');
     Route::delete('/room_type/{house}/{roomType}', [RoomTypeController::class, 'destroy'])->name('admin.room_type.destroy');
 });

@@ -1,7 +1,7 @@
 
 
 <template>
-    <section class="flex-grow space-y-8">
+    <section class="flex-grow space-y-8 mr-5">
         <!-- Add Room Type form -->
         <div class="border border-gray-200 rounded-xl p-6 max-w-4xl" aria-label="Add Room Type">
             <h3 class="font-bold text-lg mb-6">Add Mizoram House</h3>
