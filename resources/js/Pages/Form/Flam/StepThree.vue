@@ -12,14 +12,15 @@ const application = useFlamApplicationStore()
 const page = usePage()
 
 const showError = ref(false)
-
-watch(
-    () => page.props.errors,
-    (errors) => {
-        showError.value = Object.keys(errors).length > 0
-    },
-    { immediate: true }
-)
+const errorMessage = ref('')
+// watch(
+//     () => page.props.errors,
+//     (errors) => {
+//         showError.value = Object.keys(errors).length > 0
+//         console.log(showError)
+//     },
+//     { immediate: true }
+// )
 
 const errors = ref({})
 const agreement = ref(false)
@@ -59,16 +60,34 @@ function next() {
         showError.value = true
         return
     }
-    router.visit(route('apply.flam.verify'))
-}
 
-function submit() {
-    form.post(route('apply.flam.submit'), {
-        onSuccess: () => {
-            application.reset()
-        },
+    router.get(route('apply.flam.verify'), {
+        contact: application.contact,
+        type: application.type,
+    }, {
+        preserveState: true,
+        replace: true,
+        onError: (errors) => {
+            showError.value = true
+            if (errors) {
+                if (typeof errors === 'string') {
+                    errorMessage.value = errors
+                } else if (typeof errors === 'object') {
+                    const firstError = Object.values(errors)[0]
+                    if (Array.isArray(firstError)) {
+                        errorMessage.value = firstError[0]
+                    } else {
+                        errorMessage.value = firstError
+                    }
+                } else {
+                    errorMessage.value = 'An unexpected error occurred.'
+                }
+            }
+        }
     })
 }
+
+
 function back() {
     router.visit(route('apply.flam.step-two'))
 }
@@ -90,6 +109,8 @@ function back() {
                         <ul class="text-sm mt-2 list-disc list-inside">
                             <li v-for="(message, field) in errors" :key="field">{{ message }}</li>
                         </ul>
+                        {{ errorMessage }}
+
                     </div>
                     <button @click="showError = false" class="ml-4 text-white font-bold text-xl leading-none">&times;</button>
                 </div>
