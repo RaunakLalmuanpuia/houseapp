@@ -1,0 +1,1 @@
+import{C as t}from"./app-DwjiYckU.js";const a=t("application",{state:()=>({type:"STUDY TOUR",status:"Pending",applicant_name:"",gender:"",designation:"",contact:"",study_tour_details:{institute:"",institute_approval:null,male:"",female:""},location:"",start_date:"",end_date:""}),actions:{reset(){this.$reset()}},persist:!0});export{a as u};
