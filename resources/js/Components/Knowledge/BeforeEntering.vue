@@ -3,21 +3,34 @@
 
 <template>
     <div class="flex flex-col">
-        <h2 class="text-lg font-semibold mb-4">Before Entering</h2>
+        <h2 class="text-lg font-semibold mb-4">Before Entering Mizoram House</h2>
         <hr class="border-b border-border mb-4" />
-        <ol class="list-decimal list-inside space-y-2">
-            <li><span class="font-medium">Valid Identity Card :</span> Required for all guests at check-in and bill payment.</li>
-            <li><span class="font-medium">Room Availability :</span> Booking is subject to room availability.</li>
-            <li><span class="font-medium">Room Rent :</span> Charges vary based on category (On Duty, Not On Duty, Medical, Private).</li>
-            <li><span class="font-medium">Extra Bed Charges :</span> ₹100 per extra bed/mattress per night.</li>
+        <ol class="list-decimal list-inside space-y-4">
+            <!-- C. Medical (Referred Patients) -->
             <li>
-                <span class="font-medium">Transit Stay Charges :</span>
-                <ul class="list-disc list-inside ml-4 space-y-1">
-                    <li>Up to 3 hours : 20% of normal room rent.</li>
-                    <li>3 to 10 hours : 50% of normal room rent.</li>
-                    <li>More than 10 hours : Full-day charge.</li>
+                <span class="font-medium">Check-In Process</span>
+                <ul class="list-disc list-inside ml-4 space-y-2 mt-2">
+                    <li>Present a Valid Identity Card – Required at reception.</li>
+                    <li>Provide Booking Confirmation – Proof of reservation.</li>
+                    <li>Submit Required Documents – As per category (On Duty, Medical, etc.).</li>
+                    <li>Security Check – Luggage may be inspected.</li>
+                    <li>Room Allocation & Payment – As per assigned category.</li>
+                </ul>
+
+            </li>
+
+            <li>
+                <span class="font-medium">House Rules & Guidelines</span>
+                <ul class="list-disc list-inside ml-4 space-y-2 mt-2">
+                    <li>Follow House Rules – No illegal activities allowed.</li>
+                    <li>No Unauthorized Guests – Only registered individuals can stay.</li>
+                    <li>Maintain Cleanliness – Keep rooms and common areas clean.</li>
+                    <li>
+                        Check-Out on Time – Late check-out may incur additional charges.</li>
                 </ul>
             </li>
+
+            <!-- D. Private (Others) -->
         </ol>
 
 

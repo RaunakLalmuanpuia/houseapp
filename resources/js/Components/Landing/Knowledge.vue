@@ -65,7 +65,7 @@ const selectedComponent = computed(() => {
                         @click="selectOption('medicalStudyPrivate')"
                     >
                         <p class="text-[#1F3652] font-sans text-[18px] font-bold leading-[23px] tracking-[0.15px]">
-                            Medical Study Tour Private
+                            Medical  & Private
                         </p>
                     </div>
 
