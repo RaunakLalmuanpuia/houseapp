@@ -60,6 +60,9 @@ Route::group(['prefix'=>'flam'], function () {
     Route::get('/apply/step-two', [FlamController::class, 'stepTwo'])->name('apply.flam.step-two');
     Route::get('/apply/step-three', [FlamController::class, 'stepThree'])->name('apply.flam.step-three');
 
+//    Verify
+    Route::get('/apply/verify', [FlamController::class, 'verify'])->name('apply.flam.verify');
+
 // Final submission
     Route::post('/apply/submit', [FlamController::class, 'submit'])->name('apply.flam.submit');
     Route::get('submission', [FlamController::class, 'submission'])->name('apply.flam.submission');

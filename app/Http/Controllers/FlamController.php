@@ -23,6 +23,11 @@ class FlamController extends Controller
     {
         return Inertia::render('Form/Flam/StepThree');
     }
+    
+    public function verify(){
+//        dd("Hello");
+        return Inertia::render('Form/Flam/Verify');
+    }
 
     public function submit(Request $request)
     {
