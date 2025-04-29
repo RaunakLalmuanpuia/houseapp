@@ -13,14 +13,6 @@ const page = usePage()
 
 const showError = ref(false)
 const errorMessage = ref('')
-// watch(
-//     () => page.props.errors,
-//     (errors) => {
-//         showError.value = Object.keys(errors).length > 0
-//         console.log(showError)
-//     },
-//     { immediate: true }
-// )
 
 const errors = ref({})
 const agreement = ref(false)
@@ -46,7 +38,6 @@ function validateForm() {
         errors.value.end_date = 'End date cannot be before start date.'
     }
 
-
     if (!agreement.value) {
         errors.value.agreement = 'You must agree to the terms.'
     }
@@ -60,7 +51,6 @@ function next() {
         showError.value = true
         return
     }
-
     router.get(route('apply.flam.verify'), {
         contact: application.contact,
         type: application.type,
@@ -98,7 +88,6 @@ function back() {
         <Header/>
         <div class="flex-grow flex flex-col items-center w-[400px] p-3 mx-auto">
             <DestinationStep class="w-full" />
-
             <div
                 v-if="showError"
                 class="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white p-4 rounded-lg shadow-lg w-[90%] max-w-md z-50"

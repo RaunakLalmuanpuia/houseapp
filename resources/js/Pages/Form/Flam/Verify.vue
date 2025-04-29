@@ -110,9 +110,9 @@ function resendOtp(){
             <div class="flex justify-between items-start">
                 <div>
                     <b class="block">Please correct the following error(s):</b>
-                    <ul class="text-sm mt-2 list-disc list-inside">
-                        <li v-for="(message, field) in errors" :key="field">{{ message }}</li>
-                    </ul>
+<!--                    <ul class="text-sm mt-2 list-disc list-inside">-->
+<!--                        <li v-for="(message, field) in errors" :key="field">{{ message }}</li>-->
+<!--                    </ul>-->
                     {{ errorMessage }}
 
                 </div>

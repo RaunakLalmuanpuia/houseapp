@@ -297,29 +297,11 @@ import { usePage} from '@inertiajs/vue3';
 import { ref, watch} from 'vue';
 import { useFlamApplicationStore } from '@/Store/useFlamApplicationStore.js'
 import { router } from '@inertiajs/vue3'
-const page = usePage()
+
 const application = useFlamApplicationStore()
 
 const showError = ref(false)
-// function validateForm() {
-//     if (!application.applicant_name || !application.gender || !application.designation || !application.contact) {
-//         return false;
-//     }
-//
-//     for (const flam of application.flam_details) {
-//         if (!flam.flam_name || !flam.gender || !flam.designation || !flam.contact) {
-//             return false;
-//         }
-//     }
-//
-//     for (const family of application.family_details) {
-//         if (!family.name || !family.relation) {
-//             return false;
-//         }
-//     }
-//
-//     return true;
-// }
+
 const errors = ref({})
 function validateForm() {
     errors.value = {}
@@ -362,9 +344,6 @@ function validateForm() {
             }
         })
     }
-
-
-
     return Object.keys(errors.value).length === 0
 }
 
@@ -373,18 +352,9 @@ function next() {
         showError.value = true;
         return;
     }
-
     router.visit(route('apply.flam.step-three'))
 }
 
-
-watch(
-    () => page.props.errors,
-    (errors) => {
-        showError.value = Object.keys(errors).length > 0
-    },
-    { immediate: true }
-)
 function back() {
     router.visit('/apply/step-one')
 }
@@ -392,12 +362,4 @@ function back() {
 
 
 <style scoped>
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity 0.3s ease;
-}
-.fade-enter-from,
-.fade-leave-to {
-    opacity: 0;
-}
 </style>
