@@ -13,9 +13,7 @@
                     <div>
                         <b class="block">Please correct the following error(s):</b>
                         <ul class="text-sm mt-2 list-disc list-inside">
-                            <li v-for="(message, field) in page.props.errors" :key="field">
-                                {{ message }}
-                            </li>
+                            <li v-for="(message, field) in errors" :key="field">{{ message }}</li>
                         </ul>
                     </div>
                     <button @click="showError = false" class="ml-4 text-white font-bold text-xl leading-none">&times;</button>
@@ -40,6 +38,7 @@
                             placeholder="Diltu Hming"
                             class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                         />
+                        <span v-if="errors['applicant_name']" class="text-red-500 text-sm">{{ errors['applicant_name'] }}</span>
                         <p class="text-gray-400 text-xs leading-4 mt-1 flex items-center gap-1">
                             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M6.3335 10.3333H7.66683V6.33333H6.3335V10.3333ZM7.00016 4.99999C7.18905 4.99999 7.3475 4.93599 7.4755 4.80799C7.60305 4.68044 7.66683 4.52222 7.66683 4.33333C7.66683 4.14444 7.60305 3.98599 7.4755 3.85799C7.3475 3.73044 7.18905 3.66666 7.00016 3.66666C6.81127 3.66666 6.65305 3.73044 6.5255 3.85799C6.3975 3.98599 6.3335 4.14444 6.3335 4.33333C6.3335 4.52222 6.3975 4.68044 6.5255 4.80799C6.65305 4.93599 6.81127 4.99999 7.00016 4.99999ZM7.00016 13.6667C6.07794 13.6667 5.21127 13.4915 4.40016 13.1413C3.58905 12.7915 2.8835 12.3167 2.2835 11.7167C1.6835 11.1167 1.20861 10.4111 0.858829 9.59999C0.508607 8.78888 0.333496 7.92222 0.333496 6.99999C0.333496 6.07777 0.508607 5.21111 0.858829 4.39999C1.20861 3.58888 1.6835 2.88333 2.2835 2.28333C2.8835 1.68333 3.58905 1.20822 4.40016 0.857995C5.21127 0.508217 6.07794 0.333328 7.00016 0.333328C7.92238 0.333328 8.78905 0.508217 9.60016 0.857995C10.4113 1.20822 11.1168 1.68333 11.7168 2.28333C12.3168 2.88333 12.7917 3.58888 13.1415 4.39999C13.4917 5.21111 13.6668 6.07777 13.6668 6.99999C13.6668 7.92222 13.4917 8.78888 13.1415 9.59999C12.7917 10.4111 12.3168 11.1167 11.7168 11.7167C11.1168 12.3167 10.4113 12.7915 9.60016 13.1413C8.78905 13.4915 7.92238 13.6667 7.00016 13.6667ZM7.00016 12.3333C8.48905 12.3333 9.75016 11.8167 10.7835 10.7833C11.8168 9.74999 12.3335 8.48888 12.3335 6.99999C12.3335 5.51111 11.8168 4.24999 10.7835 3.21666C9.75016 2.18333 8.48905 1.66666 7.00016 1.66666C5.51127 1.66666 4.25016 2.18333 3.21683 3.21666C2.1835 4.24999 1.66683 5.51111 1.66683 6.99999C1.66683 8.48888 2.1835 9.74999 3.21683 10.7833C4.25016 11.8167 5.51127 12.3333 7.00016 12.3333Z" fill="#94979E"/>
@@ -60,6 +59,7 @@
                             <option>Female</option>
                             <option>Other</option>
                         </select>
+                        <span v-if="errors['gender']" class="text-red-500 text-sm">{{ errors['gender'] }}</span>
                     </div>
 
                     <div>
@@ -71,6 +71,7 @@
                             placeholder="Diltu Hnathawh"
                             class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                         />
+                        <span v-if="errors['designation']" class="text-red-500 text-sm">{{ errors['designation'] }}</span>
                     </div>
 
                     <div>
@@ -82,6 +83,7 @@
                             placeholder="Phone Number"
                             class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                         />
+                        <span v-if="errors['contact']" class="text-red-500 text-sm">{{ errors['contact'] }}</span>
                     </div>
 
 
@@ -102,6 +104,9 @@
                                 placeholder="Diltu Hming"
                                 class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                             />
+                            <span v-if="errors[`flam_details.${index}.flam_name`]" class="text-red-500 text-sm">
+                                  {{ errors[`flam_details.${index}.flam_name`] }}
+                            </span>
                             <p class="text-gray-400 text-xs leading-4 mt-1 flex items-center gap-1">
                                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M6.3335 10.3333H7.66683V6.33333H6.3335V10.3333ZM7.00016 4.99999C7.18905 4.99999 7.3475 4.93599 7.4755 4.80799C7.60305 4.68044 7.66683 4.52222 7.66683 4.33333C7.66683 4.14444 7.60305 3.98599 7.4755 3.85799C7.3475 3.73044 7.18905 3.66666 7.00016 3.66666C6.81127 3.66666 6.65305 3.73044 6.5255 3.85799C6.3975 3.98599 6.3335 4.14444 6.3335 4.33333C6.3335 4.52222 6.3975 4.68044 6.5255 4.80799C6.65305 4.93599 6.81127 4.99999 7.00016 4.99999ZM7.00016 13.6667C6.07794 13.6667 5.21127 13.4915 4.40016 13.1413C3.58905 12.7915 2.8835 12.3167 2.2835 11.7167C1.6835 11.1167 1.20861 10.4111 0.858829 9.59999C0.508607 8.78888 0.333496 7.92222 0.333496 6.99999C0.333496 6.07777 0.508607 5.21111 0.858829 4.39999C1.20861 3.58888 1.6835 2.88333 2.2835 2.28333C2.8835 1.68333 3.58905 1.20822 4.40016 0.857995C5.21127 0.508217 6.07794 0.333328 7.00016 0.333328C7.92238 0.333328 8.78905 0.508217 9.60016 0.857995C10.4113 1.20822 11.1168 1.68333 11.7168 2.28333C12.3168 2.88333 12.7917 3.58888 13.1415 4.39999C13.4917 5.21111 13.6668 6.07777 13.6668 6.99999C13.6668 7.92222 13.4917 8.78888 13.1415 9.59999C12.7917 10.4111 12.3168 11.1167 11.7168 11.7167C11.1168 12.3167 10.4113 12.7915 9.60016 13.1413C8.78905 13.4915 7.92238 13.6667 7.00016 13.6667ZM7.00016 12.3333C8.48905 12.3333 9.75016 11.8167 10.7835 10.7833C11.8168 9.74999 12.3335 8.48888 12.3335 6.99999C12.3335 5.51111 11.8168 4.24999 10.7835 3.21666C9.75016 2.18333 8.48905 1.66666 7.00016 1.66666C5.51127 1.66666 4.25016 2.18333 3.21683 3.21666C2.1835 4.24999 1.66683 5.51111 1.66683 6.99999C1.66683 8.48888 2.1835 9.74999 3.21683 10.7833C4.25016 11.8167 5.51127 12.3333 7.00016 12.3333Z" fill="#94979E"/>
@@ -122,6 +127,9 @@
                                 <option>Female</option>
                                 <option>Other</option>
                             </select>
+                            <span v-if="errors[`flam_details.${index}.gender`]" class="text-red-500 text-sm">
+                                  {{ errors[`flam_details.${index}.gender`] }}
+                            </span>
                         </div>
 
                         <div>
@@ -133,6 +141,9 @@
                                 placeholder="Diltu Hnathawh"
                                 class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                             />
+                            <span v-if="errors[`flam_details.${index}.designation`]" class="text-red-500 text-sm">
+                                  {{ errors[`flam_details.${index}.designation`] }}
+                            </span>
                         </div>
 
                         <div>
@@ -144,6 +155,9 @@
                                 placeholder="Phone Number"
                                 class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                             />
+                            <span v-if="errors[`flam_details.${index}.contact`]" class="text-red-500 text-sm">
+                                  {{ errors[`flam_details.${index}.contact`] }}
+                            </span>
                         </div>
 
                         <button @click.prevent="application.removeFlam(index)">Remove</button>
@@ -164,35 +178,52 @@
                             </svg> Must be family of {{application.applicant_name }}
                         </p>
 
-                        <label for="familyName" class="block text-gray-900 font-semibold mb-1"
-                        >Name</label
-                        >
-                        <input
-                            v-model="family.name"
-                            id="familyName"
-                            name="familyName"
-                            type="text"
-                            placeholder="Hming"
-                            class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
-                        />
-                        <label
-                            for="relationship"
-                            class="block text-gray-900 font-semibold mt-6 mb-1"
-                        >Relationship</label
-                        >
-                        <select
-                            v-model="family.relation"
-                            id="relationship"
-                            name="relationship"
-                            class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black appearance-none"
-                        >
-                            <option>Wife</option>
-                            <option>Husband</option>
-                            <option>Child</option>
-                            <option>Other</option>
-                        </select>
+                        <div>
+                            <label for="familyName" class="block text-gray-900 font-semibold mb-1"
+                            >Name</label
+                            >
+                            <input
+                                v-model="family.name"
+                                id="familyName"
+                                name="familyName"
+                                type="text"
+                                placeholder="Hming"
+                                class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                            />
+                            <span v-if="errors[`family_details.${index}.name`]" class="text-red-500 text-sm">
+                                  {{ errors[`family_details.${index}.name`] }}
+                            </span>
 
+                        </div>
+
+                        <div>
+                            <label
+                                for="relationship"
+                                class="block text-gray-900 font-semibold mt-6 mb-1"
+                            >Relationship</label
+                            >
+                            <select
+                                v-model="family.relation"
+                                id="relationship"
+                                name="relationship"
+                                class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black appearance-none"
+                            >
+                                <option>Wife</option>
+                                <option>Husband</option>
+                                <option>Child</option>
+                                <option>Other</option>
+                            </select>
+
+                            <span v-if="errors[`family_details.${index}.relation`]" class="text-red-500 text-sm">
+                                  {{ errors[`family_details.${index}.relation`] }}
+                            </span>
+                        </div>
                         <button @click.prevent="application.removeFamilyMember(index)">Remove</button>
+
+
+
+
+
                     </div>
 
 
@@ -270,28 +301,76 @@ const page = usePage()
 const application = useFlamApplicationStore()
 
 const showError = ref(false)
+// function validateForm() {
+//     if (!application.applicant_name || !application.gender || !application.designation || !application.contact) {
+//         return false;
+//     }
+//
+//     for (const flam of application.flam_details) {
+//         if (!flam.flam_name || !flam.gender || !flam.designation || !flam.contact) {
+//             return false;
+//         }
+//     }
+//
+//     for (const family of application.family_details) {
+//         if (!family.name || !family.relation) {
+//             return false;
+//         }
+//     }
+//
+//     return true;
+// }
+const errors = ref({})
 function validateForm() {
-    if (!application.applicant_name || !application.gender || !application.designation || !application.contact) {
-        return false;
-    }
+    errors.value = {}
 
-    for (const flam of application.flam_details) {
-        if (!flam.flam_name || !flam.gender || !flam.designation || !flam.contact) {
-            return false;
+    // Simple fields
+    const requiredFields = ['type', 'status', 'applicant_name', 'gender', 'designation', 'contact']
+    requiredFields.forEach(field => {
+        if (!application[field] || typeof application[field] !== 'string') {
+            errors.value[field] = `${field.replace('_', ' ')} is required.`
         }
+    })
+
+
+    // flam_details validation
+    if (application.flam_details?.length) {
+        application.flam_details.forEach((flam, index) => {
+            if (!flam.flam_name) {
+                errors.value[`flam_details.${index}.flam_name`] = 'FLAM name is required.'
+            }
+            if (!flam.gender) {
+                errors.value[`flam_details.${index}.gender`] = 'FLAM gender is required.'
+            }
+            if (!flam.designation) {
+                errors.value[`flam_details.${index}.designation`] = 'FLAM designation is required.'
+            }
+            if (!flam.contact) {
+                errors.value[`flam_details.${index}.contact`] = 'FLAM contact is required.'
+            }
+        })
     }
 
-    for (const family of application.family_details) {
-        if (!family.name || !family.relation) {
-            return false;
-        }
+    // family_details validation
+    if (application.family_details?.length) {
+        application.family_details.forEach((fam, index) => {
+            if (!fam.name) {
+                errors.value[`family_details.${index}.name`] = 'Family name is required.'
+            }
+            if (!fam.relation) {
+                errors.value[`family_details.${index}.relation`] = 'Family relation is required.'
+            }
+        })
     }
 
-    return true;
+
+
+    return Object.keys(errors.value).length === 0
 }
+
 function next() {
     if (!validateForm()) {
-        alert("Please fill all required fields before proceeding.");
+        showError.value = true;
         return;
     }
 

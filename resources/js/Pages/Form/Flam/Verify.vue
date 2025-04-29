@@ -28,7 +28,7 @@ const form = useForm({
                     An OTP has been sent to {{ application.contact }}
                     <span class="text-green-600 cursor-pointer">(Edit)</span>
                 </p>
-                <div class="flex justify-center space-x-4 mb-6" onsubmit="return false">
+                <div class="flex justify-center space-x-4 mb-6">
                     <input
                         type="text"
                         maxlength="1"
