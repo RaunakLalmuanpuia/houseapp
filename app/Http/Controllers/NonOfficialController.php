@@ -43,7 +43,6 @@ class NonOfficialController extends Controller
     }
     public function submit(Request $request)
     {
-//        dd($request->all());
 
         $validated = $request->validate([
             'otp'=>'required',
@@ -111,13 +110,12 @@ class NonOfficialController extends Controller
             DB::commit();
             $otp->update(['used'=>true]);
             return redirect()->route('apply.non-official.submission', ['application' => $application->id]);
-//            return redirect()->route('home')->with('success', 'Application submitted!');
-//            return response()->json(['message' => 'Application submitted successfully'], 201);
+
 
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->route('home')->with('success', $e->getMessage());
-//            return response()->json(['error' => 'Failed to save application', 'details' => $e->getMessage()], 500);
+
         }
     }
     public function submission(Request $request)
@@ -130,12 +128,5 @@ class NonOfficialController extends Controller
             'application' => $application
         ]);
     }
-    function generateApplicationId(): string
-    {
-        do {
-            $id = str_pad(random_int(0, 999999999), 9, '0', STR_PAD_LEFT);
-        } while (Application::where('application_id', $id)->exists());
 
-        return $id;
-    }
 }

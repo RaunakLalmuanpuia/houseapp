@@ -292,9 +292,7 @@ import Header from "@/Components/Common/Header.vue";
 import Footer from "@/Components/Common/Footer.vue";
 import InformationStep from "@/Components/Common/InformationStep.vue";
 
-
-import { usePage} from '@inertiajs/vue3';
-import { ref, watch} from 'vue';
+import { ref} from 'vue';
 import { useFlamApplicationStore } from '@/Store/useFlamApplicationStore.js'
 import { router } from '@inertiajs/vue3'
 

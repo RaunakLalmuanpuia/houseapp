@@ -142,12 +142,4 @@ class NotOnDutyController extends Controller
             'application' => $application
         ]);
     }
-    function generateApplicationId(): string
-    {
-        do {
-            $id = str_pad(random_int(0, 999999999), 9, '0', STR_PAD_LEFT);
-        } while (Application::where('application_id', $id)->exists());
-
-        return $id;
-    }
 }

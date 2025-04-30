@@ -5,8 +5,8 @@ import DestinationStep from "@/Components/Common/DestinationStep.vue";
 
 
 import { useStudyTourApplicationStore } from '@/Store/useStudyTourApplicationStore.js'
-import {useForm, router, usePage} from '@inertiajs/vue3'
-import {ref, watch} from "vue";
+import { router, usePage} from '@inertiajs/vue3'
+import {ref} from "vue";
 
 const application = useStudyTourApplicationStore()
 const page = usePage()
@@ -80,23 +80,10 @@ function next() {
 }
 
 
-// function submit() {
-//     form.post(route('apply.study-tour.submit'), {
-//         onSuccess: () => {
-//             application.reset()
-//         },
-//     })
-// }
 function back() {
     router.visit(route('apply.study-tour.step-two'))
 }
-// watch(
-//     () => page.props.errors,
-//     (errors) => {
-//         showError.value = Object.keys(errors).length > 0
-//     },
-//     { immediate: true }
-// )
+
 </script>
 
 <template>

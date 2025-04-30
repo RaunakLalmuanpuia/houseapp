@@ -320,10 +320,9 @@ import InformationStep from "@/Components/Common/InformationStep.vue";
 
 import { useNotOnDutyApplicationStore } from '@/Store/useNotOnDutyApplicationStore.js'
 import {router, usePage} from '@inertiajs/vue3'
-import {ref, watch} from "vue";
+import {ref} from "vue";
 
 const application = useNotOnDutyApplicationStore()
-const page = usePage()
 
 const errors = ref({})
 const showError = ref(false)
@@ -402,11 +401,5 @@ function next() {
 function back() {
     router.visit('/apply/step-one')
 }
-watch(
-    () => page.props.errors,
-    (errors) => {
-        showError.value = Object.keys(errors).length > 0
-    },
-    { immediate: true }
-)
+
 </script>

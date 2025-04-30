@@ -25,11 +25,6 @@ class FlamController extends Controller
         return Inertia::render('Form/Flam/StepThree');
     }
 
-//    public function verify(Request $request)
-//    {
-//
-//        return Inertia::render('Form/Flam/Verify');
-//    }
     public function verify(Request $request)
     {
         // Call the sendOtp function and check if it returns true or false
@@ -45,7 +40,6 @@ class FlamController extends Controller
             ]);
         }
     }
-
 
     public function submit(Request $request)
     {
@@ -113,15 +107,5 @@ class FlamController extends Controller
             'application' => $application
         ]);
     }
-
-    function generateApplicationId(): string
-    {
-        do {
-            $id = str_pad(random_int(0, 999999999), 9, '0', STR_PAD_LEFT);
-        } while (Application::where('application_id', $id)->exists());
-
-        return $id;
-    }
-
 
 }

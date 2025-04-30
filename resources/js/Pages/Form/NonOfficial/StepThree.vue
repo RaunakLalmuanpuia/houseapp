@@ -5,8 +5,8 @@ import DestinationStep from "@/Components/Common/DestinationStep.vue";
 
 
 import { useNonOfficialApplicationStore } from '@/Store/useNonOfficialApplicationStore.js'
-import {useForm, router, usePage} from '@inertiajs/vue3'
-import {ref, watch} from "vue";
+import { router} from '@inertiajs/vue3'
+import {ref} from "vue";
 
 const application = useNonOfficialApplicationStore()
 const showError = ref(false)

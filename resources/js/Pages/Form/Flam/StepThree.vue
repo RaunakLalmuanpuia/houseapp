@@ -2,14 +2,14 @@
 import Header from "@/Components/Common/Header.vue";
 import Footer from "@/Components/Common/Footer.vue";
 import DestinationStep from "@/Components/Common/DestinationStep.vue";
-import {usePage} from "@inertiajs/vue3";
-import {watch, ref} from "vue";
+
+import {ref} from "vue";
 import { useFlamApplicationStore } from '@/Store/useFlamApplicationStore.js'
-import { useForm, router } from '@inertiajs/vue3'
+import {  router } from '@inertiajs/vue3'
 
 const application = useFlamApplicationStore()
 
-const page = usePage()
+
 
 const showError = ref(false)
 const errorMessage = ref('')

@@ -5,8 +5,8 @@ import DestinationStep from "@/Components/Common/DestinationStep.vue";
 
 
 import { useNotOnDutyApplicationStore } from '@/Store/useNotOnDutyApplicationStore.js'
-import {useForm, router, usePage} from '@inertiajs/vue3'
-import {ref, watch} from "vue";
+import { router} from '@inertiajs/vue3'
+import {ref} from "vue";
 
 const application = useNotOnDutyApplicationStore()
 

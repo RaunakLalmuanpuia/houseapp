@@ -343,8 +343,8 @@ import Footer from "@/Components/Common/Footer.vue";
 import InformationStep from "@/Components/Common/InformationStep.vue";
 
 
-import {useForm, usePage} from '@inertiajs/vue3';
-import {defineProps, ref, watch} from 'vue';
+import {usePage} from '@inertiajs/vue3';
+import { ref, watch} from 'vue';
 import { useOnDutyApplicationStore } from '@/Store/useOnDutyApplicationStore.js'
 import { router } from '@inertiajs/vue3'
 
@@ -434,11 +434,4 @@ function validateForm() {
 }
 
 
-watch(
-    () => page.props.errors,
-    (errors) => {
-        showError.value = Object.keys(errors).length > 0
-    },
-    { immediate: true }
-)
 </script>
