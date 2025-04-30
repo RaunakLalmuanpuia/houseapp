@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-export const useStudyTourApplicationStore = defineStore('application', {
+export const useStudyTourApplicationStore = defineStore('study_tour_application', {
     state: () => ({
         type: 'STUDY TOUR',
         status: 'Pending',

@@ -1,7 +1,7 @@
 
 import { defineStore } from 'pinia'
 
-export const useNotOnDutyApplicationStore = defineStore('application', {
+export const useNotOnDutyApplicationStore = defineStore('not_on_duty_application', {
     state: () => ({
         type: 'NOT ON DUTY',
         status: 'Pending',

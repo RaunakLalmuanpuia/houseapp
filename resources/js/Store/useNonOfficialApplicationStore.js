@@ -1,7 +1,7 @@
 
 import { defineStore } from 'pinia'
 
-export const useNonOfficialApplicationStore = defineStore('application', {
+export const useNonOfficialApplicationStore = defineStore('non_official_application', {
     state: () => ({
         type: 'PRIVATE',
         status: 'Pending',

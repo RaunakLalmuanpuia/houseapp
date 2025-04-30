@@ -1,7 +1,7 @@
 
 import { defineStore } from 'pinia'
 
-export const useFlamApplicationStore = defineStore('application', {
+export const useFlamApplicationStore = defineStore('flam_application', {
     state: () => ({
         type: 'FLAM',
         status: 'Pending',
