@@ -314,6 +314,11 @@ function validateForm() {
         }
     })
 
+    // Contact number (main applicant)
+    if (application.contact && !/^\d{10}$/.test(application.contact)) {
+        errors.value['contact'] = 'Contact must be a 10-digit number.'
+    }
+
 
     // flam_details validation
     if (application.flam_details?.length) {
@@ -328,7 +333,9 @@ function validateForm() {
                 errors.value[`flam_details.${index}.designation`] = 'FLAM designation is required.'
             }
             if (!flam.contact) {
-                errors.value[`flam_details.${index}.contact`] = 'FLAM contact is required.'
+                errors.value[`flam_details.${index}.contact`] = 'Contact is required.'
+            } else if (!/^\d{10}$/.test(flam.contact)) {
+                errors.value[`flam_details.${index}.contact`] = 'Contact must be a 10-digit number.'
             }
         })
     }

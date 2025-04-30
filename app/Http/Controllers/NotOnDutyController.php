@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Application;
+use App\Models\Otp;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -26,11 +27,28 @@ class NotOnDutyController extends Controller
         return Inertia::render('Form/NotOnDuty/StepThree');
     }
 
+    public function verify(Request $request)
+    {
+        // Call the sendOtp function and check if it returns true or false
+        $isOtpSent = $this->sendOtp($request);
+
+        if ($isOtpSent) {
+            // OTP was successfully sent, proceed to render the verification page
+            return Inertia::render('Form/NotOnDuty/Verify');
+        } else {
+            // OTP sending failed, handle the failure (you can pass an error message if needed)
+            return Inertia::render('Form/NotOnDuty/Verify', [
+                'error' => 'Failed to send OTP. Please try again.'
+            ]);
+        }
+    }
+
     public function submit(Request $request)
     {
 //        dd($request->all());
 
         $validated = $request->validate([
+            'otp'=>'required',
             'type' => 'required|string|in:NOT ON DUTY',
             'status' => 'required|string',
             'applicant_name' => 'required|string|max:255',
@@ -51,7 +69,14 @@ class NotOnDutyController extends Controller
             'family_details.*.name' => 'required|string',
             'family_details.*.relation' => 'required|string',
         ]);
+        $otp=Otp::query()->where('recipient', $validated['contact'])
+            ->where('otp',$validated['otp'])
+            ->where('used',false)
+            ->first();
 
+        if (blank($otp)) {
+            return redirect()->back()->withErrors(['error' => 'Invalid Mobile OTP']);
+        }
 
         try {
             DB::beginTransaction();
@@ -93,6 +118,7 @@ class NotOnDutyController extends Controller
             }
 
             DB::commit();
+            $otp->update(['used'=>true]);
 //            dd($request);
             return redirect()->route('apply.not-on-duty.submission', ['application' => $application->id]);
 //            return redirect()->route('home')->with('success', 'Application submitted!');

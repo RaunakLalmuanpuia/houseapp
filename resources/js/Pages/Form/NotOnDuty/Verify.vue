@@ -3,10 +3,10 @@ import Header from "@/Components/Common/Header.vue";
 import Footer from "@/Components/Common/Footer.vue";
 import {onMounted, ref} from "vue";
 
-import { useOnDutyApplicationStore } from '@/Store/useOnDutyApplicationStore.js'
+import { useNotOnDutyApplicationStore } from '@/Store/useNotOnDutyApplicationStore.js'
 import {router, useForm} from "@inertiajs/vue3";
 
-const application = useOnDutyApplicationStore()
+const application = useNotOnDutyApplicationStore()
 
 const form = useForm({
     ...application.$state,
@@ -43,7 +43,7 @@ onMounted(() => {
     startTimer();
 });
 function submit() {
-    form.post(route('apply.on-duty.submit'), {
+    form.post(route('apply.not-on-duty.submit'), {
         onSuccess: () => {
             application.reset()
         },
@@ -68,7 +68,7 @@ function submit() {
 }
 
 function resendOtp(){
-    router.get(route('apply.on-duty.verify'), {
+    router.get(route('apply.not-on-duty.verify'), {
         contact: application.contact,
         type: application.type,
     }, {

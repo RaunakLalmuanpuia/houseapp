@@ -83,17 +83,22 @@ Route::group(['prefix'=>'on-duty'], function () {
 
     Route::get('submission', [OnDutyController::class, 'submission'])->name('apply.on-duty.submission');
 });
+
+
 //Not on Duty
 Route::group(['prefix'=>'not-on-duty'], function () {
     Route::get('/apply/step-one', [NotOnDutyController::class, 'stepOne'])->name('apply.not-on-duty.step-one');
     Route::get('/apply/step-two', [NotOnDutyController::class, 'stepTwo'])->name('apply.not-on-duty.step-two');
     Route::get('/apply/step-three', [NotOnDutyController::class, 'stepThree'])->name('apply.not-on-duty.step-three');
 
+    //    Verify
+    Route::get('/apply/verify', [NotOnDutyController::class, 'verify'])->name('apply.not-on-duty.verify');
     // Final submission
     Route::post('/apply/submit', [NotOnDutyController::class, 'submit'])->name('apply.not-on-duty.submit');
 
     Route::get('submission', [NotOnDutyController::class, 'submission'])->name('apply.not-on-duty.submission');
 });
+
 //Private
 Route::group(['prefix'=>'non-official'], function () {
     Route::get('/apply/step-one', [NonOfficialController::class, 'stepOne'])->name('apply.non-official.step-one');

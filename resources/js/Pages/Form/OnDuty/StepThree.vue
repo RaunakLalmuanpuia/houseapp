@@ -102,10 +102,11 @@ function back() {
                     <div>
                         <b class="block">Please correct the following error(s):</b>
                         <ul class="text-sm mt-2 list-disc list-inside">
-                            <li v-for="(message, field) in page.props.errors" :key="field">
+                            <li v-for="(message, field) in errors" :key="field">
                                 {{ message }}
                             </li>
                         </ul>
+                        {{errorMessage}}
                     </div>
                     <button @click="showError = false" class="ml-4 text-white font-bold text-xl leading-none">&times;</button>
                 </div>
