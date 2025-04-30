@@ -105,7 +105,7 @@ Route::group(['prefix'=>'non-official'], function () {
     Route::get('/apply/step-two', [NonOfficialController::class, 'stepTwo'])->name('apply.non-official.step-two');
     Route::get('/apply/step-three', [NonOfficialController::class, 'stepThree'])->name('apply.non-official.step-three');
 
-
+    //    Verify
      Route::get('/apply/verify', [NonOfficialController::class, 'verify'])->name('apply.non-official.verify');
 
     // Final submission
@@ -120,6 +120,8 @@ Route::group(['prefix'=>'study-tour'], function () {
     Route::get('/apply/step-two', [StudyTourController::class, 'stepTwo'])->name('apply.study-tour.step-two');
     Route::get('/apply/step-three', [StudyTourController::class, 'stepThree'])->name('apply.study-tour.step-three');
 
+    //    Verify
+    Route::get('/apply/verify', [StudyTourController::class, 'verify'])->name('apply.study-tour.verify');
     // Final submission
     Route::post('/apply/submit', [StudyTourController::class, 'submit'])->name('apply.study-tour.submit');
 

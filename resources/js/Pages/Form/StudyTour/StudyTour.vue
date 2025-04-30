@@ -11,7 +11,7 @@
                     <div>
                         <b class="block">Please correct the following error(s):</b>
                         <ul class="text-sm mt-2 list-disc list-inside">
-                            <li v-for="(message, field) in page.props.errors" :key="field">
+                            <li v-for="(message, field) in errors" :key="field">
                                 {{ message }}
                             </li>
                         </ul>
@@ -19,57 +19,146 @@
                     <button @click="showError = false" class="ml-4 text-white font-bold text-xl leading-none">&times;</button>
                 </div>
             </div>
-            <div class="p-6 bg-card rounded-lg shadow-md w-full">
 
-                <h1 class="text-xl font-semibold text-primary">STUDY TOUR</h1>
-                <p class="text-muted-foreground">Educational Group Travel</p>
-                <h2 class="mt-4 text-lg font-medium">Kal turte Information</h2>
+            <div class="max-w-md w-full rounded-xl border border-gray-200 overflow-hidden">
+                <header class="bg-[#FFE6E3] p-6 rounded-t-xl">
+                    <h1 class="text-[#DD4939] font-extrabold text-xl leading-6">STUDY TOUR</h1>
+                    <p class="text-[#DD4939] font-semibold text-sm leading-5 mt-1">Educational Group Travel</p>
+                </header>
+                <div class="bg-white p-6 space-y-6">
+                    <h2 class="font-bold text-lg leading-6 border-l-4 border-black pl-2">Kal turte Information</h2>
 
-                <label class="block mt-4 text-sm font-medium text-primary">Applicant Name</label>
-                <input v-model="application.applicant_name" type="text" placeholder="Diltu Hming" class="mt-1 p-2 border border-border rounded w-full" />
-                <p class="text-muted-foreground text-xs">Must be FLAM member</p>
+                    <div>
+                        <label for="applicant" class="block font-semibold text-sm leading-5 mb-1 text-black">Applicant Name</label>
+                        <input
+                            v-model="application.applicant_name"
+                            id="applicant"
+                            type="text"
+                            placeholder="Diltu Hming"
+                            class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                        />
+                        <span v-if="errors['applicant_name']" class="text-red-500 text-sm">{{ errors['applicant_name'] }}</span>
+<!--                        <p class="text-gray-400 text-xs leading-4 mt-1 flex items-center gap-1">-->
+<!--                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">-->
+<!--                                <path d="M6.3335 10.3333H7.66683V6.33333H6.3335V10.3333ZM7.00016 4.99999C7.18905 4.99999 7.3475 4.93599 7.4755 4.80799C7.60305 4.68044 7.66683 4.52222 7.66683 4.33333C7.66683 4.14444 7.60305 3.98599 7.4755 3.85799C7.3475 3.73044 7.18905 3.66666 7.00016 3.66666C6.81127 3.66666 6.65305 3.73044 6.5255 3.85799C6.3975 3.98599 6.3335 4.14444 6.3335 4.33333C6.3335 4.52222 6.3975 4.68044 6.5255 4.80799C6.65305 4.93599 6.81127 4.99999 7.00016 4.99999ZM7.00016 13.6667C6.07794 13.6667 5.21127 13.4915 4.40016 13.1413C3.58905 12.7915 2.8835 12.3167 2.2835 11.7167C1.6835 11.1167 1.20861 10.4111 0.858829 9.59999C0.508607 8.78888 0.333496 7.92222 0.333496 6.99999C0.333496 6.07777 0.508607 5.21111 0.858829 4.39999C1.20861 3.58888 1.6835 2.88333 2.2835 2.28333C2.8835 1.68333 3.58905 1.20822 4.40016 0.857995C5.21127 0.508217 6.07794 0.333328 7.00016 0.333328C7.92238 0.333328 8.78905 0.508217 9.60016 0.857995C10.4113 1.20822 11.1168 1.68333 11.7168 2.28333C12.3168 2.88333 12.7917 3.58888 13.1415 4.39999C13.4917 5.21111 13.6668 6.07777 13.6668 6.99999C13.6668 7.92222 13.4917 8.78888 13.1415 9.59999C12.7917 10.4111 12.3168 11.1167 11.7168 11.7167C11.1168 12.3167 10.4113 12.7915 9.60016 13.1413C8.78905 13.4915 7.92238 13.6667 7.00016 13.6667ZM7.00016 12.3333C8.48905 12.3333 9.75016 11.8167 10.7835 10.7833C11.8168 9.74999 12.3335 8.48888 12.3335 6.99999C12.3335 5.51111 11.8168 4.24999 10.7835 3.21666C9.75016 2.18333 8.48905 1.66666 7.00016 1.66666C5.51127 1.66666 4.25016 2.18333 3.21683 3.21666C2.1835 4.24999 1.66683 5.51111 1.66683 6.99999C1.66683 8.48888 2.1835 9.74999 3.21683 10.7833C4.25016 11.8167 5.51127 12.3333 7.00016 12.3333Z" fill="#94979E"/>-->
+<!--                            </svg>-->
+<!--                            Must be Government Official-->
+<!--                        </p>-->
+                    </div>
 
-                <label class="block mt-4 text-sm font-medium text-primary">Gender</label>
-                <select v-model="application.gender" class="mt-1 p-2 border border-border rounded w-full">
-                    <option>Select</option>
-                    <option>Male</option>
-                    <option>Female</option>
-                    <option>Other</option>
-                </select>
+                    <div>
+                        <label for="gender" class="block font-semibold text-sm leading-5 mb-1 text-black">Gender</label>
+                        <select
+                            v-model="application.gender"
+                            id="gender"
+                            class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black appearance-none"
+                        >
+                            <option disabled selected>Select</option>
+                            <option>Male</option>
+                            <option>Female</option>
+                            <option>Other</option>
+                        </select>
+                        <span v-if="errors['gender']" class="text-red-500 text-sm">{{ errors['gender'] }}</span>
+                    </div>
 
-                <label class="block mt-4 text-sm font-medium text-primary">Contact Number</label>
-                <input v-model="application.contact" type="text" placeholder="Phone Number" class="mt-1 p-2 border border-border rounded w-full" />
+                    <div>
+                        <label for="contact" class="block font-semibold text-sm leading-5 mb-1 text-black">Contact Number</label>
+                        <input
+                            v-model="application.contact"
+                            id="contact"
+                            type="tel"
+                            placeholder="Phone Number"
+                            class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                        />
+                        <span v-if="errors['contact']" class="text-red-500 text-sm">{{ errors['contact'] }}</span>
+                    </div>
 
-                <label class="block mt-4 text-sm font-medium text-primary">Designation</label>
-                <input v-model="application.designation"  type="text" placeholder="Diltu Hnathawh" class="mt-1 p-2 border border-border rounded w-full" />
-
-
-                <label class="block mt-4 text-sm font-medium text-primary">Institution</label>
-                <input v-model="application.study_tour_details.institute"  type="text" placeholder="Name of Institution" class="mt-1 p-2 border border-border rounded w-full" />
-
-
-                <label class="block mt-4 text-sm font-medium text-primary">Institute Approval</label>
-                <input
-                    type="file"
-                    @change="handleFileUpload"
-                    class="mt-1 p-2 border border-border rounded w-full"
-                />
-
-
-
-                <label class="block mt-4 text-sm font-medium text-primary">No. of Male Student</label>
-                <input v-model="application.study_tour_details.male"  type="number" placeholder="Zirlai Mipa zat" class="mt-1 p-2 border border-border rounded w-full" />
-
-                <label class="block mt-4 text-sm font-medium text-primary">No. of Female Student</label>
-                <input v-model="application.study_tour_details.female"  type="number" placeholder="Zirlai Hmeichhia zat" class="mt-1 p-2 border border-border rounded w-full" />
+                    <div>
+                        <label for="designation" class="block font-semibold text-sm leading-5 mb-1 text-black">Designation</label>
+                        <input
+                            v-model="application.designation"
+                            id="designation"
+                            type="text"
+                            placeholder="Diltu Hnathawh"
+                            class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                        />
+                        <span v-if="errors['designation']" class="text-red-500 text-sm">{{ errors['designation'] }}</span>
+                    </div>
 
 
-                <div class="flex justify-between mt-6">
-                    <button  @click="back" class="bg-muted text-muted-foreground hover:bg-muted/80 p-2 rounded border">Back</button>
+                    <div>
+                        <label for="institution" class="block font-semibold text-sm leading-5 mb-1 text-black">Institution</label>
+                        <input
+                            v-model="application.study_tour_details.institute"
+                            id="institution"
+                            type="text"
+                            placeholder="Name of Institution"
+                            class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                        />
 
-                    <button @click="next" class="bg-primary text-primary-foreground p-2 rounded-md">
-                        Save & Next
-                    </button>
+                        <span v-if="errors['study_tour_details.institute']" class="text-red-500 text-sm">
+                          {{ errors['study_tour_details.institute'] }}
+                        </span>
+
+                    </div>
+
+
+
+                    <div>
+                        <label for="approval" class="block font-semibold text-sm leading-5 mb-1 text-black">Institute Approval</label>
+                        <input
+                            id="approval"
+                            type="file"
+                            @change="handleFileUpload"
+                            placeholder="Institute Approval"
+                            class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                        />
+                        <span v-if="errors['study_tour_details.institute_approval']" class="text-red-500 text-sm">
+                          {{ errors['study_tour_details.institute_approval'] }}
+                        </span>
+                    </div>
+
+
+                    <div>
+                        <label class="block font-semibold text-sm leading-5 mb-1 text-black">No. of Male Student</label>
+                        <input v-model="application.study_tour_details.male"  type="number" placeholder="Zirlai Mipa zat"
+                               class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black" />
+
+                        <span v-if="errors['study_tour_details.male']" class="text-red-500 text-sm">
+                          {{ errors['study_tour_details.male'] }}
+                        </span>
+
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-sm leading-5 mb-1 text-black">No. of Female Student</label>
+                        <input v-model="application.study_tour_details.female"  type="number" placeholder="Zirlai Hmeichhia zat"
+                               class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black" />
+                        <span v-if="errors['study_tour_details.female']" class="text-red-500 text-sm">
+                          {{ errors['study_tour_details.female'] }}
+                        </span>
+                    </div>
+
+
+
+                    <hr class="border-t border-gray-200 mt-6" />
+
+                    <div class="flex gap-4 mt-6">
+                        <button
+                            @click="back"
+                            type="button"
+                            class="border border-black rounded-lg py-3 text-base font-normal leading-6 text-black flex-grow"
+                        >
+                            Back
+                        </button>
+                        <button
+                            @click="next"
+                            type="submit"
+                            class="bg-black rounded-lg py-3 text-base font-normal leading-6 text-white flex-grow-[2]"
+                        >
+                            Save & Next
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -93,6 +182,7 @@ import { router } from '@inertiajs/vue3'
 const application = useStudyTourApplicationStore()
 const page = usePage()
 
+const errors = ref({})
 const showError = ref(false)
 function handleFileUpload(event) {
     const file = event.target.files[0];
@@ -101,18 +191,64 @@ function handleFileUpload(event) {
     }
 }
 function next() {
+    if (!validateForm()) {
+        showError.value = true;
+        return;
+    }
     router.visit(route('apply.study-tour.step-three'))
 }
 
 function back() {
     router.visit('/apply/step-one')
 }
+function validateForm() {
+    errors.value = {}
 
-watch(
-    () => page.props.errors,
-    (errors) => {
-        showError.value = Object.keys(errors).length > 0
-    },
-    { immediate: true }
-)
+    const allowedGenders = ['Male', 'Female', 'Other']
+
+    // Basic required fields
+    const requiredFields = [
+        'type', 'status', 'applicant_name',
+        'gender', 'designation', 'contact'
+    ]
+    requiredFields.forEach(field => {
+        if (!application[field] || typeof application[field] !== 'string') {
+            errors.value[field] = `${field.replace('_', ' ')} is required.`
+        }
+    })
+
+    // Gender validation
+    if (application.gender && !allowedGenders.includes(application.gender)) {
+        errors.value['gender'] = 'Gender must be Male, Female, or Other.'
+    }
+
+    // Contact number validation (10 digits)
+    if (application.contact && !/^\d{10}$/.test(application.contact)) {
+        errors.value['contact'] = 'Contact must be a 10-digit number.'
+    }
+
+
+    // Study tour details
+    const details = application.study_tour_details || {}
+
+    if (!details.institute || typeof details.institute !== 'string') {
+        errors.value['study_tour_details.institute'] = 'Institute name is required.'
+    }
+
+    if (details.male === '' || details.male === null || isNaN(details.male) || parseInt(details.male) < 0) {
+        errors.value['study_tour_details.male'] = 'Male must be a non-negative number.'
+    }
+
+    if (details.female === '' || details.female === null || isNaN(details.female) || parseInt(details.female) < 0) {
+        errors.value['study_tour_details.female'] = 'Female must be a non-negative number.'
+    }
+
+    if (!details.institute_approval) {
+        errors.value['study_tour_details.institute_approval'] = 'Institute approval file is required.'
+    }
+
+    return Object.keys(errors.value).length === 0
+}
+
+
 </script>

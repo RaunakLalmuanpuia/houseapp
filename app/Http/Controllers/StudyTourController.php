@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Application;
+use App\Models\Otp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -30,9 +31,26 @@ class StudyTourController extends Controller
         return Inertia::render('Form/StudyTour/StepThree');
     }
 
+    public function verify(Request $request)
+    {
+        // Call the sendOtp function and check if it returns true or false
+        $isOtpSent = $this->sendOtp($request);
+
+        if ($isOtpSent) {
+            // OTP was successfully sent, proceed to render the verification page
+            return Inertia::render('Form/StudyTour/Verify');
+        } else {
+            // OTP sending failed, handle the failure (you can pass an error message if needed)
+            return Inertia::render('Form/StudyTour/Verify', [
+                'error' => 'Failed to send OTP. Please try again.'
+            ]);
+        }
+    }
+
     public function submit(Request $request)
     {
         $validated = $request->validate([
+            'otp'=>'required',
             'type' => 'required|string|in:STUDY TOUR',
             'status' => 'required|string',
             'applicant_name' => 'required|string|max:255',
@@ -49,9 +67,14 @@ class StudyTourController extends Controller
             'study_tour_details.institute_approval' => 'required|file|mimes:pdf|max:2048', // Max 2MB
         ]);
 
-//        if ($validator->fails()) {
-//            return response()->json(['errors' => $validator->errors()], 422);
-//        }
+        $otp=Otp::query()->where('recipient', $validated['contact'])
+            ->where('otp',$validated['otp'])
+            ->where('used',false)
+            ->first();
+
+        if (blank($otp)) {
+            return redirect()->back()->withErrors(['error' => 'Invalid Mobile OTP']);
+        }
 
         try {
             DB::beginTransaction();
@@ -83,6 +106,7 @@ class StudyTourController extends Controller
                 'female' => $request->study_tour_details['female'],
             ]);
 
+            $otp->update(['used'=>true]);
             DB::commit();
 
             return redirect()->route('apply.study-tour.submission', ['application' => $application->id]);
