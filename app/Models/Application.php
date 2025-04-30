@@ -30,7 +30,7 @@ class Application extends Model
     }
 
     public function onDutyDetails() {
-        return $this->hasMany(ONDUTY::class);
+        return $this->hasMany(OnDuty::class);
     }
 
     public function notOnDutyDetails() {
