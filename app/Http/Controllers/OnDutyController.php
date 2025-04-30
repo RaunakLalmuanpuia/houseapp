@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Application;
+use App\Models\Otp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -25,12 +26,28 @@ class OnDutyController extends Controller
         return Inertia::render('Form/OnDuty/StepThree');
     }
 
+    public function verify(Request $request)
+    {
+        // Call the sendOtp function and check if it returns true or false
+        $isOtpSent = $this->sendOtp($request);
+
+        if ($isOtpSent) {
+            // OTP was successfully sent, proceed to render the verification page
+            return Inertia::render('Form/OnDuty/Verify');
+        } else {
+            // OTP sending failed, handle the failure (you can pass an error message if needed)
+            return Inertia::render('Form/OnDuty/Verify', [
+                'error' => 'Failed to send OTP. Please try again.'
+            ]);
+        }
+    }
 
 
     public function submit(Request $request)
     {
 //        dd($request->all());
         $validated = $request->validate([
+            'otp'=>'required',
             'type' => 'required|string',
             'status' => 'required|string',
             'applicant_name' => 'required|string|max:255',
@@ -56,6 +73,15 @@ class OnDutyController extends Controller
             'family_details.*.relation' => 'required|string|max:255',
         ]);
 
+        $otp=Otp::query()->where('recipient', $validated['contact'])
+            ->where('otp',$validated['otp'])
+            ->where('used',false)
+            ->first();
+
+        if (blank($otp)) {
+            return redirect()->back()->withErrors(['error' => 'Invalid Mobile OTP']);
+        }
+
         DB::beginTransaction();
 
         try {
@@ -79,7 +105,7 @@ class OnDutyController extends Controller
                 'end_date' => $validated['end_date'],
                 'department_approval' => $deptApprovalPath,
             ]);
-
+            // Store OnDutyDetails
             if (!empty($validated['on_duty_details'])){
                 foreach ($validated['on_duty_details'] as $detail) {
                     $approvalFile = $detail['approval'];
@@ -96,9 +122,6 @@ class OnDutyController extends Controller
                     ]);
                 }
             }
-            // Store OnDutyDetails
-
-
             // Store FamilyMembers (if any)
             if (!empty($validated['family_details'])) {
                 foreach ($validated['family_details'] as $family) {
@@ -110,21 +133,13 @@ class OnDutyController extends Controller
             }
 
             DB::commit();
+            $otp->update(['used'=>true]);
             return redirect()->route('apply.on-duty.submission', ['application' => $application->id]);
-//            return redirect()->route('home')->with('success', 'Application submitted!');
-
-//            return response()->json([
-//                'message' => 'Application created successfully.',
-//                'application_id' => $application->id,
-//            ], 201);
 
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->route('home')->with('success', $e->getMessage());
-//            return response()->json([
-//                'error' => 'Something went wrong.',
-//                'details' => $e->getMessage(),
-//            ], 500);
+
         }
     }
 

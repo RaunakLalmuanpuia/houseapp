@@ -67,12 +67,17 @@ Route::group(['prefix'=>'flam'], function () {
     Route::post('/apply/submit', [FlamController::class, 'submit'])->name('apply.flam.submit');
     Route::get('submission', [FlamController::class, 'submission'])->name('apply.flam.submission');
 });
+
+
 //On Duty
 Route::group(['prefix'=>'on-duty'], function () {
+
     Route::get('/apply/step-one', [OnDutyController::class, 'stepOne'])->name('apply.on-duty.step-one');
     Route::get('/apply/step-two', [OnDutyController::class, 'stepTwo'])->name('apply.on-duty.step-two');
     Route::get('/apply/step-three', [OnDutyController::class, 'stepThree'])->name('apply.on-duty.step-three');
 
+//    Verify
+    Route::get('/apply/verify', [OnDutyController::class, 'verify'])->name('apply.on-duty.verify');
 // Final submission
     Route::post('/apply/submit', [OnDutyController::class, 'submit'])->name('apply.on-duty.submit');
 
