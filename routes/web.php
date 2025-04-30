@@ -105,6 +105,9 @@ Route::group(['prefix'=>'non-official'], function () {
     Route::get('/apply/step-two', [NonOfficialController::class, 'stepTwo'])->name('apply.non-official.step-two');
     Route::get('/apply/step-three', [NonOfficialController::class, 'stepThree'])->name('apply.non-official.step-three');
 
+
+     Route::get('/apply/verify', [NonOfficialController::class, 'verify'])->name('apply.non-official.verify');
+
     // Final submission
     Route::post('/apply/submit', [NonOfficialController::class, 'submit'])->name('apply.non-official.submit');
     Route::get('submission', [NonOfficialController::class, 'submission'])->name('apply.non-official.submission');

@@ -3,10 +3,10 @@ import Header from "@/Components/Common/Header.vue";
 import Footer from "@/Components/Common/Footer.vue";
 import {onMounted, ref} from "vue";
 
-import { useNotOnDutyApplicationStore } from '@/Store/useNotOnDutyApplicationStore.js'
+import { useNonOfficialApplicationStore } from '@/Store/useNonOfficialApplicationStore.js'
 import {router, useForm} from "@inertiajs/vue3";
 
-const application = useNotOnDutyApplicationStore()
+const application = useNonOfficialApplicationStore()
 
 const form = useForm({
     ...application.$state,
@@ -43,7 +43,7 @@ onMounted(() => {
     startTimer();
 });
 function submit() {
-    form.post(route('apply.not-on-duty.submit'), {
+    form.post(route('apply.non-official.submit'), {
         onSuccess: () => {
             application.reset()
         },
@@ -68,7 +68,7 @@ function submit() {
 }
 
 function resendOtp(){
-    router.get(route('apply.not-on-duty.verify'), {
+    router.get(route('apply.non-official.verify'), {
         contact: application.contact,
         type: application.type,
     }, {
@@ -122,7 +122,7 @@ function resendOtp(){
                     <h2 class="text-gray-900 font-semibold text-xl mb-2">Enter OTP to verify</h2>
                     <p class="text-gray-500 text-sm mb-6">
                         An OTP has been sent to {{ application.contact }}
-                        <span @click="$inertia.get(route('apply.not-on-duty.step-two'))" class="text-green-600 cursor-pointer">(Edit)</span>
+                        <span @click="$inertia.get(route('apply.non-official.step-two'))" class="text-green-600 cursor-pointer">(Edit)</span>
                     </p>
                     <div class="flex justify-center space-x-4 mb-6">
                         <input
