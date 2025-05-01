@@ -22,6 +22,8 @@ export const useStudyTourApplicationStore = defineStore('study_tour_application'
         location: '',
         start_date: '',
         end_date: '',
+
+        state_id:'',
     }),
     actions: {
         reset() {

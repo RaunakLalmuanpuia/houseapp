@@ -6,11 +6,14 @@ import DestinationStep from "@/Components/Common/DestinationStep.vue";
 
 import { useStudyTourApplicationStore } from '@/Store/useStudyTourApplicationStore.js'
 import { router, usePage} from '@inertiajs/vue3'
-import {ref} from "vue";
+import {computed, ref, watchEffect} from "vue";
 
 const application = useStudyTourApplicationStore()
 const page = usePage()
 
+const props = defineProps({
+    states: Array
+});
 
 const showError = ref(false)
 const errorMessage = ref('')
@@ -23,7 +26,7 @@ const agreement = ref(false)
 function validateForm() {
     errors.value = {}
 
-    if (!application.location || typeof application.location !== 'string') {
+    if (!application.location) {
         errors.value.location = 'Location is required.'
     }
 
@@ -83,6 +86,23 @@ function next() {
 function back() {
     router.visit(route('apply.study-tour.step-two'))
 }
+const selectedState = computed(() =>
+    props.states.find(state => state.id === application.state_id)
+);
+
+
+// Automatically assign house_id if only one house, reset otherwise
+watchEffect(() => {
+    if (selectedState.value) {
+        if (selectedState.value.houses.length === 1) {
+            application.location = selectedState.value.houses[0].id;
+        } else {
+            application.location = '';
+        }
+    } else {
+        application.location = '';
+    }
+});
 
 </script>
 
@@ -116,19 +136,39 @@ function back() {
                     <h2 class="font-bold text-lg leading-6 border-l-4 border-black pl-2">Kal Duhna Hmun</h2>
 
                     <div>
-                        <label for="applicant" class="block font-semibold text-sm leading-5 mb-1 text-black">Mizoram House Kal duhna</label>
+                        <label class="block font-semibold text-sm leading-5 mb-1 text-black">Select State</label>
+                        <select
+                            v-model="application.state_id"
+                            class="w-full rounded-md border border-gray-300 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                        >
+                            <option disabled value="">Select State</option>
+                            <option v-for="state in states" :key="state.id" :value="state.id">
+                                {{ state.name }}
+                            </option>
+                        </select>
+
+                    </div>
+                    <div v-if="selectedState?.houses.length > 1">
+                        <label for="location" class="block font-semibold text-sm leading-5 mb-1 text-black">Mizoram House Kal duhna</label>
                         <select
                             v-model="application.location"
-                            id="gender"
+                            id="location"
                             class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black appearance-none"
                         >
-                            <option disabled selected>Select</option>
-                            <option>Male</option>
-                            <option>Female</option>
-                            <option>Other</option>
+                            <option disabled value="">Select House</option>
+                            <option v-for="house in selectedState.houses" :key="house.id" :value="house.id">
+                                {{ house.name }}
+                            </option>
                         </select>
-                        <span v-if="errors.location" class="text-red-500 text-sm mt-1 block">{{ errors.location }}</span>
+
+
+
                     </div>
+                    <input v-else type="hidden" :value="application.location"/>
+                    <span v-if="errors.location" class="text-red-500 text-sm mt-1 block">{{ errors.location }}</span>
+
+
+
                     <h2 class="font-bold text-lg leading-6 border-l-4 border-black pl-2">Period</h2>
                     <div>
                         <label for="start_date" class="block font-semibold text-sm leading-5 mb-1 text-black">Arrival/Thlen ni</label>

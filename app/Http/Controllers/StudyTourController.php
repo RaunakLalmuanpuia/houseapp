@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Application;
 use App\Models\Otp;
+use App\Models\State;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -28,7 +29,10 @@ class StudyTourController extends Controller
 
     public function stepThree()
     {
-        return Inertia::render('Form/StudyTour/StepThree');
+        $states = State::with('houses')->get();
+        return Inertia::render('Form/StudyTour/StepThree',[
+            'states' => $states,
+        ]);
     }
 
     public function verify(Request $request)
@@ -57,7 +61,7 @@ class StudyTourController extends Controller
             'gender' => 'required|string|in:Male,Female,Other',
             'designation' => 'required|string|max:255',
             'contact' => 'required|string|max:20',
-            'location' => 'required|string|max:255',
+            'location' => 'required|integer|exists:houses,id',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
 
@@ -122,7 +126,7 @@ class StudyTourController extends Controller
     {
         $applicationId = $request->query('application');
 
-        $application = Application::with('studyTourDetails')->findOrFail($applicationId);
+        $application = Application::with(['studyTourDetails','house'])->findOrFail($applicationId);
 
         return Inertia::render('Form/Submission', [
             'application' => $application
