@@ -3,7 +3,7 @@ import Header from "@/Components/Common/Header.vue";
 import Footer from "@/Components/Common/Footer.vue";
 import DestinationStep from "@/Components/Common/DestinationStep.vue";
 
-import {computed, ref, watch} from "vue";
+import {computed, ref, watch, watchEffect} from "vue";
 import { useFlamApplicationStore } from '@/Store/useFlamApplicationStore.js'
 import {  router } from '@inertiajs/vue3'
 
@@ -89,10 +89,15 @@ const selectedState = computed(() =>
     props.states.find(state => state.id === application.state_id)
 );
 
-watch(() => application.state_id, (newVal) => {
-    const state = props.states.find(s => s.id === newVal);
-    if (state && state.houses.length === 1) {
-        application.location = state.houses[0].id;
+
+// Automatically assign house_id if only one house, reset otherwise
+watchEffect(() => {
+    if (selectedState.value) {
+        if (selectedState.value.houses.length === 1) {
+            application.location = selectedState.value.houses[0].id;
+        } else {
+            application.location = '';
+        }
     } else {
         application.location = '';
     }
@@ -155,8 +160,9 @@ watch(() => application.state_id, (newVal) => {
 
 
                     </div>
-                    <span v-if="errors.location" class="text-red-500 text-sm mt-1 block">{{ errors.location }}</span>
                     <input v-else type="hidden" :value="application.location"/>
+                    <span v-if="errors.location" class="text-red-500 text-sm mt-1 block">{{ errors.location }}</span>
+
 
                     <h2 class="font-bold text-lg leading-6 border-l-4 border-black pl-2">Period</h2>
                     <div>

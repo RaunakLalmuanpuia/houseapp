@@ -23,6 +23,8 @@ export const useOnDutyApplicationStore = defineStore('on_duty_application', {
         location: '',
         start_date: '',
         end_date: '',
+
+        state_id:'',
     }),
     actions: {
         reset() {

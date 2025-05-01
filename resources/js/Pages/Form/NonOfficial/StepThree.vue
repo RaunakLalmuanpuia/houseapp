@@ -140,7 +140,7 @@ import DestinationStep from "@/Components/Common/DestinationStep.vue";
 
 import { useNonOfficialApplicationStore } from '@/Store/useNonOfficialApplicationStore.js'
 import { router} from '@inertiajs/vue3'
-import {ref, watch, computed} from "vue";
+import {ref,  computed, watchEffect} from "vue";
 
 const application = useNonOfficialApplicationStore()
 
@@ -153,16 +153,18 @@ const selectedState = computed(() =>
     props.states.find(state => state.id === application.state_id)
 );
 
-watch(() => application.state_id, (newVal) => {
-    const state = props.states.find(s => s.id === newVal);
-    if (state && state.houses.length === 1) {
-        application.location = state.houses[0].id;
+// Automatically assign house_id if only one house, reset otherwise
+watchEffect(() => {
+    if (selectedState.value) {
+        if (selectedState.value.houses.length === 1) {
+            application.location = selectedState.value.houses[0].id;
+        } else {
+            application.location = '';
+        }
     } else {
         application.location = '';
     }
 });
-
-
 
 const showError = ref(false)
 
