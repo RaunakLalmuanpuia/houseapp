@@ -35,7 +35,7 @@
                             id="applicant"
                             type="text"
                             placeholder="Diltu Hming"
-                            class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                            class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                         />
                         <span v-if="errors['applicant_name']" class="text-red-500 text-sm">{{ errors['applicant_name'] }}</span>
 
@@ -46,7 +46,7 @@
                         <select
                             v-model="application.gender"
                             id="gender"
-                            class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black appearance-none"
+                            class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black appearance-none"
                         >
                             <option disabled selected>Select</option>
                             <option>Male</option>
@@ -63,7 +63,7 @@
                             id="contact"
                             type="tel"
                             placeholder="Phone Number"
-                            class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                            class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                         />
                         <span v-if="errors['contact']" class="text-red-500 text-sm">{{ errors['contact'] }}</span>
                     </div>
@@ -75,7 +75,7 @@
                             id="designation"
                             type="text"
                             placeholder="Diltu Hnathawh"
-                            class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                            class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                         />
                         <span v-if="errors['designation']" class="text-red-500 text-sm">{{ errors['designation'] }}</span>
                     </div>
@@ -88,7 +88,7 @@
                             id="institution"
                             type="text"
                             placeholder="Name of Institution"
-                            class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                            class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                         />
 
                         <span v-if="errors['study_tour_details.institute']" class="text-red-500 text-sm">
@@ -105,19 +105,18 @@
                             id="approval"
                             type="file"
                             @change="handleFileUpload"
-                            placeholder="Institute Approval"
-                            class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                           placeholder="Institute Approval"
+                            class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                         />
                         <span v-if="errors['study_tour_details.institute_approval']" class="text-red-500 text-sm">
                           {{ errors['study_tour_details.institute_approval'] }}
                         </span>
                     </div>
 
-
                     <div>
                         <label class="block font-semibold text-sm leading-5 mb-1 text-black">No. of Male Student</label>
                         <input v-model="application.study_tour_details.male"  type="number" placeholder="Zirlai Mipa zat"
-                               class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black" />
+                               class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black" />
 
                         <span v-if="errors['study_tour_details.male']" class="text-red-500 text-sm">
                           {{ errors['study_tour_details.male'] }}
@@ -128,7 +127,7 @@
                     <div>
                         <label class="block font-semibold text-sm leading-5 mb-1 text-black">No. of Female Student</label>
                         <input v-model="application.study_tour_details.female"  type="number" placeholder="Zirlai Hmeichhia zat"
-                               class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black" />
+                               class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black" />
                         <span v-if="errors['study_tour_details.female']" class="text-red-500 text-sm">
                           {{ errors['study_tour_details.female'] }}
                         </span>

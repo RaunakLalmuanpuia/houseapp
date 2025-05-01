@@ -142,9 +142,9 @@ watchEffect(() => {
                         <label class="block font-semibold text-sm leading-5 mb-1 text-black">Select State</label>
                         <select
                             v-model="application.state_id"
-                            class="w-full rounded-md border border-gray-300 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                            class="w-full rounded-md border border-gray-300 text-gray-800 px-4 py-2 leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                         >
-                            <option disabled value="">Select State</option>
+                            <option disabled selected>Select State</option>
                             <option v-for="state in states" :key="state.id" :value="state.id">
                                 {{ state.name }}
                             </option>
@@ -156,7 +156,7 @@ watchEffect(() => {
                         <select
                             v-model="application.location"
                             id="location"
-                            class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black appearance-none"
+                            class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black appearance-none"
                         >
                             <option disabled value="">Select House</option>
                             <option v-for="house in selectedState.houses" :key="house.id" :value="house.id">
@@ -177,7 +177,7 @@ watchEffect(() => {
                             id="designation"
                             type="date"
                             placeholder="Ni leh thla thlanna"
-                            class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                            class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                         />
                         <span v-if="errors.start_date" class="text-red-500 text-sm mt-1 block">{{ errors.start_date }}</span>
                     </div>
@@ -189,7 +189,7 @@ watchEffect(() => {
                             id="designation"
                             type="date"
                             placeholder="Ni leh thla thlanna"
-                            class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                            class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                         />
                         <span v-if="errors.end_date" class="text-red-500 text-sm mt-1 block">{{ errors.end_date }}</span>
                     </div>

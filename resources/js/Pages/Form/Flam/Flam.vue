@@ -36,7 +36,7 @@
                             id="applicant"
                             type="text"
                             placeholder="Diltu Hming"
-                            class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                            class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                         />
                         <span v-if="errors['applicant_name']" class="text-red-500 text-sm">{{ errors['applicant_name'] }}</span>
                         <p class="text-gray-400 text-xs leading-4 mt-1 flex items-center gap-1">
@@ -52,9 +52,9 @@
                         <select
                             v-model="application.gender"
                             id="gender"
-                            class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black appearance-none"
+                            class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black appearance-none"
                         >
-                            <option disabled selected>Select</option>
+                            <option disabled>Select</option>
                             <option>Male</option>
                             <option>Female</option>
                             <option>Other</option>
@@ -69,7 +69,7 @@
                             id="designation"
                             type="text"
                             placeholder="Diltu Hnathawh"
-                            class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                            class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                         />
                         <span v-if="errors['designation']" class="text-red-500 text-sm">{{ errors['designation'] }}</span>
                     </div>
@@ -81,7 +81,7 @@
                             id="contact"
                             type="tel"
                             placeholder="Phone Number"
-                            class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                            class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                         />
                         <span v-if="errors['contact']" class="text-red-500 text-sm">{{ errors['contact'] }}</span>
                     </div>
@@ -102,7 +102,7 @@
                                 id="applicant"
                                 type="text"
                                 placeholder="Diltu Hming"
-                                class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                                class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                             />
                             <span v-if="errors[`flam_details.${index}.flam_name`]" class="text-red-500 text-sm">
                                   {{ errors[`flam_details.${index}.flam_name`] }}
@@ -120,7 +120,7 @@
                             <select
                                 v-model="flam.gender"
                                 id="gender"
-                                class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black appearance-none"
+                                class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black appearance-none"
                             >
                                 <option disabled selected>Select</option>
                                 <option>Male</option>
@@ -139,7 +139,7 @@
                                 id="designation"
                                 type="text"
                                 placeholder="Diltu Hnathawh"
-                                class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                                class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                             />
                             <span v-if="errors[`flam_details.${index}.designation`]" class="text-red-500 text-sm">
                                   {{ errors[`flam_details.${index}.designation`] }}
@@ -153,7 +153,7 @@
                                 id="contact"
                                 type="tel"
                                 placeholder="Phone Number"
-                                class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                                class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                             />
                             <span v-if="errors[`flam_details.${index}.contact`]" class="text-red-500 text-sm">
                                   {{ errors[`flam_details.${index}.contact`] }}
@@ -165,7 +165,7 @@
 
 
                     <div v-if="application.family_details && application.family_details.length > 0">
-                        <h2 class="text-lg font-extrabold text-gray-900 mb-1 border-l-4 border-black pl-2">
+                        <h2 class="text-lg font-extrabold text-gray-800 mb-1 border-l-4 border-black pl-2">
                             Family Member
                         </h2>
                     </div>
@@ -179,7 +179,7 @@
                         </p>
 
                         <div>
-                            <label for="familyName" class="block text-gray-900 font-semibold mb-1"
+                            <label for="familyName" class="block text-gray-800 font-semibold mb-1"
                             >Name</label
                             >
                             <input
@@ -188,7 +188,7 @@
                                 name="familyName"
                                 type="text"
                                 placeholder="Hming"
-                                class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                                class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                             />
                             <span v-if="errors[`family_details.${index}.name`]" class="text-red-500 text-sm">
                                   {{ errors[`family_details.${index}.name`] }}
@@ -199,14 +199,14 @@
                         <div>
                             <label
                                 for="relationship"
-                                class="block text-gray-900 font-semibold mt-6 mb-1"
+                                class="block text-gray-800 font-semibold mt-6 mb-1"
                             >Relationship</label
                             >
                             <select
                                 v-model="family.relation"
                                 id="relationship"
                                 name="relationship"
-                                class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black appearance-none"
+                                class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black appearance-none"
                             >
                                 <option>Wife</option>
                                 <option>Husband</option>

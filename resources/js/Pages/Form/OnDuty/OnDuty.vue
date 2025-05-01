@@ -38,7 +38,7 @@
                             id="applicant"
                             type="text"
                             placeholder="Diltu Hming"
-                            class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                            class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                         />
                         <span v-if="errors['applicant_name']" class="text-red-500 text-sm">{{ errors['applicant_name'] }}</span>
                         <p class="text-gray-400 text-xs leading-4 mt-1 flex items-center gap-1">
@@ -54,7 +54,7 @@
                         <select
                             v-model="application.gender"
                             id="gender"
-                            class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black appearance-none"
+                            class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black appearance-none"
                         >
                             <option disabled selected>Select</option>
                             <option>Male</option>
@@ -71,7 +71,7 @@
                             id="designation"
                             type="text"
                             placeholder="Diltu Hnathawh"
-                            class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                            class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                         />
                         <span v-if="errors['designation']" class="text-red-500 text-sm">{{ errors['designation'] }}</span>
                     </div>
@@ -84,7 +84,7 @@
                             id="department"
                             type="text"
                             placeholder="Diltu Department"
-                            class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                            class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                         />
                         <span v-if="errors['designation']" class="text-red-500 text-sm">{{ errors['department'] }}</span>
                     </div>
@@ -96,7 +96,7 @@
                             id="contact"
                             type="tel"
                             placeholder="Phone Number"
-                            class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                            class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                         />
                         <span v-if="errors['contact']" class="text-red-500 text-sm">{{ errors['contact'] }}</span>
                     </div>
@@ -108,7 +108,7 @@
                             type="file"
                             @change="(e) => application.setDepartmentApproval(e.target.files[0])"
                             placeholder="Departmental Approval"
-                            class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                            class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                         />
                         <span v-if="errors['department_approval']" class="text-red-500 text-sm">{{ errors['department_approval'] }}</span>
                     </div>
@@ -129,7 +129,7 @@
                                 id="applicant"
                                 type="text"
                                 placeholder="Diltu Hming"
-                                class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                                class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                             />
                             <span v-if="errors[`flam_details.${index}.flam_name`]" class="text-red-500 text-sm">
                                   {{ errors[`on_duty_details.${index}.name`] }}
@@ -147,7 +147,7 @@
                             <select
                                 v-model="on_duty.gender"
                                 id="gender"
-                                class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black appearance-none"
+                                class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black appearance-none"
                             >
                                 <option disabled selected>Select</option>
                                 <option>Male</option>
@@ -166,7 +166,7 @@
                                 id="designation"
                                 type="text"
                                 placeholder="Diltu Hnathawh"
-                                class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                                class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                             />
                             <span v-if="errors[`on_duty_details.${index}.designation`]" class="text-red-500 text-sm">
                                   {{ errors[`on_duty_details.${index}.designation`] }}
@@ -181,7 +181,7 @@
                                 id="designation"
                                 type="text"
                                 placeholder="Diltu Department"
-                                class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                                class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                             />
                             <span v-if="errors[`on_duty_details.${index}.designation`]" class="text-red-500 text-sm">
                                   {{ errors[`on_duty_details.${index}.designation`] }}
@@ -195,7 +195,7 @@
                                 id="contact"
                                 type="tel"
                                 placeholder="Phone Number"
-                                class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                                class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                             />
                             <span v-if="errors[`on_duty_details.${index}.contact`]" class="text-red-500 text-sm">
                                   {{ errors[`on_duty_details.${index}.contact`] }}
@@ -209,7 +209,7 @@
                                 type="file"
                                 @change="(e) => application.setOnDutyApproval(index, e.target.files[0])"
                                 placeholder="Departmental Approval"
-                                class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                                class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                             />
                             <span v-if="errors[`on_duty_details.${index}.approval`]" class="text-red-500 text-sm">
                                 {{ errors[`on_duty_details.${index}.approval`] }}</span>
@@ -244,7 +244,7 @@
                                 name="familyName"
                                 type="text"
                                 placeholder="Hming"
-                                class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                                class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                             />
                             <span v-if="errors[`family_details.${index}.name`]" class="text-red-500 text-sm">
                                   {{ errors[`family_details.${index}.name`] }}
@@ -262,7 +262,7 @@
                                 v-model="family.relation"
                                 id="relationship"
                                 name="relationship"
-                                class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black appearance-none"
+                                class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black appearance-none"
                             >
                                 <option>Wife</option>
                                 <option>Husband</option>
