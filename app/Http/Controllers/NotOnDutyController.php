@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Application;
 use App\Models\Otp;
+use App\Models\State;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -24,7 +25,10 @@ class NotOnDutyController extends Controller
 
     public function stepThree()
     {
-        return Inertia::render('Form/NotOnDuty/StepThree');
+        $states = State::with('houses')->get();
+        return Inertia::render('Form/NotOnDuty/StepThree',[
+            'states' => $states,
+        ]);
     }
 
     public function verify(Request $request)
@@ -56,7 +60,7 @@ class NotOnDutyController extends Controller
             'designation' => 'required|string|max:255',
             'department' => 'required|string|max:255',
             'contact' => 'required|string|max:20',
-            'location' => 'required|string|max:255',
+            'location' => 'required|integer|exists:houses,id',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'not_on_duty_details' => 'nullable|array',
@@ -136,7 +140,7 @@ class NotOnDutyController extends Controller
     {
         $applicationId = $request->query('application');
 
-        $application = Application::with('notOnDutyDetails')->findOrFail($applicationId);
+        $application = Application::with(['notOnDutyDetails', 'house'])->findOrFail($applicationId);
 
         return Inertia::render('Form/Submission', [
             'application' => $application
