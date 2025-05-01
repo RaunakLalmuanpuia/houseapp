@@ -129,8 +129,9 @@ class AdminApplicationController extends Controller
             }
 
             // Optionally always load family members
-            $application->load('familyMembers');
+            $application->load(['familyMembers','house']);
 
+//            dd($application);
             return Inertia::render('Application/Show', [
                 'application' => $application
             ]);
