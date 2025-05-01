@@ -81,7 +81,7 @@ defineProps({
 
                             <div>
                                 <p class="font-semibold text-gray-500">Mizoram House</p>
-                                <p class="font-bold text-black leading-5 text-start">{{application.location}}</p>
+                                <p class="font-bold text-black leading-5 text-start">{{application.house.name}}</p>
                             </div>
                         </div>
                     </section>

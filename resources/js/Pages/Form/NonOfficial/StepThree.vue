@@ -1,89 +1,3 @@
-<script setup>
-import Header from "@/Components/Common/Header.vue";
-import Footer from "@/Components/Common/Footer.vue";
-import DestinationStep from "@/Components/Common/DestinationStep.vue";
-
-
-import { useNonOfficialApplicationStore } from '@/Store/useNonOfficialApplicationStore.js'
-import { router} from '@inertiajs/vue3'
-import {ref} from "vue";
-
-const application = useNonOfficialApplicationStore()
-const showError = ref(false)
-
-const errorMessage = ref('')
-
-const errors = ref({})
-const agreement = ref(false)
-
-
-function validateForm() {
-    errors.value = {}
-
-    if (!application.location || typeof application.location !== 'string') {
-        errors.value.location = 'Location is required.'
-    }
-
-    if (!application.start_date) {
-        errors.value.start_date = 'Start date is required.'
-    } else if (isNaN(Date.parse(application.start_date))) {
-        errors.value.start_date = 'Start date must be a valid date.'
-    }
-
-    if (!application.end_date) {
-        errors.value.end_date = 'End date is required.'
-    } else if (isNaN(Date.parse(application.end_date))) {
-        errors.value.end_date = 'End date must be a valid date.'
-    } else if (new Date(application.end_date) < new Date(application.start_date)) {
-        errors.value.end_date = 'End date cannot be before start date.'
-    }
-
-    if (!agreement.value) {
-        errors.value.agreement = 'You must agree to the terms.'
-    }
-
-    return Object.keys(errors.value).length === 0
-}
-function next() {
-    if (!validateForm()) {
-        showError.value = true
-        return
-    }
-    router.get(route('apply.non-official.verify'), {
-        contact: application.contact,
-        type: application.type,
-    }, {
-        preserveState: true,
-        replace: true,
-        onError: (errors) => {
-            showError.value = true
-            if (errors) {
-                if (typeof errors === 'string') {
-                    errorMessage.value = errors
-                } else if (typeof errors === 'object') {
-                    const firstError = Object.values(errors)[0]
-                    if (Array.isArray(firstError)) {
-                        errorMessage.value = firstError[0]
-                    } else {
-                        errorMessage.value = firstError
-                    }
-                } else {
-                    errorMessage.value = 'An unexpected error occurred.'
-                }
-            }
-        }
-    })
-}
-
-
-
-function back() {
-    router.visit(route('apply.non-official.step-two'))
-}
-
-
-</script>
-
 <template>
 
     <div class="min-h-screen flex flex-col">
@@ -114,21 +28,42 @@ function back() {
                 <div class="bg-white p-6 space-y-6">
                     <h2 class="font-bold text-lg leading-6 border-l-4 border-black pl-2">Kal Duhna Hmun</h2>
 
+
                     <div>
-                        <label for="applicant" class="block font-semibold text-sm leading-5 mb-1 text-black">Mizoram House Kal duhna</label>
+                        <label class="block font-semibold text-sm leading-5 mb-1 text-black">Select State</label>
+                        <select
+                            v-model="application.state_id"
+                            class="w-full rounded-md border border-gray-300 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                        >
+                            <option disabled value="">Select State</option>
+                            <option v-for="state in states" :key="state.id" :value="state.id">
+                                {{ state.name }}
+                            </option>
+                        </select>
+
+                    </div>
+                    <div v-if="selectedState?.houses.length > 1">
+                        <label for="location" class="block font-semibold text-sm leading-5 mb-1 text-black">Mizoram House Kal duhna</label>
                         <select
                             v-model="application.location"
-                            id="gender"
+                            id="location"
                             class="w-full rounded-md border border-gray-300 text-gray-400 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black appearance-none"
                         >
-                            <option disabled selected>Select</option>
-                            <option>Male</option>
-                            <option>Female</option>
-                            <option>Other</option>
+                            <option disabled value="">Select House</option>
+                            <option v-for="house in selectedState.houses" :key="house.id" :value="house.id">
+                                {{ house.name }}
+                            </option>
                         </select>
-                        <span v-if="errors.location" class="text-red-500 text-sm mt-1 block">{{ errors.location }}</span>
+
+
+
                     </div>
+                    <span v-if="errors.location" class="text-red-500 text-sm mt-1 block">{{ errors.location }}</span>
+                    <input v-else type="hidden" :value="application.location"/>
+
                     <h2 class="font-bold text-lg leading-6 border-l-4 border-black pl-2">Period</h2>
+
+
                     <div>
                         <label for="start_date" class="block font-semibold text-sm leading-5 mb-1 text-black">Arrival/Thlen ni</label>
                         <input
@@ -197,6 +132,112 @@ function back() {
     </div>
 
 </template>
+<script setup>
+import Header from "@/Components/Common/Header.vue";
+import Footer from "@/Components/Common/Footer.vue";
+import DestinationStep from "@/Components/Common/DestinationStep.vue";
+
+
+import { useNonOfficialApplicationStore } from '@/Store/useNonOfficialApplicationStore.js'
+import { router} from '@inertiajs/vue3'
+import {ref, watch, computed} from "vue";
+
+const application = useNonOfficialApplicationStore()
+
+const props = defineProps({
+    states: Array
+});
+
+// Computed: Get selected state object
+const selectedState = computed(() =>
+    props.states.find(state => state.id === application.state_id)
+);
+
+watch(() => application.state_id, (newVal) => {
+    const state = props.states.find(s => s.id === newVal);
+    if (state && state.houses.length === 1) {
+        application.location = state.houses[0].id;
+    } else {
+        application.location = '';
+    }
+});
+
+
+
+const showError = ref(false)
+
+const errorMessage = ref('')
+
+const errors = ref({})
+const agreement = ref(false)
+
+
+function validateForm() {
+    errors.value = {}
+
+    if (!application.location ) {
+        errors.value.location = 'Location is required.'
+    }
+
+    if (!application.start_date) {
+        errors.value.start_date = 'Start date is required.'
+    } else if (isNaN(Date.parse(application.start_date))) {
+        errors.value.start_date = 'Start date must be a valid date.'
+    }
+
+    if (!application.end_date) {
+        errors.value.end_date = 'End date is required.'
+    } else if (isNaN(Date.parse(application.end_date))) {
+        errors.value.end_date = 'End date must be a valid date.'
+    } else if (new Date(application.end_date) < new Date(application.start_date)) {
+        errors.value.end_date = 'End date cannot be before start date.'
+    }
+
+    if (!agreement.value) {
+        errors.value.agreement = 'You must agree to the terms.'
+    }
+
+    return Object.keys(errors.value).length === 0
+}
+function next() {
+    if (!validateForm()) {
+        showError.value = true
+        return
+    }
+    router.get(route('apply.non-official.verify'), {
+        contact: application.contact,
+        type: application.type,
+    }, {
+        preserveState: true,
+        replace: true,
+        onError: (errors) => {
+            showError.value = true
+            if (errors) {
+                if (typeof errors === 'string') {
+                    errorMessage.value = errors
+                } else if (typeof errors === 'object') {
+                    const firstError = Object.values(errors)[0]
+                    if (Array.isArray(firstError)) {
+                        errorMessage.value = firstError[0]
+                    } else {
+                        errorMessage.value = firstError
+                    }
+                } else {
+                    errorMessage.value = 'An unexpected error occurred.'
+                }
+            }
+        }
+    })
+}
+
+
+
+function back() {
+    router.visit(route('apply.non-official.step-two'))
+}
+
+
+</script>
 
 <style scoped>
 </style>

@@ -5,7 +5,6 @@ defineProps({
 </script>
 
 <template>
-
 <!-- New-->
     <div class="bg-white flex flex-col items-center p-4 ">
         <div class="max-w-md w-full rounded-xl border border-gray-200 overflow-hidden">
@@ -61,7 +60,7 @@ defineProps({
                         </svg>
                         <div>
                             <p>Mizoram House</p>
-                            <p class="text-black font-semibold leading-snug text-start">{{ application.location }}</p>
+                            <p class="text-black font-semibold leading-snug text-start">{{application.house.name}}</p>
                         </div>
                     </div>
                 </div>

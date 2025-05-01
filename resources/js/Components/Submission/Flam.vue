@@ -62,7 +62,7 @@ defineProps({
                     </svg>
                     <div>
                         <p>Mizoram House</p>
-                        <p class="text-black font-semibold leading-snug text-start">{{ application.location }}</p>
+                        <p class="text-black font-semibold leading-snug text-start">{{application.house.name}}</p>
                     </div>
                 </div>
             </div>

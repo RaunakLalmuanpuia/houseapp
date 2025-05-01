@@ -14,6 +14,7 @@ export const useFlamApplicationStore = defineStore('flam_application', {
         location: '',
         start_date: '',
         end_date: '',
+        state_id:'',
     }),
     actions: {
         reset() {

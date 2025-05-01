@@ -14,37 +14,6 @@ class StatusController extends Controller
         ]);
     }
 
-//    public function show($applicationId){
-//
-//        $application = Application::where('application_id', $applicationId)->firstOrFail();
-//
-//        // Eager load the relationship based on type
-//        switch ($application->type) {
-//            case 'ON DUTY':
-//                $application->load('onDutyDetails');
-//                break;
-//            case 'NOT ON DUTY':
-//                $application->load('notOnDutyDetails');
-//                break;
-//            case 'PRIVATE':
-//                $application->load('nonOfficialDetails');
-//                break;
-//            case 'STUDY TOUR':
-//                $application->load('studyTourDetails');
-//                break;
-//            case 'FLAM':
-//                $application->load('flamDetails');
-//                break;
-//        }
-//
-//        // Optionally always load family members
-//        $application->load('familyMembers');
-//
-////        dd($application);
-//        return response()->json([
-//            'data' => $application
-//        ]);
-//    }
     public function getStatus($applicationId)
     {
         try {
@@ -91,7 +60,7 @@ class StatusController extends Controller
             }
 
             // Optionally always load family members
-            $application->load('familyMembers');
+            $application->load(['familyMembers', 'house']);
 //        dd($application);
             return Inertia::render('Status/Show', [
                 'application' => $application

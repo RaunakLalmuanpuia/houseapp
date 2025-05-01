@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Application;
 use App\Models\Otp;
+use App\Models\State;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -22,7 +23,10 @@ class FlamController extends Controller
 
     public function stepThree()
     {
-        return Inertia::render('Form/Flam/StepThree');
+        $states = State::with('houses')->get();
+        return Inertia::render('Form/Flam/StepThree',[
+            'states' => $states,
+        ]);
     }
 
     public function verify(Request $request)
@@ -53,7 +57,7 @@ class FlamController extends Controller
             'gender' => 'required|string',
             'designation' => 'required|string',
             'contact' => 'required|string',
-            'location' => 'required|string',
+            'location' => 'required|integer|exists:houses,id',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'flam_details' => 'nullable|array',
@@ -101,7 +105,7 @@ class FlamController extends Controller
     {
         $applicationId = $request->query('application');
 
-        $application = Application::with('flamDetails')->findOrFail($applicationId);
+        $application = Application::with(['flamDetails','house'])->findOrFail($applicationId);
 
         return Inertia::render('Form/Submission', [
             'application' => $application

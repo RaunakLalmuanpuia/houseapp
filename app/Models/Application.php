@@ -25,6 +25,12 @@ class Application extends Model
         'status_changed_at',
         'reject_reason'];
 
+
+    public function house()
+    {
+        return $this->belongsTo(House::class, 'location');
+    }
+
     public function flamDetails() {
         return $this->hasMany(FlamDetail::class);
     }

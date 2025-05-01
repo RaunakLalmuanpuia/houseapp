@@ -13,6 +13,7 @@ export const useNonOfficialApplicationStore = defineStore('non_official_applicat
         location: '',
         start_date: '',
         end_date: '',
+        state_id:'',
     }),
     actions: {
         reset() {
