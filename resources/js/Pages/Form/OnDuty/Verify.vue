@@ -122,7 +122,7 @@ function resendOtp(){
                     <h2 class="text-gray-900 font-semibold text-xl mb-2">Enter OTP to verify</h2>
                     <p class="text-gray-500 text-sm mb-6">
                         An OTP has been sent to {{ application.contact }}
-                        <span @click="$inertia.get(route('apply.on_duty.step-two'))" class="text-green-600 cursor-pointer">(Edit)</span>
+                        <span @click="$inertia.get(route('apply.on-duty.step-two'))" class="text-green-600 cursor-pointer">(Edit)</span>
                     </p>
                     <div class="flex justify-center space-x-4 mb-6">
                         <input
