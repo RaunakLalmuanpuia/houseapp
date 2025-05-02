@@ -39,6 +39,7 @@ defineProps({
 <!--    Knowledge-->
    <Knowledge/>
 
+<!--    Statistics-->
     <Statistics/>
 
 <!--    <Faqs/>-->

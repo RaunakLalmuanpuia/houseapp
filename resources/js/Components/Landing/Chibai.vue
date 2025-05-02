@@ -17,7 +17,7 @@
             </div>
 
             <div class="flex gap-6">
-                <a class="flex flex-col justify-center rounded-xl bg-[#0059d9] px-8 py-10 w-40 md:w-48 text-white cursor-pointer hover:brightness-110 transition" href="#">
+                <a @click="$inertia.visit(route('apply.step-one'))" class="flex flex-col justify-center rounded-xl bg-[#0059d9] px-8 py-10 w-40 md:w-48 text-white cursor-pointer hover:brightness-110 transition">
                     <div class="flex items-center justify-between text-xl font-bold mb-1">
                         <span>Form</span>
                         <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -28,7 +28,7 @@
                     <span class="text-sm font-normal">Reservation Form</span>
                 </a>
 
-                <a class="flex flex-col justify-center rounded-xl bg-[#df8a0f] px-8 py-10 w-40 md:w-48 text-white cursor-pointer hover:brightness-110 transition" href="#">
+                <a @click="$inertia.visit(route('status.index'))" class="flex flex-col justify-center rounded-xl bg-[#df8a0f] px-8 py-10 w-40 md:w-48 text-white cursor-pointer hover:brightness-110 transition" href="#">
                     <div class="flex items-center justify-between text-xl font-bold mb-1">
                         <span>Status</span>
                         <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
