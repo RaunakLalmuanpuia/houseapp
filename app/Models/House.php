@@ -9,6 +9,10 @@ class House extends Model
     //
     protected $fillable = ['name','state_id'];
 
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
     public function applications()
     {
         return $this->hasMany(Application::class, 'location');
