@@ -123,16 +123,15 @@ class NotOnDutyController extends Controller
 
             DB::commit();
             $otp->update(['used'=>true]);
-//            dd($request);
+
             return redirect()->route('apply.not-on-duty.submission', ['application' => $application->id]);
-//            return redirect()->route('home')->with('success', 'Application submitted!');
-//            return response()->json(['message' => 'Application submitted successfully'], 201);
+
 
         } catch (\Exception $e) {
             DB::rollBack();
 
             return redirect()->route('home')->with('success', $e->getMessage());
-//            return response()->json(['error' => 'Failed to save application', 'details' => $e->getMessage()], 500);
+
         }
     }
 

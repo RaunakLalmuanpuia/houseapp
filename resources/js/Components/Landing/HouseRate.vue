@@ -22,7 +22,7 @@ function clearSearch() {
 function getHouseRate(props) {
     const filter = props.filter;
 
-    axios.get(route('house.index'), {
+    axios.get(route('house.json_index'), {
         params: {
             filter,
         }

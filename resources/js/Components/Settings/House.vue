@@ -522,7 +522,7 @@ function getHouse(props) {
     const { page, rowsPerPage, sortBy, descending } = props.pagination;
     const filter = props.filter;
 
-    axios.get(route('admin.house.house-index'), {
+    axios.get(route('admin.house.index'), {
         params: {
             filter,
             page,

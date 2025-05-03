@@ -49,20 +49,6 @@ class RateController extends Controller
         ]);
     }
 
-//    public function store(Request $request)
-//    {
-////        dd($request);
-//        $validated = $request->validate([
-//            'room_type_id' => 'required|exists:room_types,id',
-//            'rate_category_id' => 'required|exists:rate_categories,id',
-//            'rate' => 'required|numeric',
-//        ]);
-//
-//        $roomRate = RoomRate::create($validated);
-//
-//        return redirect()->route('admin.rate.index')->with('success', 'Room rate created successfully');
-//
-//    }
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -108,23 +94,6 @@ class RateController extends Controller
         return redirect()->route('admin.rate.index')->with('success', 'Room rate updated successfully');
     }
 
-//
-//
-//    public function update(Request $request, RoomRate $roomRate)
-//    {
-////        dd($request);
-//        $validated = $request->validate([
-//            'room_type_id' => 'required|exists:room_types,id',
-//            'rate_category_id' => 'required|exists:rate_categories,id',
-//            'rate' => 'required|numeric',
-//        ]);
-//
-//        $roomRate->update($validated);
-//
-//        return redirect()->route('admin.rate.index')->with('success', 'Room rate updated successfully');
-//
-////        return response()->json(['message' => 'Room rate updated successfully', 'data' => $roomRate]);
-//    }
 
     public function destroy(RoomRate $roomRate)
     {

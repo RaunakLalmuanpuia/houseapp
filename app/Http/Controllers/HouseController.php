@@ -10,7 +10,7 @@ use Inertia\Inertia;
 class HouseController extends Controller
 {
 
-    public function index(Request $request)
+    public function json_index(Request $request)
     {
         $search = $request->get('filter');
 
@@ -49,54 +49,8 @@ class HouseController extends Controller
             'roomsData' => $rooms,
         ]);
     }
-//    public function index(Request $request)
-//    {
-//
-//
-//        $search = $request->get('filter');
-//
-//        $houseQuery = House::with(['roomTypes.roomRates.rateCategory']);
-//
-//        if (!empty($search)) {
-//            $houseQuery->where('name', 'like', '%' . $search . '%');
-//        }
-//
-//        $house = $houseQuery->first();
-//
-//        if (!$house) {
-//            return Inertia::render('House/Index', [
-//                'rooms' => [],
-//            ]);
-//        }
-//
-//        $rooms = $house->roomTypes->map(function ($roomType) {
-//            return [
-//                'name' => $roomType->name,
-//                'prices' => $roomType->roomRates->mapWithKeys(function ($roomRate) {
-//                    return [
-//                        $roomRate->rateCategory->name => '₹' . $roomRate->rate,
-//                    ];
-//                }),
-//            ];
-//        });
-//
-//        $allHouse = House::all();
-////        return Inertia::render('House/Index', [
-////            'allHouse' => $allHouse,
-////            'house' => $house,
-////            'rooms' => $rooms,
-////            'search' => $search,
-////        ]);
-//        return response()->json([
-//            'allHouseData' => $allHouse,
-//            'houseData' => $house,
-//            'roomsData' => $rooms,
-//            'search' => $search,
-//        ]);
-//    }
 
-
-    public function house_index(Request $request)
+    public function index(Request $request)
     {
         $filter = $request->get('filter');
         $rowsPerPage = $request->get('rowsPerPage', 10);

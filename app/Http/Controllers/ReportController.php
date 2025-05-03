@@ -15,23 +15,7 @@ class ReportController extends Controller
             'application' => Application::where('status', "asdasds")->paginate(10),
         ]);
     }
-//     public function jsonIndex(Request $request){
-//
-//        $filters = $request->get('filter', []);
-//        dd($request);
-//        $query = Application::query()
-//             ->when(isset($filters['status']), fn($q) => $q->where('status', $filters['status']))
-//             ->when(isset($filters['category']), fn($q) => $q->where('type', $filters['category']))
-//             ->when(isset($filters['start_date']), fn($q) => $q->whereDate('start_date', '>=', $filters['start_date']))
-//             ->when(isset($filters['end_date']), fn($q) => $q->whereDate('end_date', '<=', $filters['end_date']))
-//             ->when(isset($filters['mizoram_house']), fn($q) => $q->where('location', $filters['mizoram_house']))
-//             ->when(isset($filters['gender']), fn($q) => $q->where('gender', $filters['gender']));
-//
-//        dd($query->paginate(10));
-//         return response()->json([
-//             'list' => $query->paginate(),
-//         ]);
-//     }
+
     public function jsonIndex(Request $request)
     {
 

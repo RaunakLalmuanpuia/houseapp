@@ -102,9 +102,6 @@ class AdminApplicationController extends Controller
         ]);
 
     }
-
-
-
     public function viewApplication(Application $application)
     {
 //        dd($applicationId);

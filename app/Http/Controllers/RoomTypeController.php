@@ -9,16 +9,6 @@ use Inertia\Inertia;
 
 class RoomTypeController extends Controller
 {
-    // Show all RoomTypes for a House
-//    public function index(House $house)
-//    {
-//        $roomTypes = $house->roomTypes()->latest()->get();
-//
-//        return Inertia::render('RoomType/Index', [
-//            'house' => $house,
-//            'roomTypes' => $roomTypes,
-//        ]);
-//    }
 
     public function index(Request $request)
     {
