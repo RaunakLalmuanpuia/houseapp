@@ -4,7 +4,28 @@ import Footer from "@/Components/Common/Footer.vue";
 import ApplicationStep from "@/Components/Common/ApplicationStep.vue";
 import { router } from '@inertiajs/vue3'
 
+import { onMounted } from 'vue'
+import { useFlamApplicationStore } from '@/Store/useFlamApplicationStore'
+import { useOnDutyApplicationStore } from '@/Store/useOnDutyApplicationStore'
+import { useNotOnDutyApplicationStore } from '@/Store/useNotOnDutyApplicationStore'
+import { useNonOfficialApplicationStore } from '@/Store/useNonOfficialApplicationStore'
+import { useStudyTourApplicationStore } from '@/Store/useStudyTourApplicationStore'
 
+// Initialize stores
+const flamStore = useFlamApplicationStore()
+const onDutyStore = useOnDutyApplicationStore()
+const notOnDutyStore = useNotOnDutyApplicationStore()
+const nonOfficialStore = useNonOfficialApplicationStore()
+const studyTourStore = useStudyTourApplicationStore()
+
+// Reset all stores on mount
+onMounted(() => {
+    flamStore.reset()
+    onDutyStore.reset()
+    notOnDutyStore.reset()
+    nonOfficialStore.reset()
+    studyTourStore.reset()
+})
 function nextFlam() {
 
     router.visit(route('apply.flam.step-two'))
