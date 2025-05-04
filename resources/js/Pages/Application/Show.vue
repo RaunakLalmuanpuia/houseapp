@@ -28,25 +28,12 @@
     />
 
 <!--    Application History-->
-    <div class="space-y-4">
-        <h2 class="text-xl font-bold text-[#0B146B] mb-2">Application History</h2>
 
-        <div
-            v-for="(history, index) in application.status_histories"
-            :key="history.id"
-            class="border border-gray-300 rounded-lg p-4"
-        >
-            <p class="text-sm text-gray-600 mb-1">
-                <strong>#{{ index + 1 }}</strong>
-                <span class="ml-2">({{ new Date(history.created_at).toLocaleString() }})</span>
-            </p>
-            <p><strong>Role:</strong> {{ history.role || 'N/A' }}</p>
-            <p><strong>Action:</strong> {{ history.action }}</p>
-            <p><strong>Note:</strong> {{ history.note || 'No note' }}</p>
-            <p><strong>Priority:</strong> {{ history.priority || 'N/A' }}</p>
-            <p v-if="history.handled_by"><strong>Handled By (User ID):</strong> {{ history.handler.name }}</p>
-        </div>
-    </div>
+    <ApplicationHistory
+    :application="application"
+    />
+
+
 
 
     <div class="bg-white mt-4 flex justify-center items-center ">
@@ -260,6 +247,7 @@ import Flam from "@/Components/Applications/Flam.vue";
 import NotOnDuty from "@/Components/Applications/NotOnDuty.vue";
 import NonOfficial from "@/Components/Applications/NonOfficial.vue";
 import StudyTour from "@/Components/Applications/StudyTour.vue";
+import ApplicationHistory from "@/Components/Applications/ApplicationHistory.vue";
 
 import {useForm, router} from "@inertiajs/vue3";
 import {ref} from "vue";
