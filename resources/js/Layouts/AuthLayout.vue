@@ -152,7 +152,7 @@
                             <a :href="route('house.application.index_rejected')"
                                :class="[
                                 'flex items-center gap-3',
-                                route().current('admin.application.index_rejected') ? 'bg-blue-100 text-blue-700 font-semibold rounded px-3 py-2' : 'font-semibold'
+                                route().current('house.application.index_rejected') ? 'bg-blue-100 text-blue-700 font-semibold rounded px-3 py-2' : 'font-semibold'
                               ]">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M7.33 11.3333V8.66667C7.33 7.40933 7.33 6.78133 7.72079 6.39067C8.11158 6 8.73977 6 9.9975 6H15.3325C16.5902 6 17.2184 6 17.6092 6.39067C18 6.78133 18 7.40933 18 8.66667V14C18 15.8853 18 16.8287 17.4138 17.414C16.8283 18 15.8847 18 13.9988 18H12.665" stroke="#080808" stroke-linecap="round"/>
