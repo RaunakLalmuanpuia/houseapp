@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Application;
+use App\Models\ApplicationStatusHistory;
 use App\Models\Otp;
 use App\Models\State;
 use Illuminate\Http\Request;
@@ -110,6 +111,14 @@ class NonOfficialController extends Controller
                     ]);
                 }
             }
+
+            ApplicationStatusHistory::create([
+                'application_id' => $application->id,
+                'handled_by' => null,
+                'role' => 'applicant',
+                'action' => 'submitted',
+                'note' => $application->applicant_name . ' submitted the application.',
+            ]);
 
             DB::commit();
             $otp->update(['used'=>true]);

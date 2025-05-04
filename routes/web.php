@@ -24,6 +24,11 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\RoomTypeController;
 use App\Http\Controllers\RateCategoryController;
 
+use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\HouseApplicationController;
+
+
+
 
 
 Route::get('/', function () {
@@ -112,6 +117,24 @@ Route::group(['prefix'=>'status'], function () {
 
 });
 
+
+//Application Actions
+Route::group([], function () {
+    Route::post('/applications/{application}/forward', [ApplicationController::class, 'forward'])->name('applications.forward');
+    Route::post('/applications/{application}/approve', [ApplicationController::class, 'approve'])->name('applications.approve');
+    Route::post('/applications/{application}/reject', [ApplicationController::class, 'reject'])->name('applications.reject');
+});
+
+
+
+////Application Actions
+//Route::group([], function () {
+//    Route::post('/applications/{application}/forward', [ApplicationController::class, 'forward'])->middleware('role:Admin')->name('applications.forward');
+//    Route::post('/applications/{application}/approve', [ApplicationController::class, 'approve'])->middleware('role:Admin|House')->name('applications.approve');
+//    Route::post('/applications/{application}/reject', [ApplicationController::class, 'reject'])->middleware('role:Admin|House')->name('applications.reject');
+//});
+
+
 // Admin Applications
 Route::group(['prefix'=>'admin'], function () {
     Route::get('/applications/incoming', [AdminApplicationController::class, 'indexIncoming'])->name('admin.application.index_incoming');
@@ -121,9 +144,20 @@ Route::group(['prefix'=>'admin'], function () {
 //    Route::get('{applicationId}', [StatusController::class, 'getStatus'])->name('status.application');
 //    Route::get('{applicationId}/view', [StatusController::class, 'show'])->name('status.show-application');
 
-    Route::post('/applications/{application}/approve', [AdminApplicationController::class, 'approve'])->name('admin.application.approve');
-    Route::post('/applications/{application}/reject', [AdminApplicationController::class, 'reject'])->name('admin.application.reject');
+//    Route::post('/applications/{application}/forward', [AdminApplicationController::class, 'forward'])->name('admin.application.forward');
+//    Route::post('/applications/{application}/approve', [AdminApplicationController::class, 'approve'])->name('admin.application.approve');
+//    Route::post('/applications/{application}/reject', [AdminApplicationController::class, 'reject'])->name('admin.application.reject');
 });
+
+
+// House Applications
+Route::group(['prefix'=>'house'], function () {
+    Route::get('/applications/incoming', [HouseApplicationController::class, 'indexIncoming'])->name('house.application.index_incoming');
+    Route::get('/applications/approved', [HouseApplicationController::class, 'indexApproved'])->name('house.application.index_approved');
+    Route::get('/applications/rejected', [HouseApplicationController::class, 'indexRejected'])->name('house.application.index_rejected');
+    Route::get('/applications/{application}/view', [HouseApplicationController::class, 'viewApplication'])->name('house.application.view');
+});
+
 //Report
 Route::group(['prefix'=>'admin'], function () {
     Route::get('/report', [ReportController::class, 'index'])->name('admin.report.index');

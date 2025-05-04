@@ -156,7 +156,7 @@
                                                       fill="black"/>
                                             </svg>
 
-                                            <a :href="route('admin.application.view', item)" class="text-sm text-gray-700">View Details</a>
+                                            <a :href="route('house.application.view', item)" class="text-sm text-gray-700">View Details</a>
                                         </div>
                                         <div class="flex items-center space-x-2 px-4 py-2 hover:bg-gray-100 cursor-pointer">
                                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -275,7 +275,7 @@ const state = reactive({
 });
 
 const handleSearch = () => {
-    router.get(route('admin.application.index_rejected'), {
+    router.get(route('house.application.index_rejected'), {
         search: state.search,
         type: state.type,   // Send the selected type filter
         perPage: state.perPage,

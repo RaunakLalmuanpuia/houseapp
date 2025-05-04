@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Application;
+use App\Models\ApplicationStatusHistory;
 use App\Models\Otp;
 use App\Models\State;
 use Illuminate\Http\Request;
@@ -108,6 +109,15 @@ class StudyTourController extends Controller
                 'institution_approval' => $filePath,
                 'male' => $request->study_tour_details['male'],
                 'female' => $request->study_tour_details['female'],
+            ]);
+
+
+            ApplicationStatusHistory::create([
+                'application_id' => $application->id,
+                'handled_by' => null,
+                'role' => 'applicant',
+                'action' => 'submitted',
+                'note' => $application->applicant_name . ' submitted the application.',
             ]);
 
             $otp->update(['used'=>true]);

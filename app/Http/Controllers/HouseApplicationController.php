@@ -6,17 +6,27 @@ use App\Models\Application;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class AdminApplicationController extends Controller
+class HouseApplicationController extends Controller
 {
     //
-
     public function indexIncoming(Request $request){
 
 //       dd($request->all());
         $search = $request->get('search');
         $perPage = $request->get('perPage', 10); // Default to 2 if not provided
         $type = $request->get('type');
-        $pendingApplications = Application::where('status', 'pending')
+
+
+        $user = auth()->user();
+
+        // Make sure user has 'house_user' role
+        if (!$user->hasRole('House')) {
+            abort(403, 'Unauthorized');
+        }
+
+
+        $pendingApplications = Application::where('status', 'forwarded')
+            ->where('location', $user->house_id)
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('type', 'like', "%{$search}%")
@@ -32,7 +42,7 @@ class AdminApplicationController extends Controller
             ->with('house')
             ->paginate($perPage);
 
-        return Inertia::render('Application/Incoming', [
+        return Inertia::render('HouseApplications/Incoming', [
             'application' => $pendingApplications,
             'search' => $search,
             'perPage' => $perPage,
@@ -41,14 +51,22 @@ class AdminApplicationController extends Controller
         ]);
 
     }
-
     public function indexApproved(Request $request){
 
 //       dd($request->all());
         $search = $request->get('search');
         $perPage = $request->get('perPage', 10); // Default to 2 if not provided
         $type = $request->get('type');
+
+        $user = auth()->user();
+
+        // Make sure user has 'house_user' role
+        if (!$user->hasRole('House')) {
+            abort(403, 'Unauthorized');
+        }
+
         $pendingApplications = Application::where('status', 'Approved')
+            ->where('location', $user->house_id)
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('type', 'like', "%{$search}%")
@@ -64,7 +82,7 @@ class AdminApplicationController extends Controller
             ->with('house')
             ->paginate($perPage);
 
-        return Inertia::render('Application/Approved', [
+        return Inertia::render('HouseApplications/Approved', [
             'application' => $pendingApplications,
             'search' => $search,
             'perPage' => $perPage,
@@ -80,7 +98,18 @@ class AdminApplicationController extends Controller
         $search = $request->get('search');
         $perPage = $request->get('perPage', 10); // Default to 2 if not provided
         $type = $request->get('type');
+
+
+        $user = auth()->user();
+
+        // Make sure user has 'house_user' role
+        if (!$user->hasRole('House')) {
+            abort(403, 'Unauthorized');
+        }
+
+
         $pendingApplications = Application::where('status', 'Rejected')
+            ->where('location', $user->house_id)
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('type', 'like', "%{$search}%")
@@ -96,7 +125,7 @@ class AdminApplicationController extends Controller
             ->with('house')
             ->paginate($perPage);
 
-        return Inertia::render('Application/Rejected', [
+        return Inertia::render('HouseApplications/Rejected', [
             'application' => $pendingApplications,
             'search' => $search,
             'perPage' => $perPage,
@@ -107,7 +136,7 @@ class AdminApplicationController extends Controller
     }
     public function viewApplication(Application $application)
     {
-//        dd($applicationId);
+//        dd($application);
         try {
 
             switch ($application->type) {
@@ -131,7 +160,7 @@ class AdminApplicationController extends Controller
             // Optionally always load family members
             $application->load(['familyMembers','house','statusHistories.handler']);
 //            dd($application);
-            return Inertia::render('Application/Show', [
+            return Inertia::render('HouseApplications/Show', [
                 'application' => $application
             ]);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
@@ -141,50 +170,5 @@ class AdminApplicationController extends Controller
             ], 404);
         }
     }
-
-//    public function approve(Application $application){
-//
-//        dd($application);
-//        $application->update([
-//            'status' => 'Approved',
-//            'status_changed_at' => now(),
-//        ]);
-//
-//        return redirect()->back();
-//
-//    }
-//
-//    public function reject(Request $request, Application $application)
-//    {
-//        $request->validate([
-//            'reject_reason' => 'required|string|max:200',
-//        ]);
-//
-//        $application->update([
-//            'status' => 'Rejected',
-//            'status_changed_at' => now(),
-//            'reject_reason' => $request->input('reject_reason'),
-//        ]);
-//
-//        return redirect()->back()->with('message', 'Application rejected successfully.');
-//    }
-//
-//
-//    public function forward(Request $request, Application $application)
-//    {
-//        dd($application);
-//
-//        $request->validate([
-//            'reject_reason' => 'required|string|max:200',
-//        ]);
-//
-//        $application->update([
-//            'status' => 'Rejected',
-//            'status_changed_at' => now(),
-//            'reject_reason' => $request->input('reject_reason'),
-//        ]);
-//
-//        return redirect()->back()->with('message', 'Application rejected successfully.');
-//    }
 
 }

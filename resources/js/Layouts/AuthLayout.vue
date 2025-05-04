@@ -66,7 +66,7 @@
                     </ul>
                 </div>
 
-                <div class="mb-8">
+                <div v-if="admin" class="mb-8">
                     <p class="uppercase font-semibold mb-3 text-gray-400 tracking-wide">Application Form</p>
                     <ul class="space-y-2">
                         <li>
@@ -116,6 +116,56 @@
                     </ul>
                 </div>
 
+                <div v-if="house" class="mb-8">
+                    <p class="uppercase font-semibold mb-3 text-gray-400 tracking-wide">Application Form</p>
+                    <ul class="space-y-2">
+                        <li>
+                            <a :href="route('house.application.index_incoming')"
+                               :class="[
+                                'flex items-center gap-3',
+                                route().current('house.application.index_incoming') ? 'bg-blue-100 text-blue-700 font-semibold rounded px-3 py-2' : 'font-semibold'
+                              ]">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6.66699 8.66667C6.66699 7.40933 6.66699 6.78133 7.05766 6.39067C7.44833 6 8.07633 6 9.33366 6H14.667C15.9243 6 16.5523 6 16.943 6.39067C17.3337 6.78133 17.3337 7.40933 17.3337 8.66667V14C17.3337 15.8853 17.3337 16.8287 16.7477 17.414C16.1623 18 15.219 18 13.3337 18H10.667C8.78166 18 7.83833 18 7.25299 17.414C6.66699 16.8287 6.66699 15.8853 6.66699 14V8.66667Z" stroke="#080808"/>
+                                    <path d="M14 15.9997V17.9997M10 15.9997V17.9997M10 9.33301H14M10 11.9997H14" stroke="#080808" stroke-linecap="round"/>
+                                </svg>
+
+                                Incoming
+                            </a>
+                        </li>
+                        <li>
+                            <a :href="route('house.application.index_approved')"
+                               :class="[
+                                'flex items-center gap-3',
+                                route().current('house.application.index_approved') ? 'bg-blue-100 text-blue-700 font-semibold rounded px-3 py-2' : 'font-semibold'
+                              ]">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M17.3337 12.3333V9.66667C17.3337 8.40933 17.3337 7.78133 16.943 7.39067C16.5523 7 15.9243 7 14.667 7H9.33366C8.07633 7 7.44833 7 7.05766 7.39067C6.66699 7.78133 6.66699 8.40933 6.66699 9.66667V15C6.66699 16.8853 6.66699 17.8287 7.25299 18.414C7.83833 19 8.78166 19 10.667 19H12.0003" stroke="#080808" stroke-linecap="round"/>
+                                    <path d="M10 16.9997V18.9997M10 10.333H14M10 12.9997H14" stroke="#080808" stroke-linecap="round"/>
+                                    <path d="M13.2031 16.8281L14.7344 18.3594L17.7969 15.0781" stroke="black" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+
+                                Approved
+                            </a>
+                        </li>
+                        <li>
+                            <a :href="route('house.application.index_rejected')"
+                               :class="[
+                                'flex items-center gap-3',
+                                route().current('admin.application.index_rejected') ? 'bg-blue-100 text-blue-700 font-semibold rounded px-3 py-2' : 'font-semibold'
+                              ]">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M7.33 11.3333V8.66667C7.33 7.40933 7.33 6.78133 7.72079 6.39067C8.11158 6 8.73977 6 9.9975 6H15.3325C16.5902 6 17.2184 6 17.6092 6.39067C18 6.78133 18 7.40933 18 8.66667V14C18 15.8853 18 16.8287 17.4138 17.414C16.8283 18 15.8847 18 13.9988 18H12.665" stroke="#080808" stroke-linecap="round"/>
+                                    <path d="M14.666 16.0007V18.0007M14.666 9.33398H10.6648M14.666 12.0007H10.6648" stroke="#080808" stroke-linecap="round"/>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M9.00228 16.5384L10.3493 17.8839C10.4208 17.9553 10.5178 17.9954 10.6189 17.9954C10.7199 17.9954 10.8169 17.9553 10.8884 17.8839C10.9598 17.8125 11 17.7157 11 17.6147C11 17.5138 10.9598 17.4169 10.8884 17.3455L9.5408 16L10.8881 14.6545C10.9235 14.6191 10.9515 14.5772 10.9707 14.531C10.9898 14.4848 10.9997 14.4353 10.9997 14.3853C10.9996 14.3353 10.9898 14.2858 10.9706 14.2397C10.9515 14.1935 10.9234 14.1515 10.888 14.1162C10.8526 14.0809 10.8106 14.0528 10.7643 14.0337C10.7181 14.0146 10.6685 14.0048 10.6185 14.0048C10.5685 14.0048 10.5189 14.0146 10.4727 14.0338C10.4265 14.0529 10.3845 14.081 10.3491 14.1163L9.00228 15.4618L7.65522 14.1163C7.62009 14.08 7.57806 14.0509 7.53158 14.031C7.4851 14.011 7.43511 14.0005 7.38452 14C7.33392 13.9996 7.28375 14.0092 7.23691 14.0283C7.19008 14.0474 7.14752 14.0756 7.11173 14.1113C7.07593 14.1471 7.04762 14.1895 7.02844 14.2363C7.00926 14.2831 6.9996 14.3332 7.00001 14.3837C7.00043 14.4343 7.01092 14.4842 7.03086 14.5306C7.05081 14.5771 7.07982 14.6191 7.11619 14.6542L8.46376 16L7.11645 17.3458C7.08007 17.3809 7.05106 17.4229 7.03112 17.4694C7.01117 17.5158 7.00068 17.5657 7.00027 17.6163C6.99985 17.6668 7.00952 17.7169 7.0287 17.7637C7.04788 17.8105 7.07619 17.8529 7.11198 17.8887C7.14777 17.9244 7.19033 17.9526 7.23717 17.9717C7.284 17.9908 7.33418 18.0004 7.38477 18C7.43536 17.9995 7.48536 17.989 7.53183 17.969C7.57831 17.9491 7.62034 17.92 7.65547 17.8837L9.00228 16.5384Z" fill="black"/>
+                                </svg>
+
+                                Rejected
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
                 <div class="mb-8">
                     <p class="uppercase font-semibold mb-3 text-gray-400 tracking-wide">Generate Report</p>
                     <ul class="space-y-2">
@@ -136,7 +186,7 @@
                     </ul>
                 </div>
 
-                <div class="mb-8">
+                <div v-if="admin" class="mb-8">
                     <p class="uppercase font-semibold mb-3 text-gray-400 tracking-wide">Content Manager</p>
                     <ul class="space-y-2">
                         <li>
@@ -193,7 +243,7 @@
                     </ul>
                 </div>
 
-                <div>
+                <div v-if="admin">
                     <p class="uppercase font-semibold mb-3 text-gray-400 tracking-wide">Settings</p>
                     <ul class="space-y-2">
                         <li>
@@ -239,8 +289,9 @@
             </nav>
         </aside>
         <!-- Main Content -->
-        <main class="flex-1 flex flex-col overflow-auto p-4 md:p-6">
-            <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-2 ml-6">
+        <div class="flex-1 flex flex-col overflow-auto p-4 md:p-6">
+
+            <header v-if="admin" class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-2 ml-6">
                 <h1 class="text-lg font-semibold flex items-center gap-1 text-gray-600">
                     <span class="border-l-4 border-black pl-2 ">Chibai!!<span class="font-bold text-black"> GAD Admin</span></span>
                 </h1>
@@ -268,15 +319,55 @@
                 </div>
             </header>
 
+            <header v-if="house" class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-2 ml-6">
+                <h1 class="text-lg font-semibold flex items-center gap-1 text-gray-600">
+                    <span class="border-l-4 border-black pl-2 ">Chibai!!<span class="font-bold text-black"> House User</span></span>
+                </h1>
+
+                <div class="flex items-center gap-2 text-[12px] text-gray-700 font-normal">
+                    <span>Welcome! House User</span>
+                    <button
+                        aria-label="User menu"
+                        class="p-1 border-none rounded text-gray-700 hover:bg-gray-100"
+                    >
+                        <svg width="42" height="24" viewBox="0 0 42 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g clip-path="url(#clip0_0_1)">
+                                <path d="M37.0648 9.83899L37.8598 10.6347L33.5271 14.969C33.4576 15.0389 33.3751 15.0943 33.2842 15.1321C33.1932 15.17 33.0957 15.1895 32.9972 15.1895C32.8987 15.1895 32.8012 15.17 32.7102 15.1321C32.6193 15.0943 32.5367 15.0389 32.4673 14.969L28.1323 10.6347L28.9273 9.83974L32.9961 13.9077L37.0648 9.83899Z" fill="black"/>
+                            </g>
+                            <path d="M8.1709 11C8.1709 8.91 9.9039 7.25 11.9999 7.25C14.0959 7.25 15.8289 8.91 15.8289 11C15.8289 13.09 14.0959 14.75 11.9989 14.75C9.9039 14.75 8.1709 13.09 8.1709 11ZM11.9999 8.75C10.6949 8.75 9.6699 9.776 9.6699 11C9.6699 12.224 10.6939 13.25 11.9989 13.25C13.3039 13.25 14.3279 12.224 14.3279 11C14.3279 9.776 13.3039 8.75 11.9979 8.75" fill="black"/>
+                            <path d="M10.367 1.25H13.633C14.725 1.25 15.591 1.25 16.288 1.307C17.002 1.365 17.605 1.487 18.157 1.767C19.0506 2.22284 19.777 2.94992 20.232 3.844C20.513 4.394 20.635 4.998 20.693 5.712C20.75 6.409 20.75 7.275 20.75 8.367V15.633C20.75 16.725 20.75 17.591 20.693 18.288C20.635 19.002 20.513 19.605 20.233 20.157C19.7774 21.0505 19.0507 21.7768 18.157 22.232C17.605 22.513 17.002 22.635 16.288 22.693C15.591 22.75 14.725 22.75 13.633 22.75H10.367C9.275 22.75 8.409 22.75 7.712 22.693C6.998 22.635 6.395 22.513 5.844 22.233C4.95014 21.7776 4.22341 21.0509 3.768 20.157C3.487 19.605 3.365 19.002 3.307 18.288C3.25 17.591 3.25 16.725 3.25 15.633V8.367C3.25 7.275 3.25 6.409 3.307 5.712C3.365 4.998 3.487 4.395 3.767 3.844C4.22267 2.94999 4.94977 2.22324 5.844 1.768C6.394 1.487 6.998 1.365 7.712 1.307C8.409 1.25 9.275 1.25 10.367 1.25ZM7.834 2.802C7.214 2.852 6.829 2.949 6.524 3.104C5.91263 3.41556 5.41556 3.91263 5.104 4.524C4.949 4.829 4.853 5.214 4.802 5.834C4.751 6.464 4.75 7.268 4.75 8.4V15.6C4.75 16.733 4.75 17.537 4.802 18.166V18.175C5.00092 17.6317 5.32221 17.1415 5.74099 16.7423C6.15977 16.3431 6.66481 16.0457 7.217 15.873L8.201 15.558C8.37167 15.504 8.543 15.4533 8.715 15.406C9.314 15.243 9.879 15.441 10.271 15.697C10.639 15.938 11.249 16.236 12 16.236C12.75 16.236 13.361 15.938 13.73 15.697C14.121 15.441 14.686 15.243 15.284 15.406C15.4567 15.4527 15.6283 15.5033 15.799 15.558L16.783 15.874C17.3349 16.0467 17.8397 16.3441 18.2583 16.7431C18.6769 17.1421 18.9981 17.632 19.197 18.175L19.198 18.166C19.249 17.536 19.25 16.733 19.25 15.6V8.4C19.25 7.268 19.25 6.463 19.198 5.834C19.148 5.214 19.051 4.829 18.896 4.524C18.5844 3.91263 18.0874 3.41556 17.476 3.104C17.171 2.949 16.786 2.853 16.166 2.802C15.536 2.751 14.732 2.75 13.6 2.75H10.4C9.268 2.75 8.463 2.75 7.834 2.802ZM6.524 20.896C6.829 21.051 7.214 21.147 7.834 21.198C8.464 21.249 9.268 21.25 10.4 21.25H13.6C14.733 21.25 15.537 21.25 16.166 21.198C16.786 21.148 17.171 21.051 17.476 20.896C17.7427 20.7587 17.985 20.5897 18.203 20.389L17.84 18.857C17.65 18.139 17.087 17.546 16.326 17.302L15.341 16.987C15.1917 16.939 15.041 16.8943 14.889 16.853C14.84 16.84 14.719 16.842 14.55 16.953C14.04 17.286 13.144 17.736 12 17.736C10.856 17.736 9.96 17.286 9.45 16.953C9.28 16.842 9.16 16.84 9.11 16.853C8.95933 16.8943 8.809 16.939 8.659 16.987L7.674 17.302C6.913 17.546 6.35 18.139 6.16 18.857L5.797 20.389C6.015 20.5897 6.25667 20.7587 6.524 20.896Z" fill="black"/>
+                            <defs>
+                                <clipPath id="clip0_0_1">
+                                    <rect width="9" height="18" fill="white" transform="translate(42 8) rotate(90)"/>
+                                </clipPath>
+                            </defs>
+                        </svg>
+
+                    </button>
+                </div>
+            </header>
+
             <!-- Slot for dynamic content -->
             <div class="flex-1 overflow-auto">
                 <slot />
             </div>
-        </main>
+        </div>
     </div>
 </template>
 <script setup>
-import { ref } from 'vue'
-
+import { ref,computed } from 'vue'
+import {usePage} from "@inertiajs/vue3";
 const showSidebar = ref(false)
+
+const admin=computed(()=>{
+    const roles = usePage().props.roles;
+    return roles.find(item => item === 'Admin');
+})
+
+const house=computed(()=>{
+    const roles = usePage().props.roles;
+    return roles.find(item => item === 'House');
+})
+
+
 </script>

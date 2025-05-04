@@ -168,19 +168,9 @@
                                                   fill="black"/>
                                         </svg>
 
-                                        <a :href="route('admin.application.view', item)" class="text-sm text-gray-700">View Details</a>
+                                        <a :href="route('house.application.view', item)" class="text-sm text-gray-700">View Details</a>
                                     </div>
-                                    <div class="flex items-center space-x-2 px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                                        <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M0.666626 13.0002H11.3333M1.77729 7.79156C1.49304 8.07645 1.33336 8.46244 1.33329 8.86489V11.0002H3.48196C3.88463 11.0002 4.27063 10.8402 4.55529 10.5549L10.8886 4.21822C11.1728 3.93329 11.3324 3.5473 11.3324 3.14489C11.3324 2.74248 11.1728 2.35649 10.8886 2.07156L10.2633 1.44489C10.1223 1.30379 9.95481 1.19187 9.7705 1.11554C9.5862 1.0392 9.38865 0.999938 9.18915 1C8.98966 1.00006 8.79214 1.03944 8.60788 1.1159C8.42362 1.19235 8.25623 1.30437 8.11529 1.44556L1.77729 7.79156Z" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                        <button
-                                            @click="exportJobDetails(item.id); openDropdownId = null"
-                                            class="text-sm text-gray-700"
-                                        >
-                                            Edit / Update
-                                        </button>
-                                    </div>
+
                                     <div class="flex items-center space-x-2 px-4 py-2 hover:bg-gray-100 cursor-pointer">
                                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M3.12471 4.14174L4.53337 12.6504C4.59781 13.0399 4.79843 13.3939 5.09951 13.6494C5.40058 13.9048 5.78255 14.045 6.17737 14.0451H8.40937M12.8747 4.14174L11.4667 12.6504C11.4023 13.0399 11.2016 13.3939 10.9006 13.6494C10.5995 13.9048 10.2175 14.045 9.82271 14.0451H7.59071M6.68137 7.41041V10.7764M9.31871 7.41041V10.7764M1.83337 4.14174H14.1667M9.85137 4.14174V2.95508C9.85137 2.68986 9.74602 2.43551 9.55848 2.24797C9.37094 2.06043 9.11659 1.95508 8.85137 1.95508H7.14871C6.88349 1.95508 6.62914 2.06043 6.4416 2.24797C6.25406 2.43551 6.14871 2.68986 6.14871 2.95508V4.14174H9.85137Z" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
@@ -264,7 +254,7 @@ const state = reactive({
 });
 
 const handleSearch = () => {
-    router.get(route('admin.application.index_incoming'), {
+    router.get(route('house.application.index_incoming'), {
         search: state.search,
         type: state.type,   // Send the selected type filter
         perPage: state.perPage,

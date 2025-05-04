@@ -23,9 +23,13 @@ class Application extends Model
         'start_date',
         'end_date',
         'status_changed_at',
-        'reject_reason'];
+        'reject_reason'
+    ];
 
-
+    public function statusHistories()
+    {
+        return $this->hasMany(ApplicationStatusHistory::class);
+    }
     public function house()
     {
         return $this->belongsTo(House::class, 'location');

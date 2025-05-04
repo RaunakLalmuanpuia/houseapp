@@ -48,7 +48,7 @@
         </div>
     </div>
 
-
+<!--    {{application}}-->
     <div class="bg-white mt-4 flex justify-center items-center ">
         <div class="flex space-x-4">
             <button
@@ -59,56 +59,44 @@
                 Reject
             </button>
             <button
-                @click="showForwardDialog = true"
+                @click="showApproveDialog = true"
                 class="px-6 py-2 rounded-lg bg-black text-white text-base font-normal"
                 type="button"
             >
-                Forward
+                Approve
             </button>
          </div>
     </div>
 
     <!--    Forward Dialog-->
-    <div v-if="showForwardDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div v-if="showApproveDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
         <div class="bg-white rounded-2xl max-w-md w-full p-6">
             <h2 class="text-[20px] font-extrabold text-[#0B146B] mb-4">Approve Note:</h2>
             <label for="statement" class="block text-base font-normal text-black mb-2">Write your statement</label>
             <textarea
                 id="statement"
                 maxlength="200"
-                v-model="forwardForm.note"
+                v-model="approveForm.note"
                 placeholder="Type here"
                 class="w-full h-24 p-3 border border-gray-300 rounded-md text-gray-700 placeholder-gray-400 resize-none focus:outline-none focus:ring-2 focus:ring-[#0B146B] focus:border-transparent"
             ></textarea>
-            <p class="text-gray-600 text-sm mt-1 mb-6">{{ forwardForm.note.length }}/200</p>
+            <p class="text-gray-600 text-sm mt-1 mb-6">{{ approveForm.note.length }}/200</p>
 
-            <!-- Priority Selection -->
-            <label for="priority" class="block text-base font-normal text-black mb-2">Select Priority</label>
-            <select
-                id="priority"
-                v-model="forwardForm.priority"
-                class="w-full p-3 border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#0B146B] focus:border-transparent mb-6"
-            >
-                <option value="" disabled>Select priority</option>
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
-            </select>
 
             <div class="flex space-x-6">
                 <button
-                    @click="showForwardDialog = false"
+                    @click="showApproveDialog = false"
                     type="button"
                     class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 text-base font-normal hover:bg-gray-100 transition"
                 >
                     Cancel
                 </button>
                 <button
-                    @click="handleForward"
+                    @click="handleApprove"
                     type="button"
                     class="px-8 py-2 bg-black text-white rounded-lg text-base font-normal hover:opacity-90 transition"
                 >
-                    Confirm Forward
+                    Confirm Approve
                 </button>
             </div>
         </div>
@@ -148,7 +136,7 @@
     </div>
 
 
-    <!--    Forward pop up-->
+    <!--    Approved pop up-->
     <div
         v-if="showApprovePopup"
         class="fixed bottom-4 left-1/2 transform -translate-x-1/2 lg:-translate-x-[22%] z-50 w-[90%] sm:w-auto"
@@ -168,9 +156,9 @@
                 </svg>
             </div>
             <div class="flex-1">
-                <p class="font-extrabold text-green-900 text-lg leading-6">Forwarded</p>
+                <p class="font-extrabold text-green-900 text-lg leading-6">Approved</p>
                 <p class="text-green-900 text-base leading-6 mt-1">
-                    Reservation forwarded successfully!
+                    Reservation approved successfully!
                 </p>
             </div>
             <button
@@ -272,24 +260,23 @@ const form = useForm({
     reject_reason:'',
 })
 
-const forwardForm = useForm({
+const approveForm = useForm({
     note:'',
-    priority:'',
 })
 
 const showApprovePopup = ref(false)
 const showRejectPopup = ref(false)
 const showRejectDialog = ref(false);
 
-const showForwardDialog = ref(false);
-const handleForward = e => {
-    forwardForm.post(route('applications.forward', props.application), {
+const showApproveDialog = ref(false);
+const handleApprove = e => {
+    approveForm.post(route('applications.approve', props.application), {
         // onStart: params => q.loading.show({
         //     boxClass: 'bg-grey-2 text-grey-9',
         //     spinnerColor: 'primary', message: ' Forwarding...'
         // }),
         onFinish: () => {
-            showForwardDialog.value = false
+            showApproveDialog.value = false
             showApprovePopup.value = true
         },
     })
