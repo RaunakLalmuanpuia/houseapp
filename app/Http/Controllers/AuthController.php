@@ -26,9 +26,7 @@ class AuthController extends Controller
 
         return redirect()->intended(route('dashboard'));
 
-//        return redirect()->intended(RouteServiceProvider::HOME);
     }
-
     public function destroy(Request $request)
     {
         Auth::guard('web')->logout();
