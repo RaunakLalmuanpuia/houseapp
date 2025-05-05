@@ -32,7 +32,8 @@
             :class="[
         'fixed md:static top-0 left-0 h-full w-64 z-40 bg-white border-r border-gray-200 flex-col transition-transform duration-300',
         showSidebar ? 'translate-x-0' : '-translate-x-full',
-        'md:translate-x-0 md:flex'
+        'md:translate-x-0 md:flex',
+         'overflow-y-auto'
       ]"
         >
             <div class="flex items-center gap-2 px-6 py-5 border-b border-gray-200">
@@ -399,6 +400,8 @@
                     </div>
                 </div>
             </header>
+
+            <hr class="p-4 ml-6" />
 
             <!-- Slot for dynamic content -->
             <div class="flex-1 overflow-auto">
