@@ -44,7 +44,6 @@ defineProps({
 
 <!--    <Faqs/>-->
 
-
     <Footer/>
 
 

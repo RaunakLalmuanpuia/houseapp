@@ -26,7 +26,7 @@ use App\Http\Controllers\RateCategoryController;
 
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\HouseApplicationController;
-
+use App\Http\Controllers\UserController;
 
 
 
@@ -223,5 +223,13 @@ Route::group(['prefix'=>'admin'], function () {
     Route::delete('/room_type/{house}/{roomType}', [RoomTypeController::class, 'destroy'])->name('admin.room_type.destroy');
 });
 
+
+//Users
+Route::group(['prefix'=>'admin'], function () {
+    Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
+    Route::post('/users', [UserController::class, 'store'])->name('admin.users.store');
+//    Route::put('/room_type/{house}/{roomType}', [RoomTypeController::class, 'update'])->name('admin.room_type.update');
+//    Route::delete('/room_type/{house}/{roomType}', [RoomTypeController::class, 'destroy'])->name('admin.room_type.destroy');
+});
 
 

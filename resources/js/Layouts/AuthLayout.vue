@@ -246,8 +246,12 @@
                 <div v-if="admin">
                     <p class="uppercase font-semibold mb-3 text-gray-400 tracking-wide">Settings</p>
                     <ul class="space-y-2">
-                        <li>
-                            <a class="flex items-center gap-3 hover:text-gray-700" href="#">
+                        <li v-if="admin">
+                            <a :href="route('admin.users.index')"
+                               :class="[
+                                'flex items-center gap-3',
+                                route().current('admin.users.index') ? 'bg-blue-100 text-blue-700 font-semibold rounded px-3 py-2' : 'font-semibold'
+                              ]">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <g clip-path="url(#clip0_530_6912)">
                                         <path d="M12.6663 6.00133C12.353 6.00044 12.0197 6 11.6663 6C8.68101 6 7.18767 6 6.26034 6.92733C5.33301 7.85467 5.33301 9.34733 5.33301 12.3333C5.33301 15.3187 5.33301 16.812 6.26034 17.7393C7.18767 18.6667 8.68034 18.6667 11.6663 18.6667C14.6517 18.6667 16.145 18.6667 17.0723 17.7393C17.9997 16.812 17.9997 15.3193 17.9997 12.3333C17.9997 11.98 17.9992 11.6467 17.9983 11.3333" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
@@ -263,7 +267,7 @@
                                 User
                             </a>
                         </li>
-                        <li>
+                        <li v-if="admin">
 
                             <a :href="route('admin.settings.index')"
                                :class="[
