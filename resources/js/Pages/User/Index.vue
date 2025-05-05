@@ -43,7 +43,7 @@ const navigateToPage = (url) => {
 const form = useForm({
     name: '',
     email:'',
-    contact:'',
+    mobile:'',
     password:'',
     house_id:'',
     role:'',
@@ -53,13 +53,12 @@ const editForm = useForm({
     id:'',
     name: '',
     email:'',
-    contact:'',
+    mobile:'',
     password:'',
     house_id:'',
     role:'',
 })
 
-const selectedHouse = ref('')
 
 const selectedUser = ref('')
 
@@ -81,23 +80,29 @@ const handleEdit = (item) => {
     editForm.id = item.id
     editForm.name = item.name
     editForm.email = item.email
-    editForm.contact = item.contact
+    editForm.mobile = item.mobile
     editForm.password = item.password
-    editForm.house_id = item.house?.map(item=>({value:item.id, label:item.name}))
-    editForm.role = item.roles?.map(item=>({value:item.name,label:item.name}))
+
+    editForm.house_id = item.house?.id || ''
+    editForm.role = item.roles?.[0]?.name || '' // Assuming one role per user
+
     showEditDialog.value = true
     openDropdownId.value = null
 
 }
 
 const saveUser = e => {
+    if (form.role === 'admin') {
+        form.house_id = '';
+    }
+
     form.post(route('admin.users.store'), {
         onStart: () => {
-            form.reset();
             // openDropdownId.value = null
         },
         onSuccess: (response) => {
             showCreatePopup.value = true
+            form.reset();
         },
         onError: (errors) => {
             if (errors) {
@@ -125,6 +130,9 @@ const saveUser = e => {
 }
 
 const updateUser =(item) => {
+    if (editForm.role === 'admin') {
+        editForm.house_id = '';
+    }
     editForm.put(route('admin.users.update', item), {
         onStart: () => {
             showEditDialog.value = false
@@ -235,10 +243,10 @@ const deleteUser = (item) => {
                         </div>
 
                         <div>
-                            <label for="contact" class="block text-xs font-normal mb-1">Phone No.</label>
+                            <label for="mobile" class="block text-xs font-normal mb-1">Phone No.</label>
                             <input
-                                v-model="form.contact"
-                                id="contact"
+                                v-model="form.mobile"
+                                id="mobile"
                                 type="tel"
                                 placeholder="Mobile No."
                                 class="w-full rounded border border-gray-300 px-3 py-2 text-xs placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
@@ -257,17 +265,7 @@ const deleteUser = (item) => {
                         </div>
 
 
-                        <div>
-                            <label for="title" class="block text-xs font-normal mb-1">Manage Mizoram House</label>
-                            <select
-                                v-model="form.house_id"
-                                id="status"
-                                class="w-full rounded border border-gray-300 px-3 py-2 text-xs placeholder:text-gray-400 bg-white text-gray-400"
-                            >
-                                <option value="">Select House</option>
-                                <option v-for="house in houses" :key="house.id" :value="house.id">{{ house.name }}</option>
-                            </select>
-                        </div>
+
 
                         <div>
                             <label for="title" class="block text-xs font-normal mb-1">User Permission/Roles</label>
@@ -278,6 +276,19 @@ const deleteUser = (item) => {
                             >
                                 <option value="">Select Role</option>
                                 <option v-for="role in userRoles" :key="role.label" :value="role.value">{{ role.value }}</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="title" class="block text-xs font-normal mb-1">Manage Mizoram House</label>
+                            <select
+                                v-model="form.house_id"
+                                :disabled="form.role === 'Admin'"
+                                id="status"
+                                class="w-full rounded border border-gray-300 px-3 py-2 text-xs placeholder:text-gray-400 bg-white text-gray-400 disabled:bg-gray-100 disabled:text-gray-300"
+                            >
+                                <option value="">Select House</option>
+                                <option v-for="house in houses" :key="house.id" :value="house.id">{{ house.name }}</option>
                             </select>
                         </div>
 
@@ -315,7 +326,7 @@ const deleteUser = (item) => {
                             <td class="py-4 px-3">{{item?.name}}</td>
 
                             <td class="py-4 px-3">{{ item?.email}}</td>
-                            <td class="py-4 px-3">{{item?.contact}} </td>
+                            <td class="py-4 px-3">{{item?.mobile}} </td>
                             <td class="py-4 px-3">{{item?.house?.name || 'All' }}</td>
                             <td class="py-4 px-3">
                               <span v-for="(role, rIndex) in item.roles" :key="rIndex" class="mr-1">
@@ -446,10 +457,10 @@ const deleteUser = (item) => {
                 </div>
 
                 <div>
-                    <label for="contact" class="block text-xs font-normal mb-1">Phone No.</label>
+                    <label for="mobile" class="block text-xs font-normal mb-1">Phone No.</label>
                     <input
-                        v-model="editForm.contact"
-                        id="contact"
+                        v-model="editForm.mobile"
+                        id="mobile"
                         type="tel"
                         placeholder="Mobile No."
                         class="w-full rounded border border-gray-300 px-3 py-2 text-xs placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
@@ -468,17 +479,7 @@ const deleteUser = (item) => {
                 </div>
 
 
-                <div>
-                    <label for="title" class="block text-xs font-normal mb-1">Mizoram House</label>
-                    <select
-                        v-model="editForm.house_id"
-                        id="status"
-                        class="w-full rounded border border-gray-300 px-3 py-2 text-xs placeholder:text-gray-400 bg-white text-gray-400"
-                    >
-                        <option value="">Select House</option>
-                        <option v-for="house in houses" :key="house.id" :value="house.id">{{ house.name }}</option>
-                    </select>
-                </div>
+
 
                 <div>
                     <label for="title" class="block text-xs font-normal mb-1">User Permission/Roles</label>
@@ -489,6 +490,20 @@ const deleteUser = (item) => {
                     >
                         <option value="">Select Role</option>
                         <option v-for="role in userRoles" :key="role.label" :value="role.value">{{ role.value }}</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="house" class="block text-xs font-normal mb-1">Mizoram House</label>
+<!--                    {{editForm.role}}-->
+                    <select
+                        v-model="editForm.house_id"
+                        id="house"
+                        :disabled="editForm.role === 'Admin'"
+                        class="w-full rounded border border-gray-300 px-3 py-2 text-xs placeholder:text-gray-400 bg-white text-gray-400"
+                    >
+                        <option value="">Select House</option>
+                        <option v-for="house in houses" :key="house.id" :value="house.id">{{ house.name }}</option>
                     </select>
                 </div>
 
@@ -520,7 +535,7 @@ const deleteUser = (item) => {
          class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
         <div class="bg-white rounded-xl max-w-sm w-full p-6">
             <h2 class="font-semibold text-lg mb-4">Delete User</h2>
-            <p class="mb-8 text-base font-normal text-gray-900">I am sure, that i want to delete this Notice</p>
+            <p class="mb-8 text-base font-normal text-gray-900">I am sure, that i want to delete this User</p>
             <div class="flex space-x-4">
                 <button
                     @click="showDeleteDialog = false"

@@ -228,8 +228,9 @@ Route::group(['prefix'=>'admin'], function () {
 Route::group(['prefix'=>'admin'], function () {
     Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
     Route::post('/users', [UserController::class, 'store'])->name('admin.users.store');
-//    Route::put('/room_type/{house}/{roomType}', [RoomTypeController::class, 'update'])->name('admin.room_type.update');
-//    Route::delete('/room_type/{house}/{roomType}', [RoomTypeController::class, 'destroy'])->name('admin.room_type.destroy');
+    Route::put('update/{model}', [UserController::class, 'update'])->name('admin.users.update');
+    Route::delete('{model}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+
 });
 
 
