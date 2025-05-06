@@ -28,7 +28,8 @@ class DatabaseSeeder extends Seeder
             RoomTypeSeeder::class,
             RoomRateSeeder::class,
             RolesAndPermissionsSeeder::class,
-            UserSeeder::class
+            UserSeeder::class,
+            FaqSeeder::class
         ]);
     }
 }

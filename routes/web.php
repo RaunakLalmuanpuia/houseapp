@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Faq;
+use App\Models\Notice;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -52,6 +54,23 @@ Route::middleware([
 
 // Fetch all houses with their room types and room rates {Welcome page}
 Route::get('/houses', [HouseController::class, 'json_index'])->name('house.json_index');
+
+
+//FAQS Page
+Route::get('/faqs', function () {
+    return Inertia::render('Faqs/Show', [
+        'faqs' => Faq::where('status', 'active')->get(),
+    ]);
+})->name('faq.show');
+
+
+//Notice Page
+Route::get('/notice', function () {
+    return Inertia::render('Notice/Show', [
+        'notices' => Notice::where('status', 'published')->paginate(10),
+    ]);
+})->name('notice.show');
+
 
 //Step 1
 Route::get('/apply/step-one', function () {
