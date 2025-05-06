@@ -28,7 +28,7 @@ onMounted(() => {
                 Application Statistics
             </p>
 
-            <div class="grid grid-cols-2 gap-4 mt-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                 <div class="w-[196px] h-[88px] flex-shrink-0 rounded-[14px] bg-white p-4 shadow">
                     <p class="text-[rgba(2,2,2,0.87)] font-sans text-[20px] font-bold leading-[23px] tracking-[0.15px]">
                         10,30,987
@@ -42,6 +42,7 @@ onMounted(() => {
                     <p class="text-[#262526] font-sans text-[12px] font-normal leading-[18px]">Approved</p>
                 </div>
             </div>
+
 
             <p class="text-[20px] font-bold leading-[24px] text-black font-sans mt-6">
                 Category Statistics
@@ -76,12 +77,13 @@ onMounted(() => {
         </div>
 
         <!-- FAQ Section -->
-        <div class="w-full max-w-md bg-white p-4 rounded-lg shadow-md flex flex-col">
+        <div class="w-full max-w-md bg-white p-4 rounded-lg shadow-md flex flex-col h-[460px]">
             <p class="text-black font-sans text-[20px] font-bold leading-[24px] tracking-[0.15px]">
                 Mizoram House Online Reservation chungchang a zawhna leh chhana tlanglawn
             </p>
 
-            <div class="mt-4 flex-1 overflow-y-auto">
+            <!-- Scrollable area -->
+            <div class="mt-4 overflow-y-auto">
                 <div v-for="(item, index) in faq" :key="index" class="mb-5">
                     <div class="flex justify-between items-center mb-2 cursor-pointer" @click="toggleFaq(index)">
                         <p class="text-sm font-normal">{{ index + 1 }}. {{ item.title }}</p>
@@ -97,9 +99,9 @@ onMounted(() => {
                     </p>
                     <hr class="ml-2 mr-5">
                 </div>
-
             </div>
         </div>
+
     </div>
 
 </template>
