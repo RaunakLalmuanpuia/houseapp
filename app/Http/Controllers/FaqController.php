@@ -32,6 +32,15 @@ class FaqController extends Controller
         ]);
     }
 
+    public function json_index(){
+
+        $faqs = Faq::all();
+
+        return response()->json([
+            'faqs' => $faqs,
+        ]);
+    }
+
 
     public function store(Request $request)
     {

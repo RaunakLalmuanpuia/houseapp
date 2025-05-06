@@ -55,6 +55,8 @@ Route::middleware([
 // Fetch all houses with their room types and room rates {Welcome page}
 Route::get('/houses', [HouseController::class, 'json_index'])->name('house.json_index');
 
+// Fetch FAQs {welcome page}
+Route::get('/faqs_json',[FaqController::class, 'json_index'])->name('faqs.json_index');
 
 //FAQS Page
 Route::get('/faqs', function () {
@@ -196,6 +198,7 @@ Route::group([], function () {
 });
 // FAQs
 Route::group(['prefix'=>'admin'], function () {
+
     Route::get('/faq', [FaqController::class, 'index'])->name('admin.faq.index');
     Route::post('/faqs', [FaqController::class, 'store'])->name('admin.faq.store');
     Route::put('/faqs/{faq}', [FaqController::class, 'update'])->name('admin.faq.update');
