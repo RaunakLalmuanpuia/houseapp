@@ -55,6 +55,9 @@ class Application extends Model
         return $this->hasOne(StudyTour::class);
     }
 
+    public function medicalDetails() {
+        return $this->hasMany(MedicalDetail::class);
+    }
 
     public function familyMembers() {
         return $this->hasMany(FamilyMember::class);

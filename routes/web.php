@@ -11,6 +11,8 @@ use App\Http\Controllers\OnDutyController;
 use App\Http\Controllers\NotOnDutyController;
 use App\Http\Controllers\NonOfficialController;
 use App\Http\Controllers\StudyTourController;
+use App\Http\Controllers\MedicalController;
+
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\AuthController;
 
@@ -108,6 +110,17 @@ Route::group(['prefix'=>'not-on-duty'], function () {
     Route::get('/apply/verify', [NotOnDutyController::class, 'verify'])->name('apply.not-on-duty.verify');
     Route::post('/apply/submit', [NotOnDutyController::class, 'submit'])->name('apply.not-on-duty.submit');
     Route::get('submission', [NotOnDutyController::class, 'submission'])->name('apply.not-on-duty.submission');
+});
+
+
+//Medical
+Route::group(['prefix'=>'medical'], function () {
+    Route::get('/apply/step-one', [MedicalController::class, 'stepOne'])->name('apply.medical.step-one');
+    Route::get('/apply/step-two', [MedicalController::class, 'stepTwo'])->name('apply.medical.step-two');
+    Route::get('/apply/step-three', [MedicalController::class, 'stepThree'])->name('apply.medical.step-three');
+    Route::get('/apply/verify', [MedicalController::class, 'verify'])->name('apply.medical.verify');
+    Route::post('/apply/submit', [MedicalController::class, 'submit'])->name('apply.medical.submit');
+    Route::get('submission', [MedicalController::class, 'submission'])->name('apply.medical.submission');
 });
 
 //Private

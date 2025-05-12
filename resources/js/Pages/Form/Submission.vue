@@ -7,6 +7,8 @@ import OnDutyCard from "@/Components/Submission/OnDuty.vue";
 import NotOnDuty from "@/Components/Submission/NotOnDuty.vue";
 import Flam from "@/Components/Submission/Flam.vue";
 import NonOfficial from "@/Components/Submission/NonOfficial.vue";
+import Medical from "@/Components/Submission/Medical.vue";
+
 import {Head} from "@inertiajs/vue3";
 
 const props = defineProps({
@@ -73,6 +75,11 @@ const props = defineProps({
         />
         <NonOfficial
             v-if="application.type === 'PRIVATE'"
+            :application="application"
+        />
+
+        <Medical
+            v-if="application.type === 'MEDICAL'"
             :application="application"
         />
 

@@ -6,6 +6,7 @@ import Flam from "@/Components/Applications/Flam.vue";
 import NotOnDuty from "@/Components/Applications/NotOnDuty.vue";
 import NonOfficial from "@/Components/Applications/NonOfficial.vue";
 import StudyTour from "@/Components/Applications/StudyTour.vue";
+import Medical from "@/Components/Applications/Medical.vue";
 import {Head} from "@inertiajs/vue3";
 
 defineProps({
@@ -42,6 +43,11 @@ defineProps({
 
             <StudyTour
                 v-if="application.type === 'STUDY TOUR'"
+                :application="application"
+            />
+
+            <Medical
+                v-if="application.type === 'MEDICAL'"
                 :application="application"
             />
         </div>

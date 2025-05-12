@@ -10,6 +10,7 @@ import { useOnDutyApplicationStore } from '@/Store/useOnDutyApplicationStore'
 import { useNotOnDutyApplicationStore } from '@/Store/useNotOnDutyApplicationStore'
 import { useNonOfficialApplicationStore } from '@/Store/useNonOfficialApplicationStore'
 import { useStudyTourApplicationStore } from '@/Store/useStudyTourApplicationStore'
+import {useMedicalApplicationStore} from "@/Store/useMedicalApplicationStore.js";
 
 // Initialize stores
 const flamStore = useFlamApplicationStore()
@@ -17,6 +18,7 @@ const onDutyStore = useOnDutyApplicationStore()
 const notOnDutyStore = useNotOnDutyApplicationStore()
 const nonOfficialStore = useNonOfficialApplicationStore()
 const studyTourStore = useStudyTourApplicationStore()
+const medicalStore = useMedicalApplicationStore()
 
 // Reset all stores on mount
 onMounted(() => {
@@ -25,6 +27,7 @@ onMounted(() => {
     notOnDutyStore.reset()
     nonOfficialStore.reset()
     studyTourStore.reset()
+    medicalStore.reset()
 })
 function nextFlam() {
 
@@ -43,6 +46,10 @@ function nextNonOfficial() {
 
 function nextStudyTour() {
     router.visit(route('apply.study-tour.step-two'))
+}
+
+function nextMedical() {
+    router.visit(route('apply.medical.step-two'))
 }
 
 
@@ -81,7 +88,7 @@ function nextStudyTour() {
                         <p class="text-[12px] font-medium text-[#409B16]">Officials traveling for personal reasons</p>
                     </div>
 
-                    <div class="bg-blue-100 p-4 cursor-pointer hover:bg-blue-200 transition rounded-[14px]">
+                    <div @click="nextMedical" class="bg-blue-100 p-4 cursor-pointer hover:bg-blue-200 transition rounded-[14px]">
                         <h2 class="mt-6 text-[18px] font-bold leading-[24px] tracking-[0.15px] text-[#0073FF]">MEDICAL</h2>
                         <p class="text-[12px] font-medium text-[#0073FF]">Patients referred for treatment</p>
                     </div>

@@ -57,6 +57,9 @@ class StatusController extends Controller
                 case 'FLAM':
                     $application->load('flamDetails');
                     break;
+                case 'MEDICAL':
+                    $application->load('medicalDetails');
+                    break;
             }
 
             // Optionally always load family members

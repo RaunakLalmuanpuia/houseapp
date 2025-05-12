@@ -57,6 +57,7 @@
                 <option value="NOT ON DUTY">Not On Duty</option>
                 <option value="PRIVATE">Private</option>
                 <option value="STUDY TOUR">Study Tour</option>
+                        <option value="MEDICAL">Medical</option>
                 <!-- Add more types as per your needs -->
                 </select>
 
@@ -129,7 +130,8 @@
                   item.type === 'NOT ON DUTY' ? 'bg-yellow-200 text-yellow-700' :
                   item.type === 'FLAM' ? 'bg-yellow-100 text-yellow-800' :
                   item.type === 'PRIVATE' ? 'bg-green-100 text-yellow-800' :
-                  item.type === 'STUDY TOUR' ? 'bg-red-200 text-red-700' : ''
+                  item.type === 'STUDY TOUR' ? 'bg-red-200 text-red-700' :
+                   item.type === 'MEDICAL' ? 'bg-[#E0F3FF] text-[#0073FF]' : ''
                 ]"
               >
                 {{ item.type }}
