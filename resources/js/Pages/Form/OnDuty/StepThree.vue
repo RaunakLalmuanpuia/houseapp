@@ -5,7 +5,7 @@ import DestinationStep from "@/Components/Common/DestinationStep.vue";
 
 
 import { useOnDutyApplicationStore } from '@/Store/useOnDutyApplicationStore.js'
-import { router, usePage} from '@inertiajs/vue3'
+import {Head, router, usePage} from '@inertiajs/vue3'
 import {computed, ref, watchEffect} from "vue";
 
 const application = useOnDutyApplicationStore()
@@ -108,6 +108,7 @@ watchEffect(() => {
 </script>
 
 <template>
+    <Head title="Form" />
     <div class="min-h-screen flex flex-col">
 
         <Header/>

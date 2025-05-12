@@ -4,6 +4,7 @@ import AuthLayout from "@/Layouts/AuthLayout.vue";
 import Welcome from '@/Components/Welcome.vue';
 
 import { ref } from 'vue';
+import {Head} from "@inertiajs/vue3";
 
 // Data for the status cards
 const incoming = ref(106);
@@ -20,6 +21,7 @@ const card6 = ref({ number: 13094, label: 'STUDY TOUR' });
 </script>
 
 <template>
+    <Head title="Dashboard" />
     <AuthLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">

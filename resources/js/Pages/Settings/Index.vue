@@ -6,6 +6,7 @@ import Category from "@/Components/Settings/Category.vue";
 import Department from "@/Components/Settings/Department.vue";
 import SubDivision from "@/Components/Settings/SubDivision.vue";
 import AuthLayout from "@/Layouts/AuthLayout.vue";
+import {Head} from "@inertiajs/vue3";
 
 defineOptions({ layout: AuthLayout })
 
@@ -23,6 +24,7 @@ const isActive = (componentName) => currentComponent.value === componentName
 </script>
 
 <template>
+    <Head title="Settings" />
     <div class="bg-white text-black">
         <div class="ml-6 mt-6">
             <h2 class="text-lg font-semibold flex items-center mb-6">

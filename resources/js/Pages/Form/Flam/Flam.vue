@@ -1,5 +1,6 @@
 
 <template>
+    <Head title="Form" />
     <div class="min-h-screen flex flex-col">
         <Header/>
         <div class="flex-grow flex flex-col items-center w-[400px] mx-auto p-3">
@@ -294,7 +295,7 @@ import InformationStep from "@/Components/Common/InformationStep.vue";
 
 import { ref} from 'vue';
 import { useFlamApplicationStore } from '@/Store/useFlamApplicationStore.js'
-import { router } from '@inertiajs/vue3'
+import {Head, router} from '@inertiajs/vue3'
 
 const application = useFlamApplicationStore()
 

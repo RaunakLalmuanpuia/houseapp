@@ -5,7 +5,7 @@ import DestinationStep from "@/Components/Common/DestinationStep.vue";
 
 
 import { useNotOnDutyApplicationStore } from '@/Store/useNotOnDutyApplicationStore.js'
-import { router} from '@inertiajs/vue3'
+import {Head, router} from '@inertiajs/vue3'
 import {computed, ref, watchEffect} from "vue";
 
 const application = useNotOnDutyApplicationStore()
@@ -107,7 +107,7 @@ watchEffect(() => {
 </script>
 
 <template>
-
+    <Head title="Form" />
     <div class="min-h-screen flex flex-col">
 
         <Header/>

@@ -5,7 +5,7 @@ import DestinationStep from "@/Components/Common/DestinationStep.vue";
 
 import {computed, ref, watch, watchEffect} from "vue";
 import { useFlamApplicationStore } from '@/Store/useFlamApplicationStore.js'
-import {  router } from '@inertiajs/vue3'
+import {Head, router} from '@inertiajs/vue3'
 
 const application = useFlamApplicationStore()
 
@@ -106,6 +106,7 @@ watchEffect(() => {
 </script>
 
 <template>
+    <Head title="Form" />
     <div class="min-h-screen flex flex-col">
         <Header/>
         <div class="flex-grow flex flex-col items-center w-[400px] p-3 mx-auto">

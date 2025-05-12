@@ -1,7 +1,7 @@
 <script setup>
 import AuthLayout from "@/Layouts/AuthLayout.vue";
 import {reactive, ref, onMounted} from "vue";
-import {router} from "@inertiajs/vue3";
+import {Head, router} from "@inertiajs/vue3";
 
 defineOptions({layout:AuthLayout})
 
@@ -92,6 +92,7 @@ function onRequest(props) {
 </script>
 
 <template>
+    <Head title="Report" />
     <div class="bg-[#f7f7f7] p-6 ml-5">
         <div class="max-w-full bg-[#f7f7f7] rounded-md p-2">
             <h2 class="heading-bar font-semibold text-base mb-6 inline-block">Report</h2>

@@ -1,4 +1,5 @@
 <template>
+    <Head title="Form" />
     <div class="min-h-screen flex flex-col">
         <Header/>
         <div class="flex-grow flex flex-col items-center w-[400px] mx-auto p-3">
@@ -319,7 +320,7 @@ import Footer from "@/Components/Common/Footer.vue";
 import InformationStep from "@/Components/Common/InformationStep.vue";
 
 import { useNotOnDutyApplicationStore } from '@/Store/useNotOnDutyApplicationStore.js'
-import {router, usePage} from '@inertiajs/vue3'
+import {Head, router, usePage} from '@inertiajs/vue3'
 import {ref} from "vue";
 
 const application = useNotOnDutyApplicationStore()

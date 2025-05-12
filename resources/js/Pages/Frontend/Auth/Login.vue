@@ -1,6 +1,7 @@
 
 
 <template>
+    <Head title="Login" />
     <Header />
 
     <div class="max-w-md mx-auto p-6  mt-4 mb-3 bg-card rounded-lg shadow-md">
@@ -50,7 +51,7 @@
 <script setup>
 import Header from "@/Components/Common/Header.vue";
 import Footer from "@/Components/Common/Footer.vue";
-import {useForm, usePage} from "@inertiajs/vue3";
+import {Head,useForm, usePage} from "@inertiajs/vue3";
 import {reactive, ref, watch} from "vue";
 
 const form=useForm({

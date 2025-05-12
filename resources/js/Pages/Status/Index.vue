@@ -2,7 +2,7 @@
 import Header from "@/Components/Common/Header.vue";
 import Footer from "@/Components/Common/Footer.vue";
 import axios from "axios";
-import {router} from "@inertiajs/vue3";
+import {Head, router} from "@inertiajs/vue3";
 import {ref} from "vue";
 import Submitted from "@/Components/Status/Submission.vue";
 import Confirmed from "@/Components/Status/Confirm.vue";
@@ -50,6 +50,7 @@ const viewApplication = (applicationId) => {
 </script>
 
 <template>
+    <Head title="Status" />
     <div class="min-h-screen flex flex-col">
         <Header />
 

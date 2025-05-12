@@ -6,6 +6,7 @@ import Flam from "@/Components/Applications/Flam.vue";
 import NotOnDuty from "@/Components/Applications/NotOnDuty.vue";
 import NonOfficial from "@/Components/Applications/NonOfficial.vue";
 import StudyTour from "@/Components/Applications/StudyTour.vue";
+import {Head} from "@inertiajs/vue3";
 
 defineProps({
     application: Object,
@@ -13,6 +14,7 @@ defineProps({
 </script>
 
 <template>
+    <Head title="Status" />
     <div class="min-h-screen flex flex-col">
         <Header />
 

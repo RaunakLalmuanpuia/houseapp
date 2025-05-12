@@ -1,4 +1,5 @@
 <template>
+    <Head title="FAQs" />
     <div class="min-h-screen flex flex-col">
         <Header />
         <div class="bg-white font-sans flex-grow flex flex-col items-center p-3 mx-auto">
@@ -43,6 +44,7 @@
 
 import Header from "@/Components/Common/Header.vue";
 import Footer from "@/Components/Common/Footer.vue";
+import {Head} from "@inertiajs/vue3";
 const props = defineProps(['faqs']);
 
 

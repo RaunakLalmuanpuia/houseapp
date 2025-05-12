@@ -1,5 +1,5 @@
 <template>
-
+    <Head title="Form" />
     <div class="min-h-screen flex flex-col">
         <Header/>
 
@@ -139,7 +139,7 @@ import DestinationStep from "@/Components/Common/DestinationStep.vue";
 
 
 import { useNonOfficialApplicationStore } from '@/Store/useNonOfficialApplicationStore.js'
-import { router} from '@inertiajs/vue3'
+import {Head, router} from '@inertiajs/vue3'
 import {ref,  computed, watchEffect} from "vue";
 
 const application = useNonOfficialApplicationStore()

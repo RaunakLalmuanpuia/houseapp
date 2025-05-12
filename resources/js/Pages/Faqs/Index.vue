@@ -1,6 +1,6 @@
 <script setup>
 import AuthLayout from "@/Layouts/AuthLayout.vue";
-import {router, useForm} from "@inertiajs/vue3";
+import {Head, router, useForm} from "@inertiajs/vue3";
 import {reactive, ref} from "vue";
 
 defineOptions({layout:AuthLayout})
@@ -138,6 +138,7 @@ const deleteFaq = (item) => {
 
 
 <template>
+    <Head title="FAQs" />
     <div class="bg-white text-black">
         <div class="ml-6">
         <header class="flex justify-between items-center mb-6">

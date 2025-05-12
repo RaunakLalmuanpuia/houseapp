@@ -2,7 +2,7 @@
 import Header from "@/Components/Common/Header.vue";
 import Footer from "@/Components/Common/Footer.vue";
 import ApplicationStep from "@/Components/Common/ApplicationStep.vue";
-import { router } from '@inertiajs/vue3'
+import {Head, router} from '@inertiajs/vue3'
 
 import { onMounted } from 'vue'
 import { useFlamApplicationStore } from '@/Store/useFlamApplicationStore'
@@ -50,6 +50,7 @@ function nextStudyTour() {
 </script>
 
 <template>
+    <Head title="Form" />
     <div class="min-h-screen flex flex-col">
         <Header />
 

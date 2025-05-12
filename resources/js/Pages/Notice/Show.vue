@@ -3,7 +3,7 @@
 import Header from "@/Components/Common/Header.vue";
 import Footer from "@/Components/Common/Footer.vue";
 import {ref} from "vue";
-import {router} from "@inertiajs/vue3";
+import {Head, router} from "@inertiajs/vue3";
 const props = defineProps(['notices']);
 
 const navigateToPage = (url) => {
@@ -42,6 +42,7 @@ const handleOpenDocument = (item) => {
 </script>
 
 <template>
+    <Head title="Notices" />
     <div class="min-h-screen flex flex-col">
         <Header />
 

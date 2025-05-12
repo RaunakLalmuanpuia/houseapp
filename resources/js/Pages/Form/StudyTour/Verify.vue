@@ -4,7 +4,7 @@ import Footer from "@/Components/Common/Footer.vue";
 import {onMounted, ref} from "vue";
 
 import { useStudyTourApplicationStore } from '@/Store/useStudyTourApplicationStore.js'
-import {router, useForm} from "@inertiajs/vue3";
+import {Head, router, useForm} from "@inertiajs/vue3";
 
 const application = useStudyTourApplicationStore()
 
@@ -99,7 +99,7 @@ function resendOtp(){
 </script>
 
 <template>
-
+    <Head title="Verify" />
     <div class="min-h-screen flex flex-col">
         <Header/>
 

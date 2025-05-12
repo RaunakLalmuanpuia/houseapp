@@ -7,6 +7,7 @@ import OnDutyCard from "@/Components/Submission/OnDuty.vue";
 import NotOnDuty from "@/Components/Submission/NotOnDuty.vue";
 import Flam from "@/Components/Submission/Flam.vue";
 import NonOfficial from "@/Components/Submission/NonOfficial.vue";
+import {Head} from "@inertiajs/vue3";
 
 const props = defineProps({
     application: Object,
@@ -15,7 +16,7 @@ const props = defineProps({
 </script>
 
 <template>
-
+    <Head title="Submission" />
 
     <div class="min-h-screen flex flex-col">
         <Header/>
