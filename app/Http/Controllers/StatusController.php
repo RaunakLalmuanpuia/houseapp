@@ -18,7 +18,7 @@ class StatusController extends Controller
     {
         try {
             // Try to fetch the application by its application_id
-            $application = Application::where('application_id', $applicationId)->firstOrFail();
+            $application = Application::where('application_id', $applicationId)->with('statusHistories')->firstOrFail();
 
             // Optionally load related data based on application type
             // $this->loadRelatedData($application);
@@ -70,9 +70,7 @@ class StatusController extends Controller
             ]);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             // Return a custom error response if application not found
-            return response()->json([
-                'err' => 'Application not found'
-            ], 404);
+            return redirect()->back()->withErrors(['error' => 'Application not found']);
         }
     }
 

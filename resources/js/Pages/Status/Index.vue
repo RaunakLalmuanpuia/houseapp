@@ -5,9 +5,9 @@ import axios from "axios";
 import {Head, router} from "@inertiajs/vue3";
 import {ref} from "vue";
 import Submitted from "@/Components/Status/Submission.vue";
-import Confirmed from "@/Components/Status/Confirm.vue";
 import Approved from "@/Components/Status/Approved.vue";
 import Rejected from "@/Components/Status/Rejected.vue";
+import Forwarded from "@/Components/Status/Forwarded.vue";
 
 // Reactive reference to store the fetched application data
 const application = ref(null);
@@ -94,11 +94,12 @@ const viewApplication = (applicationId) => {
                 </div>
             </div>
 
+<!--            {{application.status_histories?.[application.status_histories.length - 1]?.action === 'submitted'}}-->
             <!-- Conditional Status Components -->
-            <Submitted v-if="application && application.status === 'Pending'" :application="application" />
-            <Confirmed v-if="application && application.status === 'Confirmed'" :application="application" />
-            <Approved v-if="application && application.status === 'Approved'" :application="application" />
-            <Rejected v-if="application && application.status === 'Rejected'" :application="application" />
+            <Submitted v-if="application && application.status_histories?.[application.status_histories.length - 1]?.action === 'submitted'" :application="application" />
+            <Forwarded v-if="application && application.status_histories?.[application.status_histories.length - 1]?.action === 'forwarded'" :application="application" />
+            <Approved v-if="application && application.status_histories?.[application.status_histories.length - 1]?.action === 'approved'" :application="application" />
+            <Rejected v-if="application && application.status_histories?.[application.status_histories.length - 1]?.action === 'rejected'" :application="application" />
         </div>
 
         <!-- Footer stays at the bottom -->

@@ -1,7 +1,45 @@
 <script setup>
-defineProps({
+import { computed } from 'vue';
+
+const props = defineProps({
     application: Object,
-});
+})
+
+function formatDateToDDMMMYYYY(datetime) {
+    const date = new Date(datetime);
+    const day = String(date.getDate()).padStart(2, '0');
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const month = monthNames[date.getMonth()];
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+}
+
+
+// Format functions
+function formatDate(dateTime) {
+    const date = new Date(dateTime);
+    return date.toLocaleDateString('en-IN'); // DD/MM/YYYY
+}
+
+function formatTime(dateTime) {
+    const date = new Date(dateTime);
+    return date.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }); // HH:MM
+}
+
+// Computed entries for submitted and forwarded actions
+const submittedEntry = computed(() =>
+    props.application.status_histories?.find(item => item.action === 'submitted')
+)
+
+const submittedDate = computed(() =>
+    submittedEntry.value ? formatDate(submittedEntry.value.created_at) : 'N/A'
+)
+
+const submittedTime = computed(() =>
+    submittedEntry.value ? formatTime(submittedEntry.value.created_at) : 'N/A'
+)
+
 </script>
 
 <template>
@@ -12,62 +50,30 @@ defineProps({
         </p>
         <p class="mb-1">
             <span class="font-normal">Applied Date:</span>
-            <span class="font-semibold">07-Feb-2025</span>
+            <span class="font-semibold">{{formatDateToDDMMMYYYY(application.created_at)}}</span>
         </p>
         <p class="mb-6">
             <span class="font-normal">Application ID:</span>
-            <span class="font-semibold">1635716371</span>
+            <span class="font-semibold">{{ application.application_id }}</span>
         </p>
 
         <h3 class="text-gray-600 mb-6 text-lg font-normal">Current Status</h3>
 
-        <div class="relative ml-6">
-            <!-- Vertical line through circle centers -->
-            <div class="absolute top-9 left-1.5 h-[calc(100%-4.5rem)] w-0.5 bg-green-600"></div>
+        <div class="flex items-start space-x-4 ml-6">
+            <!-- SVG Icon -->
+            <svg width="32" height="33" viewBox="0 0 32 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="16" cy="16.3501" r="15" transform="rotate(90 16 16.3501)" stroke="#2CB027" stroke-width="2"/>
+                <circle cx="16" cy="16.3501" r="5" transform="rotate(90 16 16.3501)" fill="#2CB027"/>
+            </svg>
 
-            <!-- Step 1 -->
-            <div class="relative mb-10 pl-6">
-        <span
-            class="absolute -left-6 top-6 h-6 w-6 rounded-full border-2 border-green-600 flex items-center justify-center bg-white"
-            aria-hidden="true"
-        >
-          <span class="h-3.5 w-3.5 rounded-full bg-green-600"></span>
-        </span>
+
+            <!-- Step Content -->
+            <div class="mb-10">
                 <h4 class="font-bold text-gray-900 mb-1 text-base">Reservation Form Submitted</h4>
                 <p class="text-gray-500 mb-1 text-sm leading-relaxed">
                     Your reservation form has been submitted. Please wait for confirmation.
                 </p>
-                <p class="text-green-700 text-sm font-normal">2025-02-07 | 13:05</p>
-            </div>
-
-            <!-- Step 2 -->
-            <div class="relative mb-10 pl-6">
-        <span
-            class="absolute -left-6 top-6 h-6 w-6 rounded-full border-2 border-green-600 flex items-center justify-center bg-white"
-            aria-hidden="true"
-        >
-          <span class="h-3.5 w-3.5 rounded-full bg-green-600"></span>
-        </span>
-                <h4 class="font-bold text-gray-900 mb-1 text-base">Confirmed by Official</h4>
-                <p class="text-gray-500 mb-1 text-sm leading-relaxed">
-                    Your Reservation will be review by Mizoram House Staff.
-                </p>
-                <p class="text-green-700 text-sm font-normal">2025-02-08 | 06:49</p>
-            </div>
-
-            <!-- Step 3 -->
-            <div class="relative pl-6">
-        <span
-            class="absolute -left-6 top-6 h-6 w-6 rounded-full border-2 border-green-600 flex items-center justify-center bg-white"
-            aria-hidden="true"
-        >
-          <span class="h-3.5 w-3.5 rounded-full bg-green-600"></span>
-        </span>
-                <h4 class="font-bold text-gray-900 mb-1 text-base">Approved</h4>
-                <p class="text-gray-500 mb-1 text-sm leading-relaxed">
-                    Your Reservation is confirmed. Enjoy your stay!
-                </p>
-                <p class="text-green-700 text-sm font-normal">2025-02-08 | 15:38</p>
+                <p class="text-green-700 text-sm font-normal">{{ submittedDate }} | {{ submittedTime }}</p>
             </div>
         </div>
 
