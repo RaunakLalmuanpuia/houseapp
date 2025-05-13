@@ -2,6 +2,7 @@
 
 
 import { computed } from 'vue';
+import {router} from "@inertiajs/vue3";
 
 const props = defineProps({
     application: Object,
@@ -66,12 +67,23 @@ const approvedDate = computed(() =>
 const approvedTime = computed(() =>
     approvedEntry.value ? formatTime(approvedEntry.value.created_at) : 'N/A'
 )
+const viewApplication = (applicationId) => {
+    if (!applicationId || applicationId.trim() === '') {
+
+        // Optionally, you can show an error message to the user here, e.g.:
+        alert('Please enter a valid Application ID');
+        return; // Prevent further execution
+    }
+
+    // Navigate to the view route
+    router.visit(route('status.show-application', applicationId));
+};
 
 </script>
 
 <template>
 
-    <div class="max-w-md w-full border border-gray-200 rounded-xl p-6 font-sans text-gray-700">
+    <div class="mt-4 max-w-md w-full border border-gray-200 rounded-xl p-6 font-sans text-gray-700">
         <p class="mb-1">
             <span class="font-normal">Status:</span>
             <span class="font-semibold">Approved; Your Reservation is confirmed</span>
@@ -85,35 +97,22 @@ const approvedTime = computed(() =>
             <span class="font-semibold">{{ application.application_id }}</span>
         </p>
 
+
         <h3 class="text-gray-600 mb-6 text-lg font-normal">Current Status</h3>
 
-        <div class="flex ml-6 space-x-4 items-start">
-            <!-- SVG timeline -->
-            <div class="pt-2"> <!-- slight padding to align better -->
-                <svg width="33" height="243" viewBox="0 0 33 243" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <!-- First circle aligned with first h4 -->
-                    <circle cx="16" cy="30" r="15" transform="rotate(90 16 30)" stroke="#2CB027" stroke-width="2"/>
-                    <circle cx="16" cy="30" r="5" transform="rotate(90 16 30)" fill="#2CB027"/>
 
-                    <!-- Line between first and second circle -->
-                    <rect x="17" y="46" width="73" height="2" transform="rotate(90 17 46)" fill="#2CB027"/>
-
-                    <!-- Second circle aligned with second h4 -->
-                    <circle cx="16" cy="120" r="15" transform="rotate(90 16 120)" stroke="#2CB027" stroke-width="2"/>
-                    <circle cx="16" cy="120" r="5" transform="rotate(90 16 120)" fill="#2CB027"/>
-
-                    <!-- Line between second and third circle -->
-                    <rect x="17" y="136" width="73" height="2" transform="rotate(90 17 136)" fill="#2CB027"/>
-
-                    <!-- Third circle aligned with third h4 -->
-                    <circle cx="17" cy="210" r="15" transform="rotate(90 17 210)" stroke="#2CB027" stroke-width="2"/>
-                    <circle cx="17" cy="210" r="5" transform="rotate(90 17 210)" fill="#2CB027"/>
-                </svg>
-            </div>
-
-            <!-- Steps -->
-            <div>
-                <!-- Step 1 -->
+        <div class=" ml-6">
+            <!-- Timeline Item -->
+            <div class="flex gap-4">
+                <!-- Circle and Line -->
+                <div class="flex flex-col items-center">
+                    <svg width="32" height="150" viewBox="0 0 32 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="16" cy="16.3501" r="15" transform="rotate(90 16 16.3501)" stroke="#2CB027" stroke-width="2"/>
+                        <circle cx="16" cy="16.3501" r="5" transform="rotate(90 16 16.3501)" fill="#2CB027"/>
+                        <rect x="17" y="32.3501" width="120" height="2" transform="rotate(90 17 32.3501)" fill="#2CB027"/>
+                    </svg>
+                </div>
+                <!-- Content -->
                 <div class="mb-10">
                     <h4 class="font-bold text-gray-900 mb-1 text-base">Reservation Form Submitted</h4>
                     <p class="text-gray-500 mb-1 text-sm leading-relaxed">
@@ -121,8 +120,21 @@ const approvedTime = computed(() =>
                     </p>
                     <p class="text-green-700 text-sm font-normal">{{ submittedDate }} | {{ submittedTime }}</p>
                 </div>
+            </div>
 
-                <!-- Step 2 -->
+            <!-- Timeline Item -->
+            <div class="flex gap-4">
+                <!-- Circle and Line -->
+                <div class="flex flex-col items-center">
+                    <svg width="32" height="150" viewBox="0 0 32 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="16" cy="16.3501" r="15" transform="rotate(90 16 16.3501)" stroke="#2CB027" stroke-width="2"/>
+                        <circle cx="16" cy="16.3501" r="5" transform="rotate(90 16 16.3501)" fill="#2CB027"/>
+                        <rect x="17" y="32.3501" width="120" height="2" transform="rotate(90 17 32.3501)" fill="#2CB027"/>
+                    </svg>
+
+
+                </div>
+                <!-- Content -->
                 <div class="mb-10">
                     <h4 class="font-bold text-gray-900 mb-1 text-base">Forwarded by GAD</h4>
                     <p class="text-gray-500 mb-1 text-sm leading-relaxed">
@@ -130,8 +142,19 @@ const approvedTime = computed(() =>
                     </p>
                     <p class="text-green-700 text-sm font-normal">{{ forwardedDate }} | {{ forwardedTime }}</p>
                 </div>
+            </div>
 
-                <!-- Step 3 -->
+            <!-- Timeline Item -->
+            <div class="flex gap-4">
+                <!-- Circle and (no line after last) -->
+                <div class="flex flex-col items-center">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="16" cy="16" r="15" stroke="#2CB027" stroke-width="2"/>
+                        <circle cx="16" cy="16" r="5" fill="#2CB027"/>
+                    </svg>
+
+                </div>
+                <!-- Content -->
                 <div class="mb-10">
                     <h4 class="font-bold text-gray-900 mb-1 text-base">Approved</h4>
                     <p class="text-gray-500 mb-1 text-sm leading-relaxed">
@@ -140,16 +163,14 @@ const approvedTime = computed(() =>
                     <p class="text-green-700 text-sm font-normal">{{ approvedDate }} | {{ approvedTime }}</p>
                 </div>
             </div>
+
         </div>
-
-
-
-
 
 
         <hr class="border-gray-300 my-6" />
 
         <button
+            @click="viewApplication(application.application_id)"
             type="button"
             class="w-full text-center text-black font-semibold text-base focus:outline-none"
         >

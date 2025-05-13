@@ -1,6 +1,7 @@
 <script setup>
 
 import { computed } from 'vue';
+import {router} from "@inertiajs/vue3";
 
 const props = defineProps({
     application: Object,
@@ -54,6 +55,18 @@ const forwardedTime = computed(() =>
     forwardedEntry.value ? formatTime(forwardedEntry.value.created_at) : 'N/A'
 )
 
+const viewApplication = (applicationId) => {
+    if (!applicationId || applicationId.trim() === '') {
+
+        // Optionally, you can show an error message to the user here, e.g.:
+        alert('Please enter a valid Application ID');
+        return; // Prevent further execution
+    }
+
+    // Navigate to the view route
+    router.visit(route('status.show-application', applicationId));
+};
+
 </script>
 
 <template>
@@ -82,8 +95,8 @@ const forwardedTime = computed(() =>
                     <circle cx="16" cy="16.3501" r="15" transform="rotate(90 16 16.3501)" stroke="#2CB027" stroke-width="2"/>
                     <circle cx="16" cy="16.3501" r="5" transform="rotate(90 16 16.3501)" fill="#2CB027"/>
                     <rect x="17" y="32.3501" width="105" height="2" transform="rotate(90 17 32.3501)" fill="#2CB027"/>
-                    <circle cx="16" cy="155" r="15" transform="rotate(90 16 155)" stroke="#2CB027" stroke-width="2"/>
-                    <circle cx="16" cy="155" r="5" transform="rotate(90 16 155)" fill="#2CB027"/>
+                    <circle cx="13" cy="155" r="15" transform="rotate(90 16 155)" stroke="#2CB027" stroke-width="2"/>
+                    <circle cx="13" cy="155" r="5" transform="rotate(90 16 155)" fill="#2CB027"/>
                 </svg>
             </div>
 
@@ -113,6 +126,7 @@ const forwardedTime = computed(() =>
         <hr class="border-gray-300 my-6" />
 
         <button
+            @click="viewApplication(application.application_id)"
             type="button"
             class="w-full text-center text-black font-semibold text-base focus:outline-none"
         >

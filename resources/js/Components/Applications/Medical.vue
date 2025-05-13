@@ -96,7 +96,7 @@ defineProps({
 <!--            {{application}}-->
 
 <!--            Patient Table-->
-            <section v-if="application.medical_details.length !== 0" class="overflow-x-auto">
+            <section v-if="application.medical_details.filter(m => m.category === 'Patient').length !== 0" class="overflow-x-auto">
                 <h4 class="font-semibold mb-4 text-base">Patients</h4>
                 <table class="w-full border-collapse ">
                     <thead>
@@ -140,7 +140,7 @@ defineProps({
             </section>
 
             <!--            Attendants Table-->
-            <section v-if="application.medical_details.length !== 0" class="overflow-x-auto">
+            <section v-if="application.medical_details.filter(m => m.category === 'Attendant').length !== 0" class="overflow-x-auto">
                 <h4 class="font-semibold mb-4 text-base">Attendants</h4>
                 <table class="w-full border-collapse ">
                     <thead>

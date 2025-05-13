@@ -24,8 +24,10 @@ defineProps({
                         {{ application?.applicant_name }}<span class="italic font-normal">, {{ application?.gender}}</span>
                     </h3>
                     <p class="text-black text-base font-normal leading-snug mt-1">
-                        {{ application?.designation }},<br />
-                        {{ application?.department}},<br />
+                        <template v-if="application.medical_details[0].service === 'Govt'">
+                            {{ application.designation }},<br />
+                            {{ application.department }}<br />
+                        </template>
                         {{application?.contact }}
                     </p>
                 </div>

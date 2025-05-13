@@ -419,7 +419,7 @@ function validateForm() {
     errors.value = {}
 
     // Simple fields
-    const requiredFields = ['type', 'status', 'applicant_name', 'gender', 'designation', 'contact']
+    const requiredFields = ['type', 'status', 'applicant_name', 'gender', 'contact']
     requiredFields.forEach(field => {
         if (!application[field] || typeof application[field] !== 'string') {
             errors.value[field] = `${field.replace('_', ' ')} is required.`
