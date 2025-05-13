@@ -13,6 +13,7 @@ export const useMedicalApplicationStore = defineStore('medical_application', {
         contact: '',
         department:'',
         designation: '',
+        file: null,
 
         patient_details: [],
 
@@ -62,6 +63,25 @@ export const useMedicalApplicationStore = defineStore('medical_application', {
 
         removeAttendant(index) {
             this.attendant_details.splice(index, 1)
+        },
+
+        // File handler for main approval
+        setMedicalReferral(file) {
+            this.file = file
+        },
+
+        // File handler for each patient
+        setPatientMedicalReferral(index, file) {
+            if (this.patient_details[index]) {
+                this.patient_details[index].file = file
+            }
+        },
+
+        // File handler for each patient
+        setAttendantMedicalReferral(index, file) {
+            if (this.attendant_details[index]) {
+                this.attendant_details[index].file = file
+            }
         },
 
     },

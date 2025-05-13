@@ -119,6 +119,13 @@ class MedicalController extends Controller
                 'end_date' => $validated['end_date'],
             ]);
 
+            $filePath = null;
+            if ($request->hasFile("file")) {
+                $file = $request->file('file');
+                $filePath = random_int(100000, 999999) . '.' . $file->getClientOriginalExtension();
+                $filePath = $file->storeAs('medical', $filePath, 'public');
+            }
+
             // Step 2: Insert the main applicant as the first medical detail
             MedicalDetail::create([
                 'application_id' => $application->id,
@@ -127,8 +134,9 @@ class MedicalController extends Controller
                 'name' => $validated['applicant_name'],
                 'gender' => $validated['gender'],
                 'contact' =>  $validated['contact'],
-                'designation' => $validated['designation'] ?? null,
-                'department' => $validated['department'] ?? null,
+                'designation' => $validated['service'] === 'Non-Govt' ? null : ($validated['designation'] ?? null),
+                'department' => $validated['service'] === 'Non-Govt' ? null : ($validated['department'] ?? null),
+                'file_path' => $filePath,
             ]);
 
 
@@ -137,7 +145,9 @@ class MedicalController extends Controller
                 foreach ($validated['patient_details'] as $index => $patient) {
                     $filePath = null;
                     if ($request->hasFile("patient_details.$index.file")) {
-                        $filePath = $request->file("patient_details.$index.file")->store('medical_files', 'public');
+                        $file = $request->file("patient_details.$index.file");
+                        $filePath = random_int(100000, 999999) . '.' . $file->getClientOriginalExtension();
+                        $filePath = $file->storeAs('medical', $filePath, 'public');
                     }
 
                     $application->medicalDetails()->create([
@@ -146,8 +156,8 @@ class MedicalController extends Controller
                         'name' => $patient['name'],
                         'gender' => $patient['gender'],
                         'contact' => $patient['contact'],
-                        'designation' => $patient['designation'] ?? null,
-                        'department' => $patient['department'] ?? null,
+                        'designation' => $patient['service'] === 'Non-Govt' ? null : ($patient['designation'] ?? null),
+                        'department' => $patient['service'] === 'Non-Govt' ? null : ($patient['department'] ?? null),
                         'file_path' => $filePath,
                     ]);
 
@@ -159,7 +169,9 @@ class MedicalController extends Controller
                 foreach ($validated['attendant_details'] as $index => $attendant) {
                     $filePath = null;
                     if ($request->hasFile("attendant_details.$index.file")) {
-                        $filePath = $request->file("attendant_details.$index.file")->store('medical_files', 'public');
+                        $file = $request->file("attendant_details.$index.file");
+                        $filePath = random_int(100000, 999999) . '.' . $file->getClientOriginalExtension();
+                        $filePath = $file->storeAs('approvals', $filePath, 'public');
                     }
 
                     $application->medicalDetails()->create([
@@ -168,8 +180,8 @@ class MedicalController extends Controller
                         'name' => $attendant['name'],
                         'gender' => $attendant['gender'],
                         'contact' => $attendant['contact'],
-                        'designation' => $attendant['designation'] ?? null,
-                        'department' => $attendant['department'] ?? null,
+                        'designation' => $attendant['service'] === 'Non-Govt' ? null : ($attendant['designation'] ?? null),
+                        'department' => $attendant['service'] === 'Non-Govt' ? null : ($attendant['department'] ?? null),
                         'file_path' => $filePath,
                     ]);
                 }
@@ -195,7 +207,7 @@ class MedicalController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
 //            return redirect()->route('apply.medical.submission', ['application' => $application->id]);
-            dd($e->getMessage());
+//            dd($e->getMessage());
             return redirect()->route('home')->with('success', $e->getMessage());
 
         }

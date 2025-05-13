@@ -32,10 +32,10 @@
 
 
                     <div>
-                        <label for="applicant" class="block font-semibold text-sm leading-5 mb-1 text-black">Category</label>
+                        <label for="category" class="block font-semibold text-sm leading-5 mb-1 text-black">Category</label>
                         <select
                             v-model="application.category"
-                            id="applicant"
+                            id="category"
                             class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                         >
                             <option disabled>Select Category</option>
@@ -43,7 +43,7 @@
                             <option value="Attendant">Attendant</option>
 
                         </select>
-                        <span v-if="errors['applicant_name']" class="text-red-500 text-sm">{{ errors['applicant_name'] }}</span>
+                        <span v-if="errors['category']" class="text-red-500 text-sm">{{ errors['category'] }}</span>
 
                     </div>
 
@@ -58,7 +58,7 @@
                             <option value="Govt">Govt</option>
                             <option value="Non-Govt">Non-Govt</option>
                         </select>
-                        <span v-if="errors['applicant_name']" class="text-red-500 text-sm">{{ errors['applicant_name'] }}</span>
+                        <span v-if="errors['service']" class="text-red-500 text-sm">{{ errors['service'] }}</span>
 
                     </div>
 
@@ -126,6 +126,18 @@
                             class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                         />
                         <span v-if="errors['contact']" class="text-red-500 text-sm">{{ errors['contact'] }}</span>
+                    </div>
+
+                    <div>
+                        <label for="medical_approval" class="block font-semibold text-sm leading-5 mb-1 text-black">Medical Board Referral</label>
+                        <input
+                            id="medical_approval"
+                            type="file"
+                            @change="(e) => application.setMedicalReferral(e.target.files[0])"
+                            placeholder="Upload document"
+                            class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                        />
+                        <span v-if="errors['department_approval']" class="text-red-500 text-sm">{{ errors['department_approval'] }}</span>
                     </div>
 
 
@@ -227,19 +239,33 @@
                             </span>
                         </div>
 
+
+                        <div>
+                            <label for="contact" class="block font-semibold text-sm leading-5 mb-1 text-black">Approval</label>
+                            <input
+                                id="approval"
+                                type="file"
+                                @change="(e) => application.setPatientMedicalReferral(index, e.target.files[0])"
+                                placeholder="Departmental Approval"
+                                class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                            />
+                            <span v-if="errors[`patient.${index}.file`]" class="text-red-500 text-sm">
+                                {{ errors[`patient.${index}.file`] }}</span>
+                        </div>
+
                         <button @click.prevent="application.removePatient(index)">Remove</button>
                     </div>
 
 
                     <div v-if="application.attendant_details && application.attendant_details.length > 0">
                         <h2 class="text-lg font-extrabold text-gray-800 mb-1 border-l-4 border-black pl-2">
-                            Attendant
+                            More Attendant
                         </h2>
                     </div>
 
                     <div v-for="(attendant, index) in application.attendant_details" :key="index">
 
-
+                        <p class="text-muted-foreground text-s py-2">Other Attendants</p>
                         <div>
                             <label for="service" class="block font-semibold text-sm leading-5 mb-1 text-black">Service</label>
                             <select
@@ -330,6 +356,21 @@
                                   {{ errors[`attendant.${index}.contact`] }}
                             </span>
                         </div>
+
+
+                        <div>
+                            <label for="contact" class="block font-semibold text-sm leading-5 mb-1 text-black">Approval</label>
+                            <input
+                                id="approval"
+                                type="file"
+                                @change="(e) => application.setAttendantMedicalReferral(index, e.target.files[0])"
+                                placeholder="Departmental Approval"
+                                class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                            />
+                            <span v-if="errors[`attendant.${index}.file`]" class="text-red-500 text-sm">
+                                {{ errors[`attendant.${index}.file`] }}</span>
+                        </div>
+
                         <button @click.prevent="application.removeAttendant(index)">Remove</button>
 
 
@@ -418,51 +459,89 @@ const errors = ref({})
 function validateForm() {
     errors.value = {}
 
-    // Simple fields
-    const requiredFields = ['type', 'status', 'applicant_name', 'gender', 'contact']
+    // Simple fields for main applicant
+    const requiredFields = ['type', 'status', 'applicant_name', 'gender', 'contact', 'category', 'service']
     requiredFields.forEach(field => {
         if (!application[field] || typeof application[field] !== 'string') {
             errors.value[field] = `${field.replace('_', ' ')} is required.`
         }
     })
 
-    // Contact number (main applicant)
+    // File: department_approval
+    if (!application.file) {
+        errors.value['file'] = 'Medical Board Referral is required.'
+    }
+
+    // Contact number format
     if (application.contact && !/^\d{10}$/.test(application.contact)) {
         errors.value['contact'] = 'Contact must be a 10-digit number.'
     }
 
+    // Validate department & designation if service is Govt
+    if (application.service === 'Govt') {
+        if (!application.department) {
+            errors.value['department'] = 'Department is required for Govt service.'
+        }
+        if (!application.designation) {
+            errors.value['designation'] = 'Designation is required for Govt service.'
+        }
+    }
 
-    // flam_details validation
-    // if (application.flam_details?.length) {
-    //     application.flam_details.forEach((flam, index) => {
-    //         if (!flam.flam_name) {
-    //             errors.value[`flam_details.${index}.flam_name`] = 'FLAM name is required.'
-    //         }
-    //         if (!flam.gender) {
-    //             errors.value[`flam_details.${index}.gender`] = 'FLAM gender is required.'
-    //         }
-    //         if (!flam.designation) {
-    //             errors.value[`flam_details.${index}.designation`] = 'FLAM designation is required.'
-    //         }
-    //         if (!flam.contact) {
-    //             errors.value[`flam_details.${index}.contact`] = 'Contact is required.'
-    //         } else if (!/^\d{10}$/.test(flam.contact)) {
-    //             errors.value[`flam_details.${index}.contact`] = 'Contact must be a 10-digit number.'
-    //         }
-    //     })
-    // }
-    //
-    // // family_details validation
-    // if (application.family_details?.length) {
-    //     application.family_details.forEach((fam, index) => {
-    //         if (!fam.name) {
-    //             errors.value[`family_details.${index}.name`] = 'Family name is required.'
-    //         }
-    //         if (!fam.relation) {
-    //             errors.value[`family_details.${index}.relation`] = 'Family relation is required.'
-    //         }
-    //     })
-    // }
+    // Validate patient_details
+    application.patient_details.forEach((patient, index) => {
+        if (!patient.service) {
+            errors.value[`patient.${index}.service`] = 'Service is required.'
+        }
+        if (!patient.name) {
+            errors.value[`patient.${index}.name`] = 'Name is required.'
+        }
+        if (!patient.gender) {
+            errors.value[`patient.${index}.gender`] = 'Gender is required.'
+        }
+
+        if (!patient.file) {
+            errors.value[`patient.${index}.file`] = 'Medical Board Referral is required.'
+        }
+        if (!patient.contact || !/^\d{10}$/.test(patient.contact)) {
+            errors.value[`patient.${index}.contact`] = 'Contact must be a 10-digit number.'
+        }
+        if (patient.service === 'Govt') {
+            if (!patient.department) {
+                errors.value[`patient.${index}.department`] = 'Department is required for Govt service.'
+            }
+            if (!patient.designation) {
+                errors.value[`patient.${index}.designation`] = 'Designation is required for Govt service.'
+            }
+        }
+    })
+
+    // Validate attendant_details
+    application.attendant_details.forEach((attendant, index) => {
+        if (!attendant.service) {
+            errors.value[`attendant.${index}.service`] = 'Service is required.'
+        }
+        if (!attendant.name) {
+            errors.value[`attendant.${index}.name`] = 'Name is required.'
+        }
+        if (!attendant.gender) {
+            errors.value[`attendant.${index}.gender`] = 'Gender is required.'
+        }
+        if (!attendant.contact || !/^\d{10}$/.test(attendant.contact)) {
+            errors.value[`attendant.${index}.contact`] = 'Contact must be a 10-digit number.'
+        }
+        if (!attendant.file) {
+            errors.value[`attendant.${index}.file`] = 'Medical Board Referral is required.'
+        }
+        if (attendant.service === 'Govt') {
+            if (!attendant.department) {
+                errors.value[`attendant.${index}.department`] = 'Department is required for Govt service.'
+            }
+            if (!attendant.designation) {
+                errors.value[`attendant.${index}.designation`] = 'Designation is required for Govt service.'
+            }
+        }
+    })
+
     return Object.keys(errors.value).length === 0
 }
 
@@ -477,6 +556,9 @@ function next() {
 function back() {
     router.visit('/apply/step-one')
 }
+
+
+
 </script>
 
 
