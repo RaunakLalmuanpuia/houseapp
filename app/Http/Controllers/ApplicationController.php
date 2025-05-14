@@ -269,6 +269,79 @@ class ApplicationController extends Controller
         }
     }
 
+    public function updateNotOnDuty(Request $request, Application $application)
+    {
+//        dd($request->all());
+        $validated = $request->validate([
+            'applicant_name' => 'required|string|max:255',
+            'gender' => 'required|string|in:Male,Female,Other',
+            'designation' => 'required|string|max:255',
+            'department' => 'required|string|max:255',
+            'contact' => 'required|string|max:20',
+            'location' => 'required|integer|exists:houses,id',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+
+            'not_on_duty_details' => 'nullable|array',
+            'not_on_duty_details.*.name' => 'required|string|max:255',
+            'not_on_duty_details.*.gender' => 'required|string|in:Male,Female,Other',
+            'not_on_duty_details.*.designation' => 'required|string|max:255',
+            'not_on_duty_details.*.department' => 'required|string|max:255',
+            'not_on_duty_details.*.contact' => 'required|string|max:20',
+
+            'family_members' => 'nullable|array',
+            'family_members.*.name' => 'required|string|max:255',
+            'family_members.*.relation' => 'required|string|max:255',
+        ]);
+
+        DB::beginTransaction();
+        try {
+            // Update Application main fields
+            $application->update([
+                'applicant_name' => $validated['applicant_name'],
+                'gender' => $validated['gender'],
+                'designation' => $validated['designation'],
+                'department' => $validated['department'],
+                'contact' => $validated['contact'],
+                'location' => $validated['location'],
+                'start_date' => $validated['start_date'],
+                'end_date' => $validated['end_date'],
+            ]);
+
+            // Delete and recreate Not On Duty details
+            $application->notOnDutyDetails()->delete();
+            if (!empty($validated['not_on_duty_details'])) {
+                foreach ($validated['not_on_duty_details'] as $detail) {
+                    $application->notOnDutyDetails()->create([
+                        'name' => $detail['name'],
+                        'gender' => $detail['gender'],
+                        'designation' => $detail['designation'],
+                        'department' => $detail['department'],
+                        'contact' => $detail['contact'],
+                    ]);
+                }
+            }
+
+            // Delete and recreate Family Members
+            $application->familyMembers()->delete();
+            if (!empty($validated['family_members'])) {
+                foreach ($validated['family_members'] as $family) {
+                    $application->familyMembers()->create([
+                        'name' => $family['name'],
+                        'relation' => $family['relation'],
+                    ]);
+                }
+            }
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Application updated successfully.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
+
 
 
 

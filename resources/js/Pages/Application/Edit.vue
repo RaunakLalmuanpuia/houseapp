@@ -7,7 +7,7 @@ const props = defineProps(['application', 'house']);
 
 import FLAM from "@/Components/EditApplication/FLAM.vue";
 import OnDuty from "@/Components/EditApplication/OnDuty.vue";
-
+import NotOnDuty from "@/Components/EditApplication/NotOnDuty.vue";
 </script>
 
 <template>
@@ -23,6 +23,12 @@ import OnDuty from "@/Components/EditApplication/OnDuty.vue";
 
         <OnDuty
             v-if="application.type === 'ON DUTY'"
+            :application="application"
+            :house="house"
+        />
+
+        <NotOnDuty
+            v-if="application.type === 'NOT ON DUTY'"
             :application="application"
             :house="house"
         />
