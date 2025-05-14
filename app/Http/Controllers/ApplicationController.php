@@ -7,6 +7,7 @@ use App\Models\ApplicationStatusHistory;
 use App\Models\House;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class ApplicationController extends Controller
@@ -395,7 +396,47 @@ class ApplicationController extends Controller
 
     }
 
+    public function updateStudyTour(Request $request, Application $application)
+    {
+//        dd($request->all());
+        $validated = $request->validate([
+            'type' => 'required|string',
+            'applicant_name' => 'required|string',
+            'gender' => 'required|string',
+            'designation' => 'nullable|string',
+            'contact' => 'required|string',
+            'location' => 'required|exists:houses,id',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+            'study_tour_details.institution' => 'required_if:type,STUDY TOUR|string',
+            'study_tour_details.male' => 'required_if:type,STUDY TOUR|integer',
+            'study_tour_details.female' => 'required_if:type,STUDY TOUR|integer',
+            'study_tour_details.institution_approval' => 'nullable|file',
+        ]);
 
+        // Handle file upload
+        if ($request->hasFile('study_tour_details.institution_approval')) {
+            $file = $request->file('study_tour_details.institution_approval');
+            $fileName = Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('study_tour_approvals', $fileName, 'public');
+            $validated['study_tour_details']['institution_approval'] = $path;
+
+        }else {
+            // Remove it if not uploaded to avoid setting null
+            unset($validated['study_tour_details']['institution_approval']);
+        }
+
+        $application->update($validated);
+
+        if ($application->type === 'STUDY TOUR' && isset($validated['study_tour_details'])) {
+            $application->studyTourDetails()->updateOrCreate(
+                ['application_id' => $application->id],
+                $validated['study_tour_details']
+            );
+        }
+
+        return redirect()->back()->with('success', 'Application updated successfully.');
+    }
 
 
 }

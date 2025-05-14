@@ -10,7 +10,6 @@ const showUpdatePopup = ref(false)
 const form = useForm({
     id: props.application.id,
     type: props.application.type,
-    status: props.application.status,
     application_id: props.application.application_id,
     applicant_name: props.application.applicant_name,
     gender: props.application.gender,

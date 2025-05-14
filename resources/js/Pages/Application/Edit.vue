@@ -9,6 +9,7 @@ import FLAM from "@/Components/EditApplication/FLAM.vue";
 import OnDuty from "@/Components/EditApplication/OnDuty.vue";
 import NotOnDuty from "@/Components/EditApplication/NotOnDuty.vue";
 import NonOfficial from "@/Components/EditApplication/NonOfficial.vue";
+import StudyTour from "@/Components/EditApplication/StudyTour.vue";
 </script>
 
 <template>
@@ -36,6 +37,12 @@ import NonOfficial from "@/Components/EditApplication/NonOfficial.vue";
 
         <NonOfficial
             v-if="application.type === 'PRIVATE'"
+            :application="application"
+            :house="house"
+        />
+
+        <StudyTour
+            v-if="application.type === 'STUDY TOUR'"
             :application="application"
             :house="house"
         />

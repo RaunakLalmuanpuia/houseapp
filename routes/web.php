@@ -169,6 +169,8 @@ Route::group([], function () {
 
     Route::put('/applications/not-official/{application}/update', [ApplicationController::class, 'updateNonOfficial'])->name('applications.not-official.update');
 
+    Route::post('/applications/study-tour/{application}/update', [ApplicationController::class, 'updateStudyTour'])->name('applications.study-tour.update');
+
 
 
 });
@@ -189,12 +191,6 @@ Route::group(['prefix'=>'admin'], function () {
     Route::get('/applications/approved', [AdminApplicationController::class, 'indexApproved'])->name('admin.application.index_approved');
     Route::get('/applications/rejected', [AdminApplicationController::class, 'indexRejected'])->name('admin.application.index_rejected');
     Route::get('/applications/{application}/view', [AdminApplicationController::class, 'viewApplication'])->name('admin.application.view');
-//    Route::get('{applicationId}', [StatusController::class, 'getStatus'])->name('status.application');
-//    Route::get('{applicationId}/view', [StatusController::class, 'show'])->name('status.show-application');
-
-//    Route::post('/applications/{application}/forward', [AdminApplicationController::class, 'forward'])->name('admin.application.forward');
-//    Route::post('/applications/{application}/approve', [AdminApplicationController::class, 'approve'])->name('admin.application.approve');
-//    Route::post('/applications/{application}/reject', [AdminApplicationController::class, 'reject'])->name('admin.application.reject');
 });
 
 
