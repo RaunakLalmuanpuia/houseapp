@@ -145,49 +145,4 @@ class AdminApplicationController extends Controller
         }
     }
 
-//    public function approve(Application $application){
-//
-//        dd($application);
-//        $application->update([
-//            'status' => 'Approved',
-//            'status_changed_at' => now(),
-//        ]);
-//
-//        return redirect()->back();
-//
-//    }
-//
-//    public function reject(Request $request, Application $application)
-//    {
-//        $request->validate([
-//            'reject_reason' => 'required|string|max:200',
-//        ]);
-//
-//        $application->update([
-//            'status' => 'Rejected',
-//            'status_changed_at' => now(),
-//            'reject_reason' => $request->input('reject_reason'),
-//        ]);
-//
-//        return redirect()->back()->with('message', 'Application rejected successfully.');
-//    }
-//
-//
-//    public function forward(Request $request, Application $application)
-//    {
-//        dd($application);
-//
-//        $request->validate([
-//            'reject_reason' => 'required|string|max:200',
-//        ]);
-//
-//        $application->update([
-//            'status' => 'Rejected',
-//            'status_changed_at' => now(),
-//            'reject_reason' => $request->input('reject_reason'),
-//        ]);
-//
-//        return redirect()->back()->with('message', 'Application rejected successfully.');
-//    }
-
 }

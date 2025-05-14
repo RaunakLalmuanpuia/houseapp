@@ -176,12 +176,13 @@
                                         <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M0.666626 13.0002H11.3333M1.77729 7.79156C1.49304 8.07645 1.33336 8.46244 1.33329 8.86489V11.0002H3.48196C3.88463 11.0002 4.27063 10.8402 4.55529 10.5549L10.8886 4.21822C11.1728 3.93329 11.3324 3.5473 11.3324 3.14489C11.3324 2.74248 11.1728 2.35649 10.8886 2.07156L10.2633 1.44489C10.1223 1.30379 9.95481 1.19187 9.7705 1.11554C9.5862 1.0392 9.38865 0.999938 9.18915 1C8.98966 1.00006 8.79214 1.03944 8.60788 1.1159C8.42362 1.19235 8.25623 1.30437 8.11529 1.44556L1.77729 7.79156Z" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
                                         </svg>
-                                        <button
-                                            @click="exportJobDetails(item.id); openDropdownId = null"
-                                            class="text-sm text-gray-700"
-                                        >
-                                            Edit / Update
-                                        </button>
+                                        <a :href="route('applications.edit', item)" class="text-sm text-gray-700">Edit / Update</a>
+<!--                                        <button-->
+<!--                                            @click="route('applications.edit', item); openDropdownId = null"-->
+<!--                                            class="text-sm text-gray-700"-->
+<!--                                        >-->
+<!--                                            Edit / Update-->
+<!--                                        </button>-->
                                     </div>
                                     <div class="flex items-center space-x-2 px-4 py-2 hover:bg-gray-100 cursor-pointer">
                                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">

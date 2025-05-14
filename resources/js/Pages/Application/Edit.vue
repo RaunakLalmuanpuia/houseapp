@@ -1,0 +1,36 @@
+<script setup>
+import AuthLayout from "@/Layouts/AuthLayout.vue";
+import {Head} from "@inertiajs/vue3";
+
+defineOptions({layout:AuthLayout})
+const props = defineProps(['application', 'house']);
+
+import FLAM from "@/Components/EditApplication/FLAM.vue";
+import OnDuty from "@/Components/EditApplication/OnDuty.vue";
+
+</script>
+
+<template>
+    <Head title="Edit Application" />
+<!--    {{application}}-->
+    <div class="max-w-5xl mx-auto p-6 bg-white shadow rounded-xl">
+        <h2 class="text-2xl font-semibold mb-6">Edit Application :: {{application.type}}</h2>
+        <FLAM
+            v-if="application.type === 'FLAM'"
+            :application="application"
+            :house="house"
+        />
+
+        <OnDuty
+            v-if="application.type === 'ON DUTY'"
+            :application="application"
+            :house="house"
+        />
+    </div>
+
+
+</template>
+
+<style scoped>
+
+</style>

@@ -157,6 +157,15 @@ Route::group([], function () {
     Route::post('/applications/{application}/forward', [ApplicationController::class, 'forward'])->name('applications.forward');
     Route::post('/applications/{application}/approve', [ApplicationController::class, 'approve'])->name('applications.approve');
     Route::post('/applications/{application}/reject', [ApplicationController::class, 'reject'])->name('applications.reject');
+
+
+    Route::get('/applications/{application}/edit', [ApplicationController::class, 'edit'])->name('applications.edit');
+
+    Route::put('/applications/flam/{application}/update', [ApplicationController::class, 'updateFlam'])->name('applications.flam.update');
+
+    Route::post('/applications/on-duty/{application}/update', [ApplicationController::class, 'updateOnDuty'])->name('applications.on-duty.update');
+
+
 });
 
 
