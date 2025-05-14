@@ -342,6 +342,58 @@ class ApplicationController extends Controller
         }
     }
 
+    public function updateNonOfficial(Request $request, Application $application)
+    {
+//        dd($request->all());
+        $validated = $request->validate([
+            'applicant_name' => 'required|string|max:255',
+            'gender' => 'required|string|in:Male,Female,Other',
+            'contact' => 'required|string|max:20',
+            'location' => 'required|exists:houses,id',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'non_official_details' => 'nullable|array',
+            'non_official_details.*.name' => 'required|string|max:255',
+            'non_official_details.*.gender' => 'required|string|in:Male,Female,Other',
+            'non_official_details.*.contact' => 'required|string|max:20',
+            'family_members' => 'nullable|array',
+            'family_members.*.name' => 'required|string|max:255',
+            'family_members.*.relation' => 'required|string|max:100',
+        ]);
+
+        DB::beginTransaction();
+        try {
+            // Update Application main fields
+            $application->update([
+                'applicant_name' => $validated['applicant_name'],
+                'gender' => $validated['gender'],
+                'contact' => $validated['contact'],
+                'location' => $validated['location'],
+                'start_date' => $validated['start_date'],
+                'end_date' => $validated['end_date'],
+            ]);
+
+            // Delete and recreate Not On Duty details
+            $application->nonOfficialDetails()->delete();
+            if (!empty($validated['non_official_details'])) {
+                $application->nonOfficialDetails()->createMany($validated['non_official_details']);
+            }
+
+            // Replace Family Members
+            $application->familyMembers()->delete();
+            if (!empty($validated['family_members'])) {
+                $application->familyMembers()->createMany($validated['family_members']);
+            }
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Application updated successfully.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+
+    }
 
 
 

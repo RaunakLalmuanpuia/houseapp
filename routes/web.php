@@ -167,6 +167,10 @@ Route::group([], function () {
 
     Route::put('/applications/not-on-duty/{application}/update', [ApplicationController::class, 'updateNotOnDuty'])->name('applications.not-on-duty.update');
 
+    Route::put('/applications/not-official/{application}/update', [ApplicationController::class, 'updateNonOfficial'])->name('applications.not-official.update');
+
+
+
 });
 
 
