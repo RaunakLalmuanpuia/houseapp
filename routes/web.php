@@ -32,6 +32,9 @@ use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\HouseApplicationController;
 use App\Http\Controllers\UserController;
 
+use App\Http\Controllers\DigilockerController;
+
+
 
 
 
@@ -209,7 +212,6 @@ Route::group(['prefix'=>'admin'], function () {
 });
 //Auth
 Route::group([], function () {
-
     Route::get('login', [AuthController::class, 'create'])->name('login');
 //    Route::get('forgot-password', [AuthController::class, 'forgotPassword'])->name('login.forgot');
 //    Route::post('forgot-password/send-otp', [AuthController::class, 'sendOtp'])->name('forgot.send');
@@ -217,7 +219,6 @@ Route::group([], function () {
 //    Route::post('forgot-password/set-password', [AuthController::class, 'changePassword'])->name('forgot.password');
     Route::post('login', [AuthController::class, 'store'])->name('login.store');
     Route::delete('logout', [AuthController::class, 'destroy'])->name('login.destroy');
-
 });
 // FAQs
 Route::group(['prefix'=>'admin'], function () {
@@ -267,8 +268,6 @@ Route::group(['prefix'=>'admin'], function () {
     Route::put('/room_type/{house}/{roomType}', [RoomTypeController::class, 'update'])->name('admin.room_type.update');
     Route::delete('/room_type/{house}/{roomType}', [RoomTypeController::class, 'destroy'])->name('admin.room_type.destroy');
 });
-
-
 //Users
 Route::group(['prefix'=>'admin'], function () {
     Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
@@ -277,5 +276,13 @@ Route::group(['prefix'=>'admin'], function () {
     Route::delete('{model}', [UserController::class, 'destroy'])->name('admin.users.destroy');
 
 });
+
+
+//Digilocker
+Route::group(['prefix'=>'admin'], function () {
+
+    Route::get('/digilocker-parameters', [DigilockerController::class, 'getParameters'])->name('digilocker.params');
+});
+
 
 
