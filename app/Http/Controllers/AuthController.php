@@ -148,57 +148,58 @@ class AuthController extends Controller
         ]);
     }
 
-    public function create(Request $request)
-    {
-        // ✅ Log out if already logged in
-
-
-        $digilocker = new DigilockerController();
-
-        $code = $request->get('code');
-
-
-        if ($code !== null) {
-            $token = $digilocker->getToken($code);
-
-            if ($token !== null) {
-                $user_detail = $digilocker->getUser($token);
-
-                if ($user_detail === 'Failed to Fetch User Data') {
-                    return inertia('Frontend/Auth/Login', []);
-                }
-
-                // Check if user with mobile or email exists
-                $user = User::where('mobile', $user_detail['mobile'])
-                    ->orWhere('email', $user_detail['email'])
-                    ->first();
-
-                if ($user) {
-                    // Log the user in
-                    Auth::login($user);
-
-                    // ✅ Revoke the token now
-                    $digilocker->revokeToken($token, 'access_token'); // or 'refresh_token' if applicable
-                    $code= null;
-                    $token= null;
-                    $user_detail=null;
-                    // Redirect to dashboard
-                    return redirect()->route('dashboard');
-
-                }
-                // If user not found, you might want to redirect back or show error
-                return inertia('Frontend/Auth/Login', [
-                    'error' => 'User not found. Please register first.',
-                ]);
-            }
-        }
-
+    public function create(){
         return inertia('Frontend/Auth/Login', []);
     }
+//    public function create(Request $request)
+//    {
+//
+//        $digilocker = new DigilockerController();
+//
+//        $code = $request->get('code');
+//
+//
+//        if ($code !== null) {
+//            $token = $digilocker->getToken($code);
+//
+//            if ($token !== null) {
+//                $user_detail = $digilocker->getUser($token);
+//
+//                if ($user_detail === 'Failed to Fetch User Data') {
+//                    return inertia('Frontend/Auth/Login', []);
+//                }
+//
+//                // Check if user with mobile or email exists
+//                $user = User::where('mobile', $user_detail['mobile'])
+//                    ->orWhere('email', $user_detail['email'])
+//                    ->first();
+//
+//                if ($user) {
+//                    // Log the user in
+//                    Auth::login($user);
+//
+//                    // ✅ Revoke the token now
+//                    $digilocker->revokeToken($token, 'access_token'); // or 'refresh_token' if applicable
+//                    $code= null;
+//                    $token= null;
+//                    $user_detail=null;
+//                    // Redirect to dashboard
+//                    return redirect()->route('dashboard');
+//
+//                }
+//                // If user not found, you might want to redirect back or show error
+//                return inertia('Frontend/Auth/Login', [
+//                    'error' => 'User not found. Please register first.',
+//                ]);
+//            }
+//        }
+//
+//        return inertia('Frontend/Auth/Login', []);
+//    }
 
     public function store(LoginRequest $request)
     {
-
+//        dd($request);
         $request->authenticate();
 
         $request->session()->regenerate();

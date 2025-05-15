@@ -13,7 +13,7 @@ class DigilockerController extends Controller
     {
 
         // Set your app-specific values
-        $client_id = 'DC5C9B24F4';
+        $client_id = env('DIGILOCKER_CLIENT_ID');
         $redirect_uri = 'http://127.0.0.1:8000/login'; // Must match the one registered with DigiLocker
         $state = Str::random(16); // Random string to maintain state between request and callback
         $scope = 'openid';
@@ -50,12 +50,11 @@ class DigilockerController extends Controller
         ]);
 
     }
-
     public function getToken($code)
     {
         $grant_type = 'authorization_code';
-        $client_id = 'DC5C9B24F4';
-        $client_secret = '313823e81d0d7b819276';
+        $client_id = env('DIGILOCKER_CLIENT_ID');
+        $client_secret = env('DIGILOCKER_CLIENT_SECRET');
         $redirect_uri = 'http://127.0.0.1:8000/login';
         $code_verifier = Session::get('digilocker_code_verifier');
 
@@ -82,7 +81,6 @@ class DigilockerController extends Controller
 
         return 'Failed to fetch access token';
     }
-
     public function getUser($token){
 
 //        dd($token);
@@ -98,7 +96,6 @@ class DigilockerController extends Controller
         }
         return 'Failed to Fetch User Data';
     }
-
     public function revokeToken($token, $tokenTypeHint = null)
     {
         $response=Http::withHeaders([
@@ -131,7 +128,6 @@ class DigilockerController extends Controller
             'code_challenge' => $code_challenge,
         ];
     }
-
     private function base64_url_encode_without_padding($input)
     {
         return rtrim(strtr(base64_encode($input), '+/', '-_'), '=');

@@ -56,29 +56,15 @@
             <input v-model="signerForm.code_challenge" type="hidden" name="code_challenge" />
             <input v-model="signerForm.code_challenge_method" type="hidden" name="code_challenge_method" />
         </form>
-<!--        <form-->
-<!--            ref="digilockerRef"-->
-<!--            class="hidden"-->
-<!--            method="GET"-->
-<!--            action="https://digilocker.meripehchaan.gov.in/public/oauth2/1/authorize"-->
-<!--            id="digilockerForm"-->
-<!--        >-->
-<!--            <input type="hidden" name="response_type" id="response_type">-->
-<!--            <input type="hidden" name="client_id" id="client_id">-->
-<!--            <input type="hidden" name="redirect_uri" id="redirect_uri">-->
-<!--            <input type="hidden" name="state" id="state">-->
-<!--            <input type="hidden" name="scope" id="scope">-->
-<!--            <input type="hidden" name="code_challenge" id="code_challenge">-->
-<!--            <input type="hidden" name="code_challenge_method" id="code_challenge_method">-->
-<!--        </form>-->
 
 
 
-<!--        <button  @click="handleDigilocker"  class="mt-6 w-60 bg-black text-white py-2 rounded-md hover:bg-black mx-auto block">Digilocker</button>-->
-        <button @click="handleDigilocker" class=" mt-5 bg-black text-white flex ml-10 items-center p-3 rounded-lg shadow-md hover:bg-primary/80 whitespace-nowrap">
-            <img aria-hidden="true" alt="DigiLocker icon" src="/images/icons/Digilocker_logo.png" class="mr-3 w-[120px]" />
-            Continue with DigiLocker
-        </button>
+
+
+<!--        <button @click="handleDigilocker" class=" mt-5 bg-black text-white flex ml-10 items-center p-3 rounded-lg shadow-md hover:bg-primary/80 whitespace-nowrap">-->
+<!--            <img aria-hidden="true" alt="DigiLocker icon" src="/images/icons/Digilocker_logo.png" class="mr-3 w-[120px]" />-->
+<!--            Continue with DigiLocker-->
+<!--        </button>-->
 
 
         <div class="mt-4 flex items-center justify-between">
