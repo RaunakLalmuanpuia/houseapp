@@ -61,10 +61,10 @@
 
 
 
-<!--        <button @click="handleDigilocker" class=" mt-5 bg-black text-white flex ml-10 items-center p-3 rounded-lg shadow-md hover:bg-primary/80 whitespace-nowrap">-->
-<!--            <img aria-hidden="true" alt="DigiLocker icon" src="/images/icons/Digilocker_logo.png" class="mr-3 w-[120px]" />-->
-<!--            Continue with DigiLocker-->
-<!--        </button>-->
+        <button @click="handleDigilocker" class=" mt-5 bg-blue-700 text-white flex ml-10 items-center p-3 rounded-lg shadow-md hover:bg-primary/80 whitespace-nowrap">
+            <img aria-hidden="true" alt="DigiLocker icon" src="/images/icons/Digilocker_logo.png" class="mr-3 w-[120px]" />
+            Continue with DigiLocker
+        </button>
 
 
         <div class="mt-4 flex items-center justify-between">
