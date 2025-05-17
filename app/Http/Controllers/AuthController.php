@@ -165,6 +165,32 @@ class AuthController extends Controller
             if ($token !== null) {
                 $user_detail = $digilocker->getUser($token);
 
+                $uploadedDocument = $digilocker->getUploadedDocuments($token);
+
+                $eAdharXml = $digilocker->getEAadhaar($token);
+
+
+                $issuedDocuments = $digilocker->getIssuedDocuments($token);
+
+                // Ensure we have a valid array (in case it's accidentally a JSON string)
+                if (is_string($issuedDocuments)) {
+                    $issuedDocuments = json_decode($issuedDocuments, true);
+                }
+
+                $documentName = 'Driving License';
+
+                if (is_array($issuedDocuments) && isset($issuedDocuments['items'])) {
+
+                    $drivingDocument = collect($issuedDocuments['items'])->firstWhere('name', $documentName);
+                    $uri = $drivingDocument['uri'];
+
+                    $drivingLicense = $digilocker->getCertificateXml($token, $uri);
+
+                    //Does not have permission
+                    //$drivingLicense = $digilocker->getCertificateFile($token, $uri);
+
+                }
+
                 if ($user_detail === 'Failed to Fetch User Data') {
                     return inertia('Frontend/Auth/Login', []);
                 }
@@ -183,6 +209,8 @@ class AuthController extends Controller
                     $code= null;
                     $token= null;
                     $user_detail=null;
+
+
                     // Redirect to dashboard
                     return redirect()->route('dashboard');
 
@@ -199,7 +227,7 @@ class AuthController extends Controller
 
     public function store(LoginRequest $request)
     {
-//        dd($request);
+
         $request->authenticate();
 
         $request->session()->regenerate();
@@ -217,6 +245,5 @@ class AuthController extends Controller
 
         return Inertia::location('/');
 
-//        return redirect('/');
     }
 }
