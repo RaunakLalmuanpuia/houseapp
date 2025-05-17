@@ -38,8 +38,8 @@ class RegisterController extends Controller
             'otp' => $phoneOtp
         ]);
 
-//        AppUtil::sendOtp($phoneOtp, $data['mobile'], 'sms');
-        AppUtil::sendOtp($phoneOtp, $data['email'], 'email');
+
+        AppUtil::sendOtp($phoneOtp, $data['mobile']);
 
 
         return response()->json(['status'=>true]);

@@ -14,8 +14,8 @@
         <h2 class="text-2xl font-bold">Login</h2>
         <p class="text-muted-foreground">Enter your credentials to login</p>
         <form @submit.prevent="handleSubmit" class="mt-4">
-            <label class="block text-sm font-medium text-zinc-700" for="email">Email ID/Phone No.</label>
-            <input v-model="form.email" required type="email" id="email" placeholder="Enter your email-ID/Phone No." class="mt-1 block w-full border border-border rounded-md p-2 focus:outline-none focus:ring focus:ring-ring" />
+            <label class="block text-sm font-medium text-zinc-700" for="login">Email ID/Phone No.</label>
+            <input v-model="form.login" required  id="login" placeholder="Enter your email-ID/Phone No." class="mt-1 block w-full border border-border rounded-md p-2 focus:outline-none focus:ring focus:ring-ring" />
 
             <label  v-if="showError"  class="block text-sm font-medium text-red-700">{{page.props.errors.email}}</label>
 
@@ -43,9 +43,9 @@
 
 
         <div class="mt-4 flex items-center justify-between">
-            <a :href="route('register.create')" href="#" class="text-muted-foreground text-start">Register New Account!</a>
+            <a :href="route('register.create')" class="text-muted-foreground text-start">Register New Account!</a>
 <!--            <a  class="text-accent text-no-underline">SIGN UP</a>-->
-            <a href="#" class="text-muted-foreground text-end">Forgot Password?</a>
+            <a :href="route('login.forgot')"  class="text-muted-foreground text-end">Forgot Password?</a>
         </div>
 
 
@@ -64,7 +64,7 @@ import {reactive, ref, watch} from "vue";
 import { nextTick } from 'vue'
 
 const form=useForm({
-    email:'',
+    login:'',
     password:''
 })
 const page = usePage()

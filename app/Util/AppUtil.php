@@ -18,6 +18,11 @@ class AppUtil{
         if ($response->successful()) {
             return true;
         }
+
+//        Mail::raw($data['message'], function ($message) use ($recipient, $data) {
+//            $message->to($recipient)
+//                ->subject($data['subject']);
+//        });
         return false;
     }
 }
