@@ -17,7 +17,7 @@
             <label class="block text-sm font-medium text-zinc-700" for="login">Email ID/Phone No.</label>
             <input v-model="form.login" required  id="login" placeholder="Enter your email-ID/Phone No." class="mt-1 block w-full border border-border rounded-md p-2 focus:outline-none focus:ring focus:ring-ring" />
 
-            <label  v-if="showError"  class="block text-sm font-medium text-red-700">{{page.props.errors.email}}</label>
+            <label  v-if="showError"  class="block text-sm font-medium text-red-700">{{page.props.errors.login}}</label>
 
             <label class="block text-sm font-medium text-zinc-700 mt-4" for="password">Password</label>
 

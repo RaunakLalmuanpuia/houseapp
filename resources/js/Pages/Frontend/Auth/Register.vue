@@ -39,12 +39,10 @@
 
 
                         <div class="flex">
-                            <button
-                                type="submit"
-                                class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition"
-                            >
-                                Confirm
-                            </button>
+
+                            <button   type="submit" class="mt-6 w-60 bg-black text-white py-2 rounded-md hover:bg-black mx-auto block">Confirm</button>
+
+
                         </div>
                     </form>
                 </div>
@@ -134,12 +132,14 @@
                     </div>
 
                     <div class="flex mt-2">
-                        <button
-                            type="submit"
-                            class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition"
-                        >
-                            Next
-                        </button>
+
+                        <button   type="submit" class="mt-6 w-60 bg-black text-white py-2 rounded-md hover:bg-black mx-auto block">Next</button>
+<!--                        <button-->
+<!--                            type="submit"-->
+<!--                            class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition"-->
+<!--                        >-->
+<!--                            Next-->
+<!--                        </button>-->
                     </div>
                 </form>
             </div>

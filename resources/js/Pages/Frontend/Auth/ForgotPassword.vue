@@ -16,8 +16,7 @@
                             Go to dashboard
                         </button>
                     </div>
-
-                    <div>
+                    <div v-else>
                         <p class="text-2xl font-bold text-gray-900 mb-4">Forgot Password</p>
 
                         <!-- Step 1 -->
@@ -75,12 +74,9 @@
                             <p v-if="resetForm.errors?.password_confirmation" class="text-red-500 text-sm">
                                 {{ resetForm.errors.password_confirmation }}
                             </p>
-                            <button
-                                @click="handleConfirm"
-                                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-                            >
-                                Confirm
-                            </button>
+
+                            <button @click="handleConfirm"  type="submit" class="mt-6 w-60 bg-black text-white py-2 rounded-md hover:bg-black mx-auto block">Login</button>
+
                         </div>
                     </div>
                 </div>
