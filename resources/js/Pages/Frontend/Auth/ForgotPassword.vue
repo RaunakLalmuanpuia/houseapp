@@ -9,12 +9,8 @@
                 <div class="w-full md:w-1/2 flex flex-col items-start justify-center space-y-6">
                     <div v-if="$page.props.auth?.user">
                         <p class="text-gray-800">You are logged in</p>
-                        <button
-                            @click="$inertia.get(route('dashboard'))"
-                            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                        >
-                            Go to dashboard
-                        </button>
+
+                        <button @click="$inertia.get(route('dashboard'))"  type="submit" class="mt-6 w-60 bg-black text-white py-2 rounded-md hover:bg-black mx-auto block">Go to dashboard</button>
                     </div>
                     <div v-else>
                         <p class="text-2xl font-bold text-gray-900 mb-4">Forgot Password</p>
