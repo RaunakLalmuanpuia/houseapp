@@ -13,7 +13,6 @@ use Inertia\Inertia;
 
 class ApplicationController extends Controller
 {
-    //
     public function forward(Request $request, Application $application)
     {
 //        dd($request->all());
@@ -37,7 +36,6 @@ class ApplicationController extends Controller
 
         return back()->with('success', 'Application forwarded to house user.');
     }
-
     public function approve(Request $request, Application $application)
     {
         $user = auth()->user();
@@ -56,7 +54,6 @@ class ApplicationController extends Controller
         ]);
         return back()->with('success', 'Application approved.');
     }
-
     public function reject(Request $request, Application $application)
     {
         $user = auth()->user();
@@ -76,7 +73,6 @@ class ApplicationController extends Controller
         ]);
         return back()->with('success', 'Application Rejected.');
     }
-
     public function edit(Request $request, Application $application){
 //        dd($application);
 
@@ -344,7 +340,6 @@ class ApplicationController extends Controller
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
     }
-
     public function updateNonOfficial(Request $request, Application $application)
     {
 //        dd($request->all());
@@ -397,7 +392,6 @@ class ApplicationController extends Controller
         }
 
     }
-
     public function updateStudyTour(Request $request, Application $application)
     {
 //        dd($request->all());
@@ -439,8 +433,6 @@ class ApplicationController extends Controller
 
         return redirect()->back()->with('success', 'Application updated successfully.');
     }
-
-
     public function updateMedical(Request $request, Application $application)
     {
         $validated = $request->validate([
@@ -519,95 +511,4 @@ class ApplicationController extends Controller
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
     }
-
-
-
-//    public function updateMedical(Request $request, Application $application)
-//    {
-//        $validated = $request->validate([
-//            'applicant_name' => 'required|string|max:255',
-//            'gender' => 'required|string',
-//            'contact' => 'required|string|max:15',
-//            'designation' => 'nullable|string|max:255',
-//            'department' => 'nullable|string|max:255',
-//            'location' => 'required|integer|exists:houses,id',
-//            'start_date' => 'required|date',
-//            'end_date' => 'required|date|after_or_equal:start_date',
-//
-//            'medical_details' => 'required|array|min:1',
-//            'medical_details.*.name' => 'required|string|max:255',
-//            'medical_details.*.gender' => 'required|string',
-//            'medical_details.*.contact' => 'required|string|max:15',
-//            'medical_details.*.category' => 'required|string|max:255',
-//            'medical_details.*.service' => 'required|string|max:255',
-//            'medical_details.*.designation' => 'nullable|string|max:255',
-//            'medical_details.*.department' => 'nullable|string|max:255',
-//            'medical_details.*.file_path' => 'required|file|mimes:pdf|max:2048',
-//        ]);
-//
-//        DB::beginTransaction();
-//        try {
-//            // Update main application fields
-//            $application->update([
-//                'applicant_name' => $validated['applicant_name'],
-//                'gender' => $validated['gender'],
-//                'contact' => $validated['contact'],
-//                'designation' => $validated['designation'] ?? null,
-//                'department' => $validated['department'] ?? null,
-//                'location' => $validated['location'],
-//                'start_date' => $validated['start_date'] ?? null,
-//                'end_date' => $validated['end_date'] ?? null,
-//            ]);
-//
-//            // Sync medical details
-//            $existingIds = collect($request->medical_details)->pluck('id')->filter()->toArray();
-//            $application->medicalDetails()->whereNotIn('id', $existingIds)->delete();
-//
-//            foreach ($request->medical_details as $index => $detail) {
-//                $filePath = null;
-//
-//                // Handle new file upload
-//                if ($request->hasFile("medical_details.$index.file_path")) {
-//                    $filePath = $request->file("medical_details.$index.file_path")
-//                        ->store('medical_details', 'public');
-//                } elseif (!empty($detail['existing_file'])) {
-//                    $filePath = $detail['existing_file'];
-//                }
-//
-//                if (!empty($detail['id'])) {
-//                    // Update existing record
-//                    $application->medicalDetails()->where('id', $detail['id'])->update([
-//                        'name' => $detail['name'],
-//                        'gender' => $detail['gender'],
-//                        'contact' => $detail['contact'],
-//                        'category' => $detail['category'],
-//                        'service' => $detail['service'],
-//                        'designation' => $detail['designation'] ?? null,
-//                        'department' => $detail['department'] ?? null,
-//                        'file_path' => $filePath,
-//                    ]);
-//                } else {
-//                    // Create new record
-//                    $application->medicalDetails()->create([
-//                        'name' => $detail['name'],
-//                        'gender' => $detail['gender'],
-//                        'contact' => $detail['contact'],
-//                        'category' => $detail['category'],
-//                        'service' => $detail['service'],
-//                        'designation' => $detail['designation'] ?? null,
-//                        'department' => $detail['department'] ?? null,
-//                        'file_path' => $filePath,
-//                    ]);
-//                }
-//            }
-//
-//            DB::commit();
-//            return redirect()->back()->with('success', 'Medical application updated successfully.');
-//        } catch (\Exception $e) {
-//            DB::rollBack();
-//            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
-//        }
-//    }
-
-
 }

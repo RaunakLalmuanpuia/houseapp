@@ -34,6 +34,9 @@ use App\Http\Controllers\UserController;
 
 use App\Http\Controllers\DigilockerController;
 
+use App\Http\Controllers\RegisterController;
+
+
 
 
 
@@ -177,18 +180,10 @@ Route::group([], function () {
 
     Route::post('/applications/medical/{application}/update', [ApplicationController::class, 'updateMedical'])->name('applications.medical.update');
 
-
-
 });
 
 
 
-////Application Actions
-//Route::group([], function () {
-//    Route::post('/applications/{application}/forward', [ApplicationController::class, 'forward'])->middleware('role:Admin')->name('applications.forward');
-//    Route::post('/applications/{application}/approve', [ApplicationController::class, 'approve'])->middleware('role:Admin|House')->name('applications.approve');
-//    Route::post('/applications/{application}/reject', [ApplicationController::class, 'reject'])->middleware('role:Admin|House')->name('applications.reject');
-//});
 
 
 // Admin Applications
@@ -223,6 +218,12 @@ Route::group([], function () {
     Route::post('login', [AuthController::class, 'store'])->name('login.store');
     Route::delete('logout', [AuthController::class, 'destroy'])->name('login.destroy');
 });
+
+
+Route::get('register', [RegisterController::class, 'create'])->name('register.create');
+Route::post('register/send-otp', [RegisterController::class, 'sendOtp'])->name('register.send-otp');
+Route::post('register/confirm-otp', [RegisterController::class, 'confirmOtp'])->name('register.confirm-otp');
+
 // FAQs
 Route::group(['prefix'=>'admin'], function () {
 

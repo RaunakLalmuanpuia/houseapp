@@ -43,8 +43,8 @@
 
 
         <div class="mt-4 flex items-center justify-between">
-            <a href="#" class="text-muted-foreground text-start">Register New Account!</a>
-
+            <a :href="route('register.create')" href="#" class="text-muted-foreground text-start">Register New Account!</a>
+<!--            <a  class="text-accent text-no-underline">SIGN UP</a>-->
             <a href="#" class="text-muted-foreground text-end">Forgot Password?</a>
         </div>
 
