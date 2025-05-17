@@ -111,6 +111,8 @@ class ApplicationController extends Controller
         ]);
     }
 
+
+
     public function updateFlam(Request $request, Application $application){
 //        dd($request->all());
 
@@ -176,37 +178,137 @@ class ApplicationController extends Controller
         }
     }
 
+//    public function updateOnDuty(Request $request, Application $application)
+//    {
+//        $validated = $request->validate([
+//            'type' => 'required|string',
+//            'status' => 'required|string',
+//            'applicant_name' => 'required|string|max:255',
+//            'gender' => 'required|string|in:Male,Female,Other',
+//            'designation' => 'required|string|max:255',
+//            'department' => 'required|string|max:255',
+//            'contact' => 'required|string|max:20',
+//            'location' => 'required|integer|exists:houses,id',
+//            'start_date' => 'required|date',
+//            'end_date' => 'required|date|after_or_equal:start_date',
+//
+//            'department_approval_file' => 'nullable|mimes:pdf,jpg,jpeg,png,xlsx|max:2048',
+//            'on_duty_details' => 'nullable|array',
+//            'on_duty_details.*.name' => 'required|string|max:255',
+//            'on_duty_details.*.gender' => 'required|string|in:Male,Female,Other',
+//            'on_duty_details.*.designation' => 'required|string|max:255',
+//            'on_duty_details.*.department' => 'required|string|max:255',
+//            'on_duty_details.*.contact' => 'required|string|max:20',
+//            'on_duty_details.*.department_approval_file' => 'nullable|mimes:pdf,jpg,jpeg,png,xlsx|max:2048',
+//            'family_details' => 'nullable|array',
+//            'family_details.*.name' => 'required|string|max:255',
+//            'family_details.*.relation' => 'required|string|max:255',
+//        ]);
+//
+//        DB::beginTransaction();
+//        try {
+//            // Update application fields
+//            $application->update([
+//                'gender' => $validated['gender'],
+//                'designation' => $validated['designation'],
+//                'department' => $validated['department'],
+//                'contact' => $validated['contact'],
+//                'location' => $validated['location'],
+//                'start_date' => $validated['start_date'],
+//                'end_date' => $validated['end_date'],
+//            ]);
+//
+//            // Check if a new department_approval file is uploaded, and update if necessary
+//            if ($request->hasFile('department_approval_file')) {
+//                $deptApprovalFile = $request->file('department_approval_file');
+//                $deptApprovalName = random_int(100000, 999999) . '.' . $deptApprovalFile->getClientOriginalExtension();
+//                $deptApprovalPath = $deptApprovalFile->storeAs('approvals', $deptApprovalName, 'public');
+//                $application->department_approval = $deptApprovalPath;  // Only update if a new file is uploaded
+//            }
+//
+//            // Delete old on duty details and recreate
+//            $application->onDutyDetails()->delete();
+//
+//            if (!empty($validated['on_duty_details'])) {
+//                foreach ($validated['on_duty_details'] as $index => $detail) {
+//                    $approvalPath = $detail['department_approval'] ?? '';  // Keep existing value if no new file uploaded
+//
+//                    // If a new department_approval file is uploaded for this detail, update the path
+//                    if ($request->hasFile("on_duty_details.$index.department_approval_file")) {
+//                        $file = $request->file("on_duty_details.$index.department_approval_file");
+//                        $fileName = random_int(100000, 999999) . '.' . $file->getClientOriginalExtension();
+//                        $approvalPath = $file->storeAs('approvals', $fileName, 'public');
+//                    }
+//
+//                    // Store the on duty details with the department_approval path
+//                    $application->onDutyDetails()->create([
+//                        'name' => $detail['name'],
+//                        'gender' => $detail['gender'],
+//                        'designation' => $detail['designation'],
+//                        'department' => $detail['department'],
+//                        'contact' => $detail['contact'],
+//                        'department_approval' => $approvalPath,  // Use existing path if no new file uploaded
+//                    ]);
+//                }
+//            }
+//
+//            // Delete and recreate family members
+//            $application->familyMembers()->delete();
+//            if (!empty($validated['family_details'])) {
+//                foreach ($validated['family_details'] as $family) {
+//                    $application->familyMembers()->create([
+//                        'name' => $family['name'],
+//                        'relation' => $family['relation'],
+//                    ]);
+//                }
+//            }
+//
+//            DB::commit();
+//            return redirect()->back()->with('success', 'Application updated successfully.');
+//
+//        } catch (\Exception $e) {
+//            DB::rollBack();
+//            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+//        }
+//    }
+
+
     public function updateOnDuty(Request $request, Application $application)
     {
         $validated = $request->validate([
-            'type' => 'required|string',
-            'status' => 'required|string',
             'applicant_name' => 'required|string|max:255',
-            'gender' => 'required|string|in:Male,Female,Other',
-            'designation' => 'required|string|max:255',
-            'department' => 'required|string|max:255',
-            'contact' => 'required|string|max:20',
+            'gender' => 'required|string',
+            'contact' => 'required|string|max:15',
+            'designation' => 'nullable|string|max:255',
+            'department' => 'nullable|string|max:255',
             'location' => 'required|integer|exists:houses,id',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'type' => 'nullable|string|max:255',
+            'department_approval' => 'nullable|file|mimes:pdf|max:2048',
 
-            'department_approval_file' => 'nullable|mimes:pdf,jpg,jpeg,png,xlsx|max:2048',
             'on_duty_details' => 'nullable|array',
             'on_duty_details.*.name' => 'required|string|max:255',
-            'on_duty_details.*.gender' => 'required|string|in:Male,Female,Other',
-            'on_duty_details.*.designation' => 'required|string|max:255',
-            'on_duty_details.*.department' => 'required|string|max:255',
-            'on_duty_details.*.contact' => 'required|string|max:20',
-            'on_duty_details.*.department_approval_file' => 'nullable|mimes:pdf,jpg,jpeg,png,xlsx|max:2048',
-            'family_details' => 'nullable|array',
-            'family_details.*.name' => 'required|string|max:255',
-            'family_details.*.relation' => 'required|string|max:255',
+            'on_duty_details.*.gender' => 'required|string',
+            'on_duty_details.*.contact' => 'required|string|max:15',
+            'on_duty_details.*.designation' => 'nullable|string|max:255',
+            'on_duty_details.*.department' => 'nullable|string|max:255',
+            'on_duty_details.*.department_approval' => 'nullable|file|mimes:pdf|max:2048',
+
+            'family_members' => 'nullable|array',
+            'family_members.*.name' => 'required|string|max:255',
+            'family_members.*.relation' => 'required|string|max:255',
         ]);
+
+
 
         DB::beginTransaction();
         try {
-            // Update application fields
+
+            // Update basic application fields
             $application->update([
+
+                'applicant_name' => $validated['applicant_name'],
                 'gender' => $validated['gender'],
                 'designation' => $validated['designation'],
                 'department' => $validated['department'],
@@ -216,60 +318,58 @@ class ApplicationController extends Controller
                 'end_date' => $validated['end_date'],
             ]);
 
-            // Check if a new department_approval file is uploaded, and update if necessary
-            if ($request->hasFile('department_approval_file')) {
-                $deptApprovalFile = $request->file('department_approval_file');
-                $deptApprovalName = random_int(100000, 999999) . '.' . $deptApprovalFile->getClientOriginalExtension();
-                $deptApprovalPath = $deptApprovalFile->storeAs('approvals', $deptApprovalName, 'public');
-                $application->department_approval = $deptApprovalPath;  // Only update if a new file is uploaded
+            // Upload department approval PDF if new file provided
+            if ($request->hasFile('department_approval')) {
+                $path = $request->file('department_approval')->store('approvals', 'public');
+                $application->department_approval = $path;
+                $application->save();
             }
 
-            // Delete old on duty details and recreate
-            $application->onDutyDetails()->delete();
+            // Handle on duty details
+            $application->onDutyDetails()->delete(); // delete existing ones
+            if ($request->on_duty_details) {
+                foreach ($request->on_duty_details as $index => $duty) {
+                    $approvalPath = null;
 
-            if (!empty($validated['on_duty_details'])) {
-                foreach ($validated['on_duty_details'] as $index => $detail) {
-                    $approvalPath = $detail['department_approval'] ?? '';  // Keep existing value if no new file uploaded
-
-                    // If a new department_approval file is uploaded for this detail, update the path
-                    if ($request->hasFile("on_duty_details.$index.department_approval_file")) {
-                        $file = $request->file("on_duty_details.$index.department_approval_file");
-                        $fileName = random_int(100000, 999999) . '.' . $file->getClientOriginalExtension();
-                        $approvalPath = $file->storeAs('approvals', $fileName, 'public');
+                    // Handle individual file upload
+                    if ($request->hasFile("on_duty_details.$index.department_approval")) {
+                        $approvalPath = $request->file("on_duty_details.$index.department_approval")
+                            ->store('approvals/on_duty', 'public');
+                    } elseif (isset($duty['existing_approval'])) {
+                        $approvalPath = $duty['existing_approval']; // retain existing
                     }
 
-                    // Store the on duty details with the department_approval path
                     $application->onDutyDetails()->create([
-                        'name' => $detail['name'],
-                        'gender' => $detail['gender'],
-                        'designation' => $detail['designation'],
-                        'department' => $detail['department'],
-                        'contact' => $detail['contact'],
-                        'department_approval' => $approvalPath,  // Use existing path if no new file uploaded
+                        'name' => $duty['name'],
+                        'gender' => $duty['gender'],
+                        'contact' => $duty['contact'],
+                        'designation' => $duty['designation'] ?? null,
+                        'department' => $duty['department'] ?? null,
+                        'department_approval' => $approvalPath,
                     ]);
                 }
             }
 
-            // Delete and recreate family members
+            // Handle family members
             $application->familyMembers()->delete();
-            if (!empty($validated['family_details'])) {
-                foreach ($validated['family_details'] as $family) {
+            if ($request->family_members) {
+                foreach ($request->family_members as $member) {
                     $application->familyMembers()->create([
-                        'name' => $family['name'],
-                        'relation' => $family['relation'],
+                        'name' => $member['name'],
+                        'relation' => $member['relation'],
                     ]);
                 }
             }
-
             DB::commit();
+
             return redirect()->back()->with('success', 'Application updated successfully.');
 
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
-    }
 
+    }
     public function updateNotOnDuty(Request $request, Application $application)
     {
 //        dd($request->all());
