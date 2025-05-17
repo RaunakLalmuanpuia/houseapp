@@ -175,7 +175,7 @@ Route::group([], function () {
     Route::post('/applications/study-tour/{application}/update', [ApplicationController::class, 'updateStudyTour'])->name('applications.study-tour.update');
 
 
-    Route::post('/applications/study-tour/{application}/update', [ApplicationController::class, 'updateStudyTour'])->name('applications.study-tour.update');
+    Route::post('/applications/medical/{application}/update', [ApplicationController::class, 'updateMedical'])->name('applications.medical.update');
 
 
 

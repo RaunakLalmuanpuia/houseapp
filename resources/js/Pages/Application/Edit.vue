@@ -10,6 +10,7 @@ import OnDuty from "@/Components/EditApplication/OnDuty.vue";
 import NotOnDuty from "@/Components/EditApplication/NotOnDuty.vue";
 import NonOfficial from "@/Components/EditApplication/NonOfficial.vue";
 import StudyTour from "@/Components/EditApplication/StudyTour.vue";
+import Medical from "@/Components/EditApplication/Medical.vue";
 </script>
 
 <template>
@@ -46,6 +47,14 @@ import StudyTour from "@/Components/EditApplication/StudyTour.vue";
             :application="application"
             :house="house"
         />
+
+        <Medical
+            v-if="application.type === 'MEDICAL'"
+            :application="application"
+            :house="house"
+        />
+
+
     </div>
 
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Application;
 use App\Models\ApplicationStatusHistory;
 use App\Models\House;
+use App\Models\MedicalDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -110,9 +111,6 @@ class ApplicationController extends Controller
             'house' => $house,
         ]);
     }
-
-
-
     public function updateFlam(Request $request, Application $application){
 //        dd($request->all());
 
@@ -177,102 +175,6 @@ class ApplicationController extends Controller
             return redirect()->back()->with('error', 'Update failed: ' . $e->getMessage());
         }
     }
-
-//    public function updateOnDuty(Request $request, Application $application)
-//    {
-//        $validated = $request->validate([
-//            'type' => 'required|string',
-//            'status' => 'required|string',
-//            'applicant_name' => 'required|string|max:255',
-//            'gender' => 'required|string|in:Male,Female,Other',
-//            'designation' => 'required|string|max:255',
-//            'department' => 'required|string|max:255',
-//            'contact' => 'required|string|max:20',
-//            'location' => 'required|integer|exists:houses,id',
-//            'start_date' => 'required|date',
-//            'end_date' => 'required|date|after_or_equal:start_date',
-//
-//            'department_approval_file' => 'nullable|mimes:pdf,jpg,jpeg,png,xlsx|max:2048',
-//            'on_duty_details' => 'nullable|array',
-//            'on_duty_details.*.name' => 'required|string|max:255',
-//            'on_duty_details.*.gender' => 'required|string|in:Male,Female,Other',
-//            'on_duty_details.*.designation' => 'required|string|max:255',
-//            'on_duty_details.*.department' => 'required|string|max:255',
-//            'on_duty_details.*.contact' => 'required|string|max:20',
-//            'on_duty_details.*.department_approval_file' => 'nullable|mimes:pdf,jpg,jpeg,png,xlsx|max:2048',
-//            'family_details' => 'nullable|array',
-//            'family_details.*.name' => 'required|string|max:255',
-//            'family_details.*.relation' => 'required|string|max:255',
-//        ]);
-//
-//        DB::beginTransaction();
-//        try {
-//            // Update application fields
-//            $application->update([
-//                'gender' => $validated['gender'],
-//                'designation' => $validated['designation'],
-//                'department' => $validated['department'],
-//                'contact' => $validated['contact'],
-//                'location' => $validated['location'],
-//                'start_date' => $validated['start_date'],
-//                'end_date' => $validated['end_date'],
-//            ]);
-//
-//            // Check if a new department_approval file is uploaded, and update if necessary
-//            if ($request->hasFile('department_approval_file')) {
-//                $deptApprovalFile = $request->file('department_approval_file');
-//                $deptApprovalName = random_int(100000, 999999) . '.' . $deptApprovalFile->getClientOriginalExtension();
-//                $deptApprovalPath = $deptApprovalFile->storeAs('approvals', $deptApprovalName, 'public');
-//                $application->department_approval = $deptApprovalPath;  // Only update if a new file is uploaded
-//            }
-//
-//            // Delete old on duty details and recreate
-//            $application->onDutyDetails()->delete();
-//
-//            if (!empty($validated['on_duty_details'])) {
-//                foreach ($validated['on_duty_details'] as $index => $detail) {
-//                    $approvalPath = $detail['department_approval'] ?? '';  // Keep existing value if no new file uploaded
-//
-//                    // If a new department_approval file is uploaded for this detail, update the path
-//                    if ($request->hasFile("on_duty_details.$index.department_approval_file")) {
-//                        $file = $request->file("on_duty_details.$index.department_approval_file");
-//                        $fileName = random_int(100000, 999999) . '.' . $file->getClientOriginalExtension();
-//                        $approvalPath = $file->storeAs('approvals', $fileName, 'public');
-//                    }
-//
-//                    // Store the on duty details with the department_approval path
-//                    $application->onDutyDetails()->create([
-//                        'name' => $detail['name'],
-//                        'gender' => $detail['gender'],
-//                        'designation' => $detail['designation'],
-//                        'department' => $detail['department'],
-//                        'contact' => $detail['contact'],
-//                        'department_approval' => $approvalPath,  // Use existing path if no new file uploaded
-//                    ]);
-//                }
-//            }
-//
-//            // Delete and recreate family members
-//            $application->familyMembers()->delete();
-//            if (!empty($validated['family_details'])) {
-//                foreach ($validated['family_details'] as $family) {
-//                    $application->familyMembers()->create([
-//                        'name' => $family['name'],
-//                        'relation' => $family['relation'],
-//                    ]);
-//                }
-//            }
-//
-//            DB::commit();
-//            return redirect()->back()->with('success', 'Application updated successfully.');
-//
-//        } catch (\Exception $e) {
-//            DB::rollBack();
-//            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
-//        }
-//    }
-
-
     public function updateOnDuty(Request $request, Application $application)
     {
         $validated = $request->validate([
@@ -537,6 +439,175 @@ class ApplicationController extends Controller
 
         return redirect()->back()->with('success', 'Application updated successfully.');
     }
+
+
+    public function updateMedical(Request $request, Application $application)
+    {
+        $validated = $request->validate([
+
+            'applicant_name' => 'required|string|max:255',
+            'gender' => 'required|string',
+            'contact' => 'required|string|max:15',
+            'location' => 'required|exists:houses,id',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+
+            'medical_details' => 'required|array|min:1',
+            'medical_details.*.name' => 'required|string|max:255',
+            'medical_details.*.gender' => 'required|string|in:Male,Female,Other',
+            'medical_details.*.contact' => 'required|string|max:20',
+            'medical_details.*.category' => 'required|string|max:255',
+            'medical_details.*.service' => 'required|string|max:255',
+            'medical_details.*.designation' => 'nullable|string|max:255',
+            'medical_details.*.department' => 'nullable|string|max:255',
+            'medical_details.*.file_path' => 'nullable|file|mimes:pdf|max:2048',
+            'medical_details.*.existing_file' => 'nullable|string',
+
+        ]);
+
+        DB::beginTransaction();
+        try {
+            // Get main applicant from first entry in medical_details
+            $mainApplicant = $validated['medical_details'][0];
+
+            // Update Application with main applicant info
+            $application->update([
+                'applicant_name' => $mainApplicant['name'],
+                'gender' => $mainApplicant['gender'],
+                'contact' => $mainApplicant['contact'],
+                'designation' => $mainApplicant['designation'] ?? null,
+                'department' => $mainApplicant['department'] ?? null,
+                'location' => $validated['location'],
+                'start_date' => $validated['start_date'],
+                'end_date' => $validated['end_date'],
+            ]);
+
+            // Delete old medical details
+            $application->medicalDetails()->delete();
+
+            // Create new medical details
+            $newDetails = [];
+
+            foreach ($request->medical_details as $index => $detail) {
+                $filePath = null;
+
+                if ($request->hasFile("medical_details.$index.file_path")) {
+                    $filePath = $request->file("medical_details.$index.file_path")->store('medical_details', 'public');
+                } elseif (!empty($detail['existing_file'])) {
+                    $filePath = $detail['existing_file'];
+                }
+
+                $newDetails[] = [
+                    'name' => $detail['name'],
+                    'gender' => $detail['gender'],
+                    'contact' => $detail['contact'],
+                    'category' => $detail['category'],
+                    'service' => $detail['service'],
+                    'designation' => $detail['designation'] ?? null,
+                    'department' => $detail['department'] ?? null,
+                    'file_path' => $filePath,
+                ];
+            }
+
+            $application->medicalDetails()->createMany($newDetails);
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Medical application updated successfully.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
+
+
+
+//    public function updateMedical(Request $request, Application $application)
+//    {
+//        $validated = $request->validate([
+//            'applicant_name' => 'required|string|max:255',
+//            'gender' => 'required|string',
+//            'contact' => 'required|string|max:15',
+//            'designation' => 'nullable|string|max:255',
+//            'department' => 'nullable|string|max:255',
+//            'location' => 'required|integer|exists:houses,id',
+//            'start_date' => 'required|date',
+//            'end_date' => 'required|date|after_or_equal:start_date',
+//
+//            'medical_details' => 'required|array|min:1',
+//            'medical_details.*.name' => 'required|string|max:255',
+//            'medical_details.*.gender' => 'required|string',
+//            'medical_details.*.contact' => 'required|string|max:15',
+//            'medical_details.*.category' => 'required|string|max:255',
+//            'medical_details.*.service' => 'required|string|max:255',
+//            'medical_details.*.designation' => 'nullable|string|max:255',
+//            'medical_details.*.department' => 'nullable|string|max:255',
+//            'medical_details.*.file_path' => 'required|file|mimes:pdf|max:2048',
+//        ]);
+//
+//        DB::beginTransaction();
+//        try {
+//            // Update main application fields
+//            $application->update([
+//                'applicant_name' => $validated['applicant_name'],
+//                'gender' => $validated['gender'],
+//                'contact' => $validated['contact'],
+//                'designation' => $validated['designation'] ?? null,
+//                'department' => $validated['department'] ?? null,
+//                'location' => $validated['location'],
+//                'start_date' => $validated['start_date'] ?? null,
+//                'end_date' => $validated['end_date'] ?? null,
+//            ]);
+//
+//            // Sync medical details
+//            $existingIds = collect($request->medical_details)->pluck('id')->filter()->toArray();
+//            $application->medicalDetails()->whereNotIn('id', $existingIds)->delete();
+//
+//            foreach ($request->medical_details as $index => $detail) {
+//                $filePath = null;
+//
+//                // Handle new file upload
+//                if ($request->hasFile("medical_details.$index.file_path")) {
+//                    $filePath = $request->file("medical_details.$index.file_path")
+//                        ->store('medical_details', 'public');
+//                } elseif (!empty($detail['existing_file'])) {
+//                    $filePath = $detail['existing_file'];
+//                }
+//
+//                if (!empty($detail['id'])) {
+//                    // Update existing record
+//                    $application->medicalDetails()->where('id', $detail['id'])->update([
+//                        'name' => $detail['name'],
+//                        'gender' => $detail['gender'],
+//                        'contact' => $detail['contact'],
+//                        'category' => $detail['category'],
+//                        'service' => $detail['service'],
+//                        'designation' => $detail['designation'] ?? null,
+//                        'department' => $detail['department'] ?? null,
+//                        'file_path' => $filePath,
+//                    ]);
+//                } else {
+//                    // Create new record
+//                    $application->medicalDetails()->create([
+//                        'name' => $detail['name'],
+//                        'gender' => $detail['gender'],
+//                        'contact' => $detail['contact'],
+//                        'category' => $detail['category'],
+//                        'service' => $detail['service'],
+//                        'designation' => $detail['designation'] ?? null,
+//                        'department' => $detail['department'] ?? null,
+//                        'file_path' => $filePath,
+//                    ]);
+//                }
+//            }
+//
+//            DB::commit();
+//            return redirect()->back()->with('success', 'Medical application updated successfully.');
+//        } catch (\Exception $e) {
+//            DB::rollBack();
+//            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+//        }
+//    }
 
 
 }
