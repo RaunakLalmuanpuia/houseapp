@@ -8,7 +8,6 @@ defineProps({
 
 
 <!--    New-->
-
     <div class="bg-white flex flex-col items-center p-4 ">
         <div class="max-w-md w-full rounded-xl border border-gray-200 overflow-hidden">
             <div class="bg-green-100 px-6 py-4 flex justify-between items-center rounded-t-xl">
@@ -25,7 +24,7 @@ defineProps({
                     </h3>
                     <p class="text-black text-base font-normal leading-snug mt-1">
                         {{ application?.designation }},<br />
-                        {{ application?.department}},<br />
+                        {{ application?.department?.name}},<br />
                         {{application?.contact }}
                     </p>
                 </div>

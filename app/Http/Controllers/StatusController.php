@@ -43,10 +43,10 @@ class StatusController extends Controller
 
             switch ($application->type) {
                 case 'ON DUTY':
-                    $application->load('onDutyDetails');
+                    $application->load(['onDutyDetails.department']);
                     break;
                 case 'NOT ON DUTY':
-                    $application->load('notOnDutyDetails');
+                    $application->load(['notOnDutyDetails.department']);
                     break;
                 case 'PRIVATE':
                     $application->load('nonOfficialDetails');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Application;
 use App\Models\ApplicationStatusHistory;
+use App\Models\Department;
 use App\Models\Otp;
 use App\Models\State;
 use Illuminate\Support\Facades\Validator;
@@ -21,7 +22,10 @@ class NotOnDutyController extends Controller
 
     public function stepTwo()
     {
-        return Inertia::render('Form/NotOnDuty/NotOnDuty');
+        $departments = Department::all();
+        return Inertia::render('Form/NotOnDuty/NotOnDuty',[
+            'departments' => $departments,
+        ]);
     }
 
     public function stepThree()
@@ -59,7 +63,7 @@ class NotOnDutyController extends Controller
             'applicant_name' => 'required|string|max:255',
             'gender' => 'required|string|in:Male,Female,Other,Select',
             'designation' => 'required|string|max:255',
-            'department' => 'required|string|max:255',
+            'department' => 'required|integer|exists:departments,id',
             'contact' => 'required|string|max:20',
             'location' => 'required|integer|exists:houses,id',
             'start_date' => 'required|date',
@@ -67,7 +71,7 @@ class NotOnDutyController extends Controller
             'not_on_duty_details' => 'nullable|array',
             'not_on_duty_details.*.name' => 'required|string',
             'not_on_duty_details.*.designation' => 'required|string',
-            'not_on_duty_details.*.department' => 'required|string',
+            'not_on_duty_details.*.department' => 'required|integer|exists:departments,id',
             'not_on_duty_details.*.contact' => 'required|string',
             'not_on_duty_details.*.gender' => 'required|string|in:Male,Female,Other,Select',
             'family_details' => 'nullable|array',
@@ -148,7 +152,7 @@ class NotOnDutyController extends Controller
     {
         $applicationId = $request->query('application');
 
-        $application = Application::with(['notOnDutyDetails', 'house'])->findOrFail($applicationId);
+        $application = Application::with(['notOnDutyDetails.department', 'house', 'department'])->findOrFail($applicationId);
 
         return Inertia::render('Form/Submission', [
             'application' => $application

@@ -38,7 +38,7 @@ defineProps({
                                 </h3>
                                 <p class="text-sm leading-5 mt-1">
                                     {{ application.designation }},<br />
-                                    {{ application.department }}<br />
+                                    {{ application.department?.name }}<br />
                                     {{ application.contact }}
                                 </p>
                             </div>
@@ -110,7 +110,7 @@ defineProps({
                         <td class="py-3 px-3 whitespace-nowrap">{{ member.gender }}</td>
                         <td class="py-3 px-3 whitespace-nowrap">{{ member.designation }}</td>
                         <td class="py-3 px-3 max-w-[160px] leading-5 break-words whitespace-normal">
-                            {{ member.department }}
+                            {{ member.department?.name }}
                         </td>
                         <td class="py-3 px-3 whitespace-nowrap">{{ member.contact }}</td>
                     </tr>
