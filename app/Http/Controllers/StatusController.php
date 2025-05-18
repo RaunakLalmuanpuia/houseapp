@@ -63,7 +63,7 @@ class StatusController extends Controller
             }
 
             // Optionally always load family members
-            $application->load(['familyMembers', 'house']);
+            $application->load(['familyMembers', 'house', 'department']);
 //        dd($application);
             return Inertia::render('Status/Show', [
                 'application' => $application

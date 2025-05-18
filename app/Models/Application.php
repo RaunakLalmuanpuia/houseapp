@@ -36,7 +36,7 @@ class Application extends Model
     }
     public function department()
     {
-        return $this->belongsTo(House::class, 'department');
+        return $this->belongsTo(Department::class, 'department');
     }
     public function flamDetails() {
         return $this->hasMany(FlamDetail::class);

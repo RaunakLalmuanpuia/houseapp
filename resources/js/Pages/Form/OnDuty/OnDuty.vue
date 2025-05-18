@@ -80,14 +80,18 @@
 
                     <div>
                         <label for="department" class="block font-semibold text-sm leading-5 mb-1 text-black">Department</label>
-                        <input
+                        <select
                             v-model="application.department"
                             id="department"
-                            type="text"
-                            placeholder="Diltu Department"
                             class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
-                        />
-                        <span v-if="errors['designation']" class="text-red-500 text-sm">{{ errors['department'] }}</span>
+                        >
+                            <option disabled value="">Select Department</option>
+                            <option v-for="dept in departments" :key="dept.id" :value="dept.id">
+                                {{ dept.name }}
+                            </option>
+                        </select>
+
+                        <span v-if="errors['department']" class="text-red-500 text-sm">{{ errors['department'] }}</span>
                     </div>
 
                     <div>
@@ -177,15 +181,19 @@
 
                         <div>
                             <label for="department" class="block font-semibold text-sm leading-5 mb-1 text-black">Department</label>
-                            <input
+                            <select
                                 v-model="on_duty.department"
-                                id="designation"
-                                type="text"
-                                placeholder="Diltu Department"
+                                id="department"
                                 class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
-                            />
-                            <span v-if="errors[`on_duty_details.${index}.designation`]" class="text-red-500 text-sm">
-                                  {{ errors[`on_duty_details.${index}.designation`] }}
+                            >
+                                <option disabled value="">Select Department</option>
+                                <option v-for="dept in departments" :key="dept.id" :value="dept.id">
+                                    {{ dept.name }}
+                                </option>
+                            </select>
+
+                            <span v-if="errors[`on_duty_details.${index}.department`]" class="text-red-500 text-sm">
+                                  {{ errors[`on_duty_details.${index}.department`] }}
                             </span>
                         </div>
 
@@ -351,6 +359,10 @@ import { router } from '@inertiajs/vue3'
 
 const application = useOnDutyApplicationStore()
 
+const props = defineProps({
+    departments: Array
+});
+
 const page = usePage()
 const showError = ref(false)
 function next() {
@@ -371,16 +383,32 @@ function validateForm() {
     errors.value = {}
 
     // Simple fields
-    const requiredFields = [
-        'type', 'status', 'applicant_name', 'gender',
-        'designation', 'department', 'contact',
-    ]
-    requiredFields.forEach(field => {
-        if (!application[field] || typeof application[field] !== 'string') {
-            errors.value[field] = `${field.replace('_', ' ')} is required.`
-        }
-    })
-
+    // Validate specific fields
+    if (!application.type || typeof application.type !== 'string') {
+        errors.value['type'] = 'Type is required.'
+    }
+    if (!application.status || typeof application.status !== 'string') {
+        errors.value['status'] = 'Status is required.'
+    }
+    if (!application.applicant_name || typeof application.applicant_name !== 'string') {
+        errors.value['applicant_name'] = 'Applicant name is required.'
+    }
+    if (!application.gender || typeof application.gender !== 'string') {
+        errors.value['gender'] = 'Gender is required.'
+    }
+    if (!application.designation || typeof application.designation !== 'string') {
+        errors.value['designation'] = 'Designation is required.'
+    }
+    if (
+        application.department === null ||
+        application.department === undefined ||
+        typeof application.department === 'string'
+    ) {
+        errors.value['department'] = 'Department must be selected.'
+    }
+    if (!application.contact || typeof application.contact !== 'string') {
+        errors.value['contact'] = 'Contact is required.'
+    }
     // Gender specific values
     const allowedGenders = ['Male', 'Female', 'Other']
     if (application.gender && !allowedGenders.includes(application.gender)) {

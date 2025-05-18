@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Application;
 use App\Models\ApplicationStatusHistory;
+use App\Models\Department;
 use App\Models\Otp;
 use App\Models\State;
 use Illuminate\Http\Request;
@@ -20,7 +21,10 @@ class OnDutyController extends Controller
 
     public function stepTwo()
     {
-        return Inertia::render('Form/OnDuty/OnDuty');
+        $departments = Department::all();
+        return Inertia::render('Form/OnDuty/OnDuty',[
+            'departments' => $departments,
+        ]);
     }
 
     public function stepThree()
@@ -58,7 +62,7 @@ class OnDutyController extends Controller
             'applicant_name' => 'required|string|max:255',
             'gender' => 'required|string|in:Male,Female,Other',
             'designation' => 'required|string|max:255',
-            'department' => 'required|string|max:255',
+            'department' => 'required|integer|exists:departments,id',
             'contact' => 'required|string|max:20',
             'location' => 'required|integer|exists:houses,id',
             'start_date' => 'required|date',
@@ -161,8 +165,9 @@ class OnDutyController extends Controller
 
         $applicationId = $request->query('application');
 
-        $application = Application::with(['onDutyDetails', 'house'])->findOrFail($applicationId);
+        $application = Application::with(['onDutyDetails', 'house', 'department'])->findOrFail($applicationId);
 
+//        dd($application);
         return Inertia::render('Form/Submission', [
             'application' => $application
         ]);

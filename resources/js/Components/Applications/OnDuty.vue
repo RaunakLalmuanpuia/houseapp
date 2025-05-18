@@ -44,7 +44,7 @@ const handleOpenDocument = (item) => {
                             </h3>
                             <p class="text-sm leading-5 mt-1">
                                 {{ application.designation }},<br />
-                                {{ application.department }}<br />
+                                {{ application.department?.name }}<br />
                                 {{ application.contact }}
                             </p>
                         </div>

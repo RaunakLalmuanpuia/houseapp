@@ -23,7 +23,7 @@ defineProps({
                     </h3>
                     <p class="text-black text-base font-normal leading-snug mt-1">
                         {{ application?.designation }},<br />
-                        {{ application?.department }},<br />
+                        {{ application?.department?.name }},<br />
                         {{application?.contact }}
                     </p>
                 </div>
