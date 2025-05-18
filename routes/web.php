@@ -162,25 +162,25 @@ Route::group(['prefix'=>'status'], function () {
 
 //Application Actions
 Route::group([], function () {
-    Route::post('/applications/{application}/forward', [ApplicationController::class, 'forward'])->name('applications.forward');
-    Route::post('/applications/{application}/approve', [ApplicationController::class, 'approve'])->name('applications.approve');
-    Route::post('/applications/{application}/reject', [ApplicationController::class, 'reject'])->name('applications.reject');
+    Route::post('/applications/{application}/forward', [ApplicationController::class, 'forward'])->middleware('can:Forward application')->name('applications.forward');
+    Route::post('/applications/{application}/approve', [ApplicationController::class, 'approve'])->middleware('can:Approve Application')->name('applications.approve');
+    Route::post('/applications/{application}/reject', [ApplicationController::class, 'reject'])->middleware('can:Reject Application')->name('applications.reject');
 
 
-    Route::get('/applications/{application}/edit', [ApplicationController::class, 'edit'])->name('applications.edit');
+    Route::get('/applications/{application}/edit', [ApplicationController::class, 'edit'])->middleware('can:Edit Application')->name('applications.edit');
 
-    Route::put('/applications/flam/{application}/update', [ApplicationController::class, 'updateFlam'])->name('applications.flam.update');
+    Route::put('/applications/flam/{application}/update', [ApplicationController::class, 'updateFlam'])->middleware('can:Edit Application')->name('applications.flam.update');
 
-    Route::post('/applications/on-duty/{application}/update', [ApplicationController::class, 'updateOnDuty'])->name('applications.on-duty.update');
+    Route::post('/applications/on-duty/{application}/update', [ApplicationController::class, 'updateOnDuty'])->middleware('can:Edit Application')->name('applications.on-duty.update');
 
-    Route::put('/applications/not-on-duty/{application}/update', [ApplicationController::class, 'updateNotOnDuty'])->name('applications.not-on-duty.update');
+    Route::put('/applications/not-on-duty/{application}/update', [ApplicationController::class, 'updateNotOnDuty'])->middleware('can:Edit Application')->name('applications.not-on-duty.update');
 
-    Route::put('/applications/not-official/{application}/update', [ApplicationController::class, 'updateNonOfficial'])->name('applications.not-official.update');
+    Route::put('/applications/not-official/{application}/update', [ApplicationController::class, 'updateNonOfficial'])->middleware('can:Edit Application')->name('applications.not-official.update');
 
-    Route::post('/applications/study-tour/{application}/update', [ApplicationController::class, 'updateStudyTour'])->name('applications.study-tour.update');
+    Route::post('/applications/study-tour/{application}/update', [ApplicationController::class, 'updateStudyTour'])->middleware('can:Edit Application')->name('applications.study-tour.update');
 
 
-    Route::post('/applications/medical/{application}/update', [ApplicationController::class, 'updateMedical'])->name('applications.medical.update');
+    Route::post('/applications/medical/{application}/update', [ApplicationController::class, 'updateMedical'])->middleware('can:Edit Application')->name('applications.medical.update');
 
 });
 
@@ -189,7 +189,7 @@ Route::group([], function () {
 
 
 // Admin Applications
-Route::group(['prefix'=>'admin'], function () {
+Route::group(['prefix'=>'admin', 'middleware' => ['role:Admin'], ], function () {
     Route::get('/applications/incoming', [AdminApplicationController::class, 'indexIncoming'])->name('admin.application.index_incoming');
     Route::get('/applications/forwarded', [AdminApplicationController::class, 'indexForwarded'])->name('admin.application.index_forwarded');
     Route::get('/applications/approved', [AdminApplicationController::class, 'indexApproved'])->name('admin.application.index_approved');
@@ -199,7 +199,7 @@ Route::group(['prefix'=>'admin'], function () {
 
 
 // House Applications
-Route::group(['prefix'=>'house'], function () {
+Route::group(['prefix'=>'house', 'middleware' => ['role:House']], function () {
     Route::get('/applications/incoming', [HouseApplicationController::class, 'indexIncoming'])->name('house.application.index_incoming');
     Route::get('/applications/approved', [HouseApplicationController::class, 'indexApproved'])->name('house.application.index_approved');
     Route::get('/applications/rejected', [HouseApplicationController::class, 'indexRejected'])->name('house.application.index_rejected');
@@ -207,10 +207,11 @@ Route::group(['prefix'=>'house'], function () {
 });
 
 //Report
-Route::group(['prefix'=>'admin'], function () {
+Route::group(['prefix'=>'admin' ,'middleware' => ['role:Admin'] ], function () {
     Route::get('/report', [ReportController::class, 'index'])->name('admin.report.index');
     Route::get('/json-index', [ReportController::class, 'jsonIndex'])->name('admin.report.json-index');
 });
+
 //Auth
 Route::group([], function () {
     Route::get('login', [AuthController::class, 'create'])->name('login');
@@ -222,13 +223,15 @@ Route::group([], function () {
     Route::delete('logout', [AuthController::class, 'destroy'])->name('login.destroy');
 });
 
-
-Route::get('register', [RegisterController::class, 'create'])->name('register.create');
-Route::post('register/send-otp', [RegisterController::class, 'sendOtp'])->name('register.send-otp');
-Route::post('register/confirm-otp', [RegisterController::class, 'confirmOtp'])->name('register.confirm-otp');
+//Register
+Route::group([], function () {
+    Route::get('register', [RegisterController::class, 'create'])->name('register.create');
+    Route::post('register/send-otp', [RegisterController::class, 'sendOtp'])->name('register.send-otp');
+    Route::post('register/confirm-otp', [RegisterController::class, 'confirmOtp'])->name('register.confirm-otp');
+});
 
 // FAQs
-Route::group(['prefix'=>'admin'], function () {
+Route::group(['prefix'=>'admin','middleware' => ['role:Admin']], function () {
 
     Route::get('/faq', [FaqController::class, 'index'])->name('admin.faq.index');
     Route::post('/faqs', [FaqController::class, 'store'])->name('admin.faq.store');
@@ -237,26 +240,26 @@ Route::group(['prefix'=>'admin'], function () {
 
 });
 //Notice
-Route::group(['prefix'=>'admin'], function () {
+Route::group(['prefix'=>'admin','middleware' => ['role:Admin']], function () {
     Route::get('/notice', [NoticeController::class, 'index'])->name('admin.notice.index');
     Route::post('/notice', [NoticeController::class, 'store'])->name('admin.notice.store');
     Route::put('/notice/{notice}', [NoticeController::class, 'update'])->name('admin.notice.update');
     Route::delete('/notice/{notice}', [NoticeController::class, 'destroy'])->name('admin.notice.destroy');
 });
 //Rate
-Route::group(['prefix'=>'admin'], function () {
+Route::group(['prefix'=>'admin','middleware' => ['role:Admin']], function () {
     Route::get('/rate', [RateController::class, 'index'])->name('admin.rate.index');
     Route::post('/rate', [RateController::class, 'store'])->name('admin.rate.store');
     Route::put('/rate/{roomRate}', [RateController::class, 'update'])->name('admin.rate.update');
     Route::delete('/rate/{roomRate}', [RateController::class, 'destroy'])->name('admin.rate.destroy');
 });
 // Settings
-Route::group(['prefix'=>'admin'], function () {
+Route::group(['prefix'=>'admin','middleware' => ['role:Admin']], function () {
     Route::get('/settings', [SettingsController::class, 'index'])->name('admin.settings.index');
 });
 
 //Department
-Route::group(['prefix'=>'admin'], function () {
+Route::group(['prefix'=>'admin','middleware' => ['role:Admin']], function () {
     Route::get('/department', [DepartmentController::class, 'index'])->name('admin.department.index');
     Route::post('/department', [DepartmentController::class, 'store'])->name('admin.department.store');
     Route::put('/department/{department}', [DepartmentController::class, 'update'])->name('admin.department.update');
@@ -264,28 +267,28 @@ Route::group(['prefix'=>'admin'], function () {
 });
 
 //House
-Route::group(['prefix'=>'admin'], function () {
+Route::group(['prefix'=>'admin','middleware' => ['role:Admin']], function () {
     Route::get('/house', [HouseController::class, 'index'])->name('admin.house.index');
     Route::post('/house', [HouseController::class, 'store'])->name('admin.house.store');
     Route::put('/house/{house}', [HouseController::class, 'update'])->name('admin.house.update');
     Route::delete('/house/{house}', [HouseController::class, 'destroy'])->name('admin.house.destroy');
 });
 //Room Category
-Route::group(['prefix'=>'admin'], function () {
+Route::group(['prefix'=>'admin','middleware' => ['role:Admin']], function () {
     Route::get('/rate-category', [RateCategoryController::class, 'index'])->name('admin.rate-category.index');
     Route::post('/rate-category', [RateCategoryController::class, 'store'])->name('admin.rate-category.store');
     Route::put('/rate-category/{rateCategory}', [RateCategoryController::class, 'update'])->name('admin.rate-category.update');
     Route::delete('/rate-category/{rateCategory}', [RateCategoryController::class, 'destroy'])->name('admin.rate-category.destroy');
 });
 // Room type
-Route::group(['prefix'=>'admin'], function () {
+Route::group(['prefix'=>'admin','middleware' => ['role:Admin']], function () {
     Route::get('/room_type', [RoomTypeController::class, 'index'])->name('admin.room_type.index');
     Route::post('/room_type/{house}', [RoomTypeController::class, 'store'])->name('admin.room_type.store');
     Route::put('/room_type/{house}/{roomType}', [RoomTypeController::class, 'update'])->name('admin.room_type.update');
     Route::delete('/room_type/{house}/{roomType}', [RoomTypeController::class, 'destroy'])->name('admin.room_type.destroy');
 });
 //Users
-Route::group(['prefix'=>'admin'], function () {
+Route::group(['prefix'=>'admin','middleware' => ['role:Admin']], function () {
     Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
     Route::post('/users', [UserController::class, 'store'])->name('admin.users.store');
     Route::put('update/{model}', [UserController::class, 'update'])->name('admin.users.update');

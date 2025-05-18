@@ -22,6 +22,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'Approve Application',
             'Reject Application',
             'Forward application',
+            'Edit Application',
 
         ];
 
@@ -32,7 +33,7 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // Define roles and their permissions
         $roles = [
-            'Admin' => ['Forward application', 'Approve Application', 'Reject Application'],
+            'Admin' => ['Forward application', 'Approve Application', 'Reject Application', 'Edit Application'],
             'House' => ['Approve Application', 'Reject Application'],
         ];
 
