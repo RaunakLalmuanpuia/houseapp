@@ -45,7 +45,7 @@ const handleOpenDocument = (item) => {
                                 <p class="text-sm leading-5 mt-1">
                                     <template v-if="application.medical_details[0].service === 'Govt'">
                                         {{ application.designation }},<br />
-                                        {{ application.department }}<br />
+                                        {{ application.department?.name }}<br />
                                     </template>
                                     {{ application.contact }}
                                 </p>
@@ -130,7 +130,7 @@ const handleOpenDocument = (item) => {
                         <td class="py-3 px-3 whitespace-nowrap">{{ member.gender }}</td>
                         <td class="py-3 px-3 whitespace-nowrap"> {{ member.designation || 'N/A' }}</td>
                         <td class="py-3 px-3 max-w-[160px] leading-5 break-words whitespace-normal">
-                            {{ member.department || 'N/A' }}
+                            {{ member.department?.name || 'N/A' }}
                         </td>
                         <td class="py-3 px-3 whitespace-nowrap">{{ member.contact }}</td>
                         <td class="py-3 px-3 text-center cursor-pointer"  @click="handleOpenDocument(member.file_path)">
@@ -174,7 +174,7 @@ const handleOpenDocument = (item) => {
                         <td class="py-3 px-3 whitespace-nowrap">{{ member.gender }}</td>
                         <td class="py-3 px-3 whitespace-nowrap"> {{ member.designation || 'N/A' }}</td>
                         <td class="py-3 px-3 max-w-[160px] leading-5 break-words whitespace-normal">
-                            {{ member.department || 'N/A' }}
+                            {{ member.department?.name || 'N/A' }}
                         </td>
                         <td class="py-3 px-3 whitespace-nowrap">{{ member.contact }}</td>
                         <td class="py-3 px-3 text-center cursor-pointer"  @click="handleOpenDocument(member.file_path)">

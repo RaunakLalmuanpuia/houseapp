@@ -58,13 +58,13 @@ class StatusController extends Controller
                     $application->load('flamDetails');
                     break;
                 case 'MEDICAL':
-                    $application->load('medicalDetails');
+                    $application->load('medicalDetails.department');
                     break;
             }
 
             // Optionally always load family members
             $application->load(['familyMembers', 'house', 'department']);
-//        dd($application);
+
             return Inertia::render('Status/Show', [
                 'application' => $application
             ]);

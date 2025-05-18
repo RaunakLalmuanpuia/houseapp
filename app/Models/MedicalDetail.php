@@ -24,4 +24,9 @@ class MedicalDetail extends Model
         return $this->belongsTo(Application::class);
     }
 
+    public function department()
+    {
+        return $this->belongsTo(Department::class, 'department');
+    }
+
 }

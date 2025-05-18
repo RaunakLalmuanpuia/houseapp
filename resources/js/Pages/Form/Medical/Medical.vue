@@ -94,13 +94,17 @@
 
                     <div v-if="application.service && application.service === 'Govt'">
                         <label for="department" class="block font-semibold text-sm leading-5 mb-1 text-black">Department</label>
-                        <input
+                        <select
                             v-model="application.department"
-                            id="designation"
-                            type="text"
-                            placeholder="Diltu Department"
+                            id="department"
                             class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
-                        />
+                        >
+                            <option disabled value="">Select Department</option>
+                            <option v-for="dept in departments" :key="dept.id" :value="dept.id">
+                                {{ dept.name }}
+                            </option>
+                        </select>
+
                         <span v-if="errors['department']" class="text-red-500 text-sm">{{ errors['department'] }}</span>
                     </div>
 
@@ -199,13 +203,16 @@
 
                         <div v-if="patient.service && patient.service === 'Govt'">
                             <label for="department" class="block font-semibold text-sm leading-5 mb-1 text-black">Department</label>
-                            <input
+                            <select
                                 v-model="patient.department"
-                                id="designation"
-                                type="text"
-                                placeholder="Diltu Department"
+                                id="department"
                                 class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
-                            />
+                            >
+                                <option disabled value="">Select Department</option>
+                                <option v-for="dept in departments" :key="dept.id" :value="dept.id">
+                                    {{ dept.name }}
+                                </option>
+                            </select>
                             <span v-if="errors[`patient.${index}.department`]" class="text-red-500 text-sm">
                                   {{ errors[`patient.${index}.department`] }}
                             </span>
@@ -315,13 +322,16 @@
 
                         <div v-if="attendant.service && attendant.service === 'Govt'">
                             <label for="department" class="block font-semibold text-sm leading-5 mb-1 text-black">Department</label>
-                            <input
+                            <select
                                 v-model="attendant.department"
-                                id="designation"
-                                type="text"
-                                placeholder="Diltu Department"
+                                id="department"
                                 class="w-full rounded-md border border-gray-300 text-gray-800 placeholder-gray-400 px-4 py-2 text-base leading-6 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
-                            />
+                            >
+                                <option disabled value="">Select Department</option>
+                                <option v-for="dept in departments" :key="dept.id" :value="dept.id">
+                                    {{ dept.name }}
+                                </option>
+                            </select>
                             <span v-if="errors[`attendant.${index}.department`]" class="text-red-500 text-sm">
                                   {{ errors[`attendant.${index}.department`] }}
                             </span>
@@ -451,7 +461,9 @@ import {useMedicalApplicationStore} from "@/Store/useMedicalApplicationStore.js"
 import {Head, router} from '@inertiajs/vue3'
 
 const application = useMedicalApplicationStore()
-
+const props = defineProps({
+    departments: Array
+});
 
 const showError = ref(false)
 

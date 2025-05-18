@@ -12,4 +12,8 @@ class OnDuty extends Model
     public function application() {
         return $this->belongsTo(Application::class);
     }
+    public function department()
+    {
+        return $this->belongsTo(Department::class, 'department');
+    }
 }

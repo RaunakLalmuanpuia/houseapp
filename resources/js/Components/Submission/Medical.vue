@@ -26,7 +26,7 @@ defineProps({
                     <p class="text-black text-base font-normal leading-snug mt-1">
                         <template v-if="application.medical_details[0].service === 'Govt'">
                             {{ application.designation }},<br />
-                            {{ application.department }}<br />
+                            {{ application.department?.name }}<br />
                         </template>
                         {{application?.contact }}
                     </p>

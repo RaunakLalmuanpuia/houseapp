@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Application;
 use App\Models\ApplicationStatusHistory;
+use App\Models\Department;
 use App\Models\MedicalDetail;
 use App\Models\Otp;
 use App\Models\State;
@@ -21,7 +22,10 @@ class MedicalController extends Controller
 
     public function stepTwo()
     {
-        return Inertia::render('Form/Medical/Medical');
+        $departments = Department::all();
+        return Inertia::render('Form/Medical/Medical',[
+            'departments' => $departments,
+        ]);
     }
 
     public function stepThree()
@@ -64,7 +68,7 @@ class MedicalController extends Controller
             'gender' => 'required|in:Male,Female,Other',
             'contact' => 'required|string',
             'designation' => 'nullable|string',
-            'department' => 'nullable|string',
+            'department' => 'nullable|integer|exists:departments,id',
             'location' => 'required|integer',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
@@ -77,7 +81,7 @@ class MedicalController extends Controller
             'patient_details.*.gender' => 'required_with:patient_details|in:Male,Female,Other',
             'patient_details.*.contact' => 'required_with:patient_details|string',
             'patient_details.*.designation' => 'nullable|string',
-            'patient_details.*.department' => 'nullable|string',
+            'patient_details.*.department' => 'nullable|integer|exists:departments,id',
             'patient_details.*.file' => 'nullable|file',
 
             'attendant_details' => 'nullable|array',
@@ -218,7 +222,7 @@ class MedicalController extends Controller
 //        dd($request->all());
         $applicationId = $request->query('application');
 
-        $application = Application::with(['medicalDetails','house'])->findOrFail($applicationId);
+        $application = Application::with(['medicalDetails','house','department'])->findOrFail($applicationId);
 
         return Inertia::render('Form/Submission', [
             'application' => $application
