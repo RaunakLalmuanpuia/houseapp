@@ -271,7 +271,7 @@
                         type="submit"
                         class="bg-black text-white text-sm font-normal px-6 py-2 rounded-md hover:opacity-90 focus:outline-none focus:ring-1 focus:ring-blue-600"
                     >
-                        Update FAQ
+                        Update Mizoram House
                     </button>
                 </div>
             </div>

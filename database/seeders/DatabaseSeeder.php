@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
 
 //        $this->call(UserSeeder::class);
         $this->call([
+            DepartmentSeeder::class,
             StateSeeder::class,
             HouseSeeder::class,
             RateCategorySeeder::class,
@@ -29,7 +30,7 @@ class DatabaseSeeder extends Seeder
             RoomRateSeeder::class,
             RolesAndPermissionsSeeder::class,
             UserSeeder::class,
-            FaqSeeder::class
+            FaqSeeder::class,
         ]);
     }
 }

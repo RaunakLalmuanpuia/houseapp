@@ -23,6 +23,8 @@ use App\Http\Controllers\AdminApplicationController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\HouseController;
+use App\Http\Controllers\DepartmentController;
+
 use App\Http\Controllers\RateController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\RoomTypeController;
@@ -252,6 +254,15 @@ Route::group(['prefix'=>'admin'], function () {
 Route::group(['prefix'=>'admin'], function () {
     Route::get('/settings', [SettingsController::class, 'index'])->name('admin.settings.index');
 });
+
+//Department
+Route::group(['prefix'=>'admin'], function () {
+    Route::get('/department', [DepartmentController::class, 'index'])->name('admin.department.index');
+    Route::post('/department', [DepartmentController::class, 'store'])->name('admin.department.store');
+    Route::put('/department/{department}', [DepartmentController::class, 'update'])->name('admin.department.update');
+    Route::delete('/department/{department}', [DepartmentController::class, 'destroy'])->name('admin.department.destroy');
+});
+
 //House
 Route::group(['prefix'=>'admin'], function () {
     Route::get('/house', [HouseController::class, 'index'])->name('admin.house.index');

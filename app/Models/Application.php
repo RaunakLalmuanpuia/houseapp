@@ -34,11 +34,13 @@ class Application extends Model
     {
         return $this->belongsTo(House::class, 'location');
     }
-
+    public function department()
+    {
+        return $this->belongsTo(House::class, 'department');
+    }
     public function flamDetails() {
         return $this->hasMany(FlamDetail::class);
     }
-
     public function onDutyDetails() {
         return $this->hasMany(OnDuty::class);
     }
