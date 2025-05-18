@@ -189,6 +189,7 @@ Route::group([], function () {
 // Admin Applications
 Route::group(['prefix'=>'admin'], function () {
     Route::get('/applications/incoming', [AdminApplicationController::class, 'indexIncoming'])->name('admin.application.index_incoming');
+    Route::get('/applications/forwarded', [AdminApplicationController::class, 'indexForwarded'])->name('admin.application.index_forwarded');
     Route::get('/applications/approved', [AdminApplicationController::class, 'indexApproved'])->name('admin.application.index_approved');
     Route::get('/applications/rejected', [AdminApplicationController::class, 'indexRejected'])->name('admin.application.index_rejected');
     Route::get('/applications/{application}/view', [AdminApplicationController::class, 'viewApplication'])->name('admin.application.view');

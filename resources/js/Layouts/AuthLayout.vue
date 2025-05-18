@@ -85,6 +85,21 @@
                             </a>
                         </li>
                         <li>
+                            <a :href="route('admin.application.index_forwarded')"
+                               :class="[
+                                'flex items-center gap-3',
+                                route().current('admin.application.index_forwarded') ? 'bg-blue-100 text-blue-700 font-semibold rounded px-3 py-2' : 'font-semibold'
+                              ]">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M17.3337 12.3333V9.66667C17.3337 8.40933 17.3337 7.78133 16.943 7.39067C16.5523 7 15.9243 7 14.667 7H9.33366C8.07633 7 7.44833 7 7.05766 7.39067C6.66699 7.78133 6.66699 8.40933 6.66699 9.66667V15C6.66699 16.8853 6.66699 17.8287 7.25299 18.414C7.83833 19 8.78166 19 10.667 19H12.0003" stroke="#080808" stroke-linecap="round"/>
+                                    <path d="M10 16.9997V18.9997M10 10.333H14M10 12.9997H14" stroke="#080808" stroke-linecap="round"/>
+                                    <path d="M13.2031 16.8281L14.7344 18.3594L17.7969 15.0781" stroke="black" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+
+                                Forwarded
+                            </a>
+                        </li>
+                        <li>
                             <a :href="route('admin.application.index_approved')"
                                :class="[
                                 'flex items-center gap-3',
