@@ -39,7 +39,7 @@ class HouseApplicationController extends Controller
             ->when($type, function ($query, $type) {
                 $query->where('type', $type);
             })
-            ->with('house')
+            ->with(['house','department'])
             ->paginate($perPage);
 
         return Inertia::render('HouseApplications/Incoming', [
@@ -79,7 +79,7 @@ class HouseApplicationController extends Controller
             ->when($type, function ($query, $type) {
                 $query->where('type', $type);
             })
-            ->with('house')
+            ->with(['house','department'])
             ->paginate($perPage);
 
         return Inertia::render('HouseApplications/Approved', [
@@ -122,7 +122,7 @@ class HouseApplicationController extends Controller
             ->when($type, function ($query, $type) {
                 $query->where('type', $type);
             })
-            ->with('house')
+            ->with(['house','department'])
             ->paginate($perPage);
 
         return Inertia::render('HouseApplications/Rejected', [
@@ -141,10 +141,10 @@ class HouseApplicationController extends Controller
 
             switch ($application->type) {
                 case 'ON DUTY':
-                    $application->load('onDutyDetails');
+                    $application->load('onDutyDetails.department');
                     break;
                 case 'NOT ON DUTY':
-                    $application->load('notOnDutyDetails');
+                    $application->load('notOnDutyDetails.department');
                     break;
                 case 'PRIVATE':
                     $application->load('nonOfficialDetails');
@@ -156,12 +156,12 @@ class HouseApplicationController extends Controller
                     $application->load('flamDetails');
                     break;
                 case 'MEDICAL':
-                    $application->load('medicalDetails');
+                    $application->load('medicalDetails.department');
                     break;
             }
 
             // Optionally always load family members
-            $application->load(['familyMembers','house','statusHistories.handler']);
+            $application->load(['familyMembers','house','statusHistories.handler', 'department']);
 //            dd($application);
             return Inertia::render('HouseApplications/Show', [
                 'application' => $application

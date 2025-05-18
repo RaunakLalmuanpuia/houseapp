@@ -107,7 +107,7 @@ class OnDutyController extends Controller
                 'applicant_name' => $validated['applicant_name'],
                 'gender' => $validated['gender'],
                 'designation' => $validated['designation'],
-                'department' => $validated['department'],
+                'department_id' => $validated['department'],
                 'contact' => $validated['contact'],
                 'location' => $validated['location'],
                 'start_date' => $validated['start_date'],
@@ -125,7 +125,7 @@ class OnDutyController extends Controller
                         'name' => $detail['name'],
                         'gender' => $detail['gender'],
                         'designation' => $detail['designation'],
-                        'department' => $detail['department'],
+                        'department_id' => $detail['department'],
                         'contact' => $detail['contact'],
                         'department_approval' => $approvalPath,
                     ]);

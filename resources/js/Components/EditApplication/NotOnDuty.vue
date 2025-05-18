@@ -25,6 +25,7 @@
                 <select v-model="form.gender" class="w-full border border-gray-300 p-3 rounded-md bg-white focus:ring-2 focus:ring-blue-500">
                     <option>Male</option>
                     <option>Female</option>
+                    <option>Other</option>
                 </select>
             </div>
 
@@ -40,7 +41,17 @@
 
             <div>
                 <label class="block text-gray-700 font-medium mb-2">Department</label>
-                <input v-model="form.department" class="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-blue-500" />
+                <select
+                    v-model="form.department"
+                    id="department"
+                    class="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-blue-500"
+                >
+                    <option value="">Select Department</option>
+                    <option v-for="dept in departments" :key="dept.id" :value="dept.id">
+                        {{ dept.name }}
+                    </option>
+                </select>
+
             </div>
 
             <div>
@@ -75,8 +86,24 @@
                         </select>
                     </div>
                     <div><label class="block text-gray-700 font-medium mb-2">Contact</label><input v-model="person.contact" class="w-full border p-3 rounded-md" /></div>
-                    <div><label class="block text-gray-700 font-medium mb-2">Designation</label><input v-model="person.designation" class="w-full border p-3 rounded-md" /></div>
-                    <div><label class="block text-gray-700 font-medium mb-2">Department</label><input v-model="person.department" class="w-full border p-3 rounded-md" /></div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">Designation</label>
+                        <input v-model="person.designation" class="w-full border p-3 rounded-md" />
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">Department</label>
+                        <select
+                            v-model="person.department"
+                            id="department"
+                            class="w-full border p-3 rounded-md"
+                        >
+                            <option disabled value="">Select Department</option>
+                            <option v-for="dept in departments" :key="dept.id" :value="dept.id">
+                                {{ dept.name }}
+                            </option>
+                        </select>
+
+                    </div>
 
                     <div class="md:col-span-2 text-right">
                         <button type="button" @click="removeNotOnDuty(index)" class="text-red-500 hover:underline">Remove</button>
@@ -166,7 +193,8 @@ import {useForm} from "@inertiajs/vue3";
 import {ref} from "vue";
 const props = defineProps({
     application: Object,
-    house: Array
+    house: Array,
+    departments: Array,
 })
 const form = useForm({
 
@@ -177,12 +205,23 @@ const form = useForm({
     gender: props.application.gender,
     contact: props.application.contact,
     designation: props.application.designation,
-    department: props.application.department,
+    department: props.application.department_id,
     location: props.application.location,
     start_date: props.application.start_date,
     end_date: props.application.end_date,
 
-    not_on_duty_details: props.application.not_on_duty_details ?? [],
+    not_on_duty_details: props.application.not_on_duty_details.map(person => ({
+        id: person.id,
+        name: person.name,
+        gender: person.gender,
+        contact: person.contact,
+        designation: person.designation,
+        department: person.department_id,
+        department_approval: null,
+        existing_approval: person.department_approval
+    })),
+
+    // not_on_duty_details: props.application.not_on_duty_details ?? [],
     family_members: props.application.family_members ?? []
 })
 const showUpdatePopup = ref(false)

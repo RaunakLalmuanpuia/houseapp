@@ -4,7 +4,8 @@ import { ref } from 'vue'
 
 const props = defineProps({
     application: Object,
-    house: Array
+    house: Array,
+    departments:Array,
 })
 const showUpdatePopup = ref(false)
 
@@ -15,7 +16,7 @@ const form = useForm({
     gender: props.application.gender,
     contact: props.application.contact,
     designation: props.application.designation,
-    department: props.application.department,
+    department: props.application.department_id,
     location: props.application.location,
     start_date: props.application.start_date,
     end_date: props.application.end_date,
@@ -27,7 +28,7 @@ const form = useForm({
         category: m.category || '',
         service: m.service || '',
         designation: m.designation || '',
-        department: m.department || '',
+        department: m.department_id || '',
         file_path: null,           // for new file upload (File object)
         existing_file: m.file_path // existing file path string from DB
     })),
@@ -137,7 +138,18 @@ const handleOpenDocument = (filePath) => {
 
             <div  v-if="form.medical_details[0].service==='Govt'">
                 <label class="block text-gray-700 font-medium mb-2">Department</label>
-                <input v-model="form.department" class="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-blue-500" />
+
+                <select
+                    v-model="form.department"
+                    id="department"
+                    class="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-blue-500"
+                >
+                    <option disabled value="">Select Department</option>
+                    <option v-for="dept in departments" :key="dept.id" :value="dept.id">
+                        {{ dept.name }}
+                    </option>
+                </select>
+
             </div>
 
             <div>
@@ -202,7 +214,17 @@ const handleOpenDocument = (filePath) => {
                     </div>
                     <div v-if="person.service === 'Govt'">
                         <label class="block text-gray-700 font-medium mb-2">Department</label>
-                        <input v-model="person.department" class="w-full border p-3 rounded-md" />
+
+                        <select
+                            v-model="person.department"
+                            id="department"
+                            class="w-full border p-3 rounded-md"
+                        >
+                            <option disabled value="">Select Department</option>
+                            <option v-for="dept in departments" :key="dept.id" :value="dept.id">
+                                {{ dept.name }}
+                            </option>
+                        </select>
                     </div>
                     <div>
                         <label class="block text-gray-700 font-medium mb-2">Approval PDF</label>

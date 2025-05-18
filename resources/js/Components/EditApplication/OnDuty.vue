@@ -4,7 +4,8 @@ import { ref } from 'vue'
 
 const props = defineProps({
     application: Object,
-    house: Array
+    house: Array,
+    departments:Array
 })
 
 const showUpdatePopup = ref(false)
@@ -15,7 +16,7 @@ const form = useForm({
     gender: props.application.gender || '',
     contact: props.application.contact || '',
     designation: props.application.designation || '',
-    department: props.application.department || '',
+    department: props.application.department_id || '',
     department_approval: null,
     location: props.application.location || '',
     start_date: props.application.start_date || '',
@@ -27,7 +28,7 @@ const form = useForm({
         gender: person.gender,
         contact: person.contact,
         designation: person.designation,
-        department: person.department,
+        department: person.department_id,
         department_approval: null,
         existing_approval: person.department_approval
     })),
@@ -146,12 +147,22 @@ const handleOpenDocument = (item) => {
 
             <div>
                 <label class="block text-gray-700 font-medium mb-2">Department</label>
-                <input v-model="form.department" class="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-blue-500" />
+                <select
+                    v-model="form.department"
+                    id="department"
+                    class="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-blue-500"
+                >
+                    <option value="">Select Department</option>
+                    <option v-for="dept in departments" :key="dept.id" :value="dept.id">
+                        {{ dept.name }}
+                    </option>
+                </select>
             </div>
 
             <div>
                 <label class="block text-gray-700 font-medium mb-2">Location</label>
-                <select v-model="form.location" class="w-full border border-gray-300 p-3 rounded-md bg-white focus:ring-2 focus:ring-blue-500">
+                <select v-model="form.location"
+                        class="w-full border border-gray-300 p-3 rounded-md bg-white focus:ring-2 focus:ring-blue-500">
                     <option value="">Select Location</option>
                     <option v-for="loc in house" :key="loc.id" :value="loc.id">{{ loc.name }}</option>
                 </select>
@@ -185,11 +196,25 @@ const handleOpenDocument = (item) => {
                         <select v-model="person.gender" class="w-full border p-3 rounded-md bg-white focus:ring-2 focus:ring-blue-500">
                             <option>Male</option>
                             <option>Female</option>
+                            <option>Other</option>
                         </select>
                     </div>
                     <div><label class="block text-gray-700 font-medium mb-2">Contact</label><input v-model="person.contact" class="w-full border p-3 rounded-md" /></div>
                     <div><label class="block text-gray-700 font-medium mb-2">Designation</label><input v-model="person.designation" class="w-full border p-3 rounded-md" /></div>
-                    <div><label class="block text-gray-700 font-medium mb-2">Department</label><input v-model="person.department" class="w-full border p-3 rounded-md" /></div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">Department</label>
+                        <select
+                            v-model="person.department"
+                            id="department"
+                            class="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-blue-500"
+                        >
+                            <option disabled value="">Select Department</option>
+                            <option v-for="dept in departments" :key="dept.id" :value="dept.id">
+                                {{ dept.name }}
+                            </option>
+                        </select>
+<!--                        <input v-model="person.department" class="w-full border p-3 rounded-md" />-->
+                    </div>
                     <div>
                         <label class="block text-gray-700 font-medium mb-2">Approval PDF</label>
                         <input type="file" @change="e => person.department_approval = e.target.files[0]" class="w-full border p-3 rounded-md" />

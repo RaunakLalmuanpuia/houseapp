@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('gender');
             $table->string('contact');
             $table->string('designation');
-            $table->string('department');
+            $table->string('department_id');
             $table->timestamps();
         });
     }

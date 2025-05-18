@@ -3,7 +3,7 @@ import AuthLayout from "@/Layouts/AuthLayout.vue";
 import {Head} from "@inertiajs/vue3";
 
 defineOptions({layout:AuthLayout})
-const props = defineProps(['application', 'house']);
+const props = defineProps(['application', 'house','departments']);
 
 import FLAM from "@/Components/EditApplication/FLAM.vue";
 import OnDuty from "@/Components/EditApplication/OnDuty.vue";
@@ -23,6 +23,7 @@ import Medical from "@/Components/EditApplication/Medical.vue";
             v-if="application.type === 'ON DUTY'"
             :application="application"
             :house="house"
+            :departments="departments"
         />
 
         <FLAM
@@ -35,6 +36,7 @@ import Medical from "@/Components/EditApplication/Medical.vue";
             v-if="application.type === 'NOT ON DUTY'"
             :application="application"
             :house="house"
+            :departments="departments"
         />
 
         <NonOfficial
@@ -53,6 +55,7 @@ import Medical from "@/Components/EditApplication/Medical.vue";
             v-if="application.type === 'MEDICAL'"
             :application="application"
             :house="house"
+            :departments="departments"
         />
 
 

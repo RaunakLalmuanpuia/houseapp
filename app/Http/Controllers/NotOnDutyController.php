@@ -98,7 +98,7 @@ class NotOnDutyController extends Controller
                 'applicant_name' => $request->applicant_name,
                 'gender' => $request->gender,
                 'designation' => $request->designation,
-                'department' => $request->department,
+                'department_id' => $request->department,
                 'contact' => $request->contact,
                 'location' => $request->location,
                 'start_date' => $request->start_date,
@@ -110,7 +110,7 @@ class NotOnDutyController extends Controller
                 $application->notOnDutyDetails()->create([
                     'name' => $detail['name'],
                     'designation' => $detail['designation'],
-                    'department' => $detail['department'],
+                    'department_id' => $detail['department'],
                     'gender' => $detail['gender'],
                     'contact' => $detail['contact'],
                 ]);

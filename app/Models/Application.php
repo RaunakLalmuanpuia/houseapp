@@ -16,7 +16,7 @@ class Application extends Model
         'applicant_name',
         'gender',
         'designation',
-        'department',
+        'department_id',
         'department_approval',
         'contact',
         'location',
@@ -36,7 +36,7 @@ class Application extends Model
     }
     public function department()
     {
-        return $this->belongsTo(Department::class, 'department');
+        return $this->belongsTo(Department::class, 'department_id');
     }
     public function flamDetails() {
         return $this->hasMany(FlamDetail::class);

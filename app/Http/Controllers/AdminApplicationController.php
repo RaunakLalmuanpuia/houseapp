@@ -29,8 +29,9 @@ class AdminApplicationController extends Controller
             ->when($type, function ($query, $type) {
                 $query->where('type', $type);
             })
-            ->with('house')
+            ->with(['house','department'])
             ->paginate($perPage);
+//        dd($pendingApplications);
 
         return Inertia::render('Application/Incoming', [
             'application' => $pendingApplications,
@@ -60,7 +61,7 @@ class AdminApplicationController extends Controller
             ->when($type, function ($query, $type) {
                 $query->where('type', $type);
             })
-            ->with('house')
+            ->with(['house','department'])
             ->paginate($perPage);
 
         return Inertia::render('Application/Forwarded', [
@@ -92,7 +93,7 @@ class AdminApplicationController extends Controller
             ->when($type, function ($query, $type) {
                 $query->where('type', $type);
             })
-            ->with('house')
+            ->with(['house','department'])
             ->paginate($perPage);
 
         return Inertia::render('Application/Approved', [
@@ -124,7 +125,7 @@ class AdminApplicationController extends Controller
             ->when($type, function ($query, $type) {
                 $query->where('type', $type);
             })
-            ->with('house')
+            ->with(['house','department'])
             ->paginate($perPage);
 
         return Inertia::render('Application/Rejected', [
@@ -143,10 +144,10 @@ class AdminApplicationController extends Controller
 
             switch ($application->type) {
                 case 'ON DUTY':
-                    $application->load('onDutyDetails');
+                    $application->load('onDutyDetails.department');
                     break;
                 case 'NOT ON DUTY':
-                    $application->load('notOnDutyDetails');
+                    $application->load('notOnDutyDetails.department');
                     break;
                 case 'PRIVATE':
                     $application->load('nonOfficialDetails');
@@ -158,12 +159,12 @@ class AdminApplicationController extends Controller
                     $application->load('flamDetails');
                     break;
                 case 'MEDICAL':
-                    $application->load('medicalDetails');
+                    $application->load('medicalDetails.department');
                     break;
             }
 
             // Optionally always load family members
-            $application->load(['familyMembers','house','statusHistories.handler']);
+            $application->load(['familyMembers','house','statusHistories.handler', 'department']);
 //            dd($application);
             return Inertia::render('Application/Show', [
                 'application' => $application

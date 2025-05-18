@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Application;
 use App\Models\ApplicationStatusHistory;
+use App\Models\Department;
 use App\Models\House;
 use App\Models\MedicalDetail;
 use Illuminate\Http\Request;
@@ -77,13 +78,14 @@ class ApplicationController extends Controller
 //        dd($application);
 
         $house = House::all();
+        $departments= Department::all();
 
         switch ($application->type) {
             case 'ON DUTY':
-                $application->load('onDutyDetails');
+                $application->load('onDutyDetails.department');
                 break;
             case 'NOT ON DUTY':
-                $application->load('notOnDutyDetails');
+                $application->load('notOnDutyDetails.department');
                 break;
             case 'PRIVATE':
                 $application->load('nonOfficialDetails');
@@ -95,16 +97,17 @@ class ApplicationController extends Controller
                 $application->load('flamDetails');
                 break;
             case 'MEDICAL':
-                $application->load('medicalDetails');
+                $application->load('medicalDetails.department');
                 break;
         }
 
         // Optionally always load family members
-        $application->load(['familyMembers','house']);
+        $application->load(['familyMembers','house','department']);
 
         return Inertia::render('Application/Edit', [
             'application' => $application,
             'house' => $house,
+            'departments' => $departments,
         ]);
     }
     public function updateFlam(Request $request, Application $application){
@@ -173,15 +176,16 @@ class ApplicationController extends Controller
     }
     public function updateOnDuty(Request $request, Application $application)
     {
+//        dd($request->all());
         $validated = $request->validate([
             'applicant_name' => 'required|string|max:255',
             'gender' => 'required|string',
             'contact' => 'required|string|max:15',
-            'designation' => 'nullable|string|max:255',
-            'department' => 'nullable|string|max:255',
+            'designation' => 'required|string|max:255',
+            'department' => 'required|integer|exists:departments,id',
             'location' => 'required|integer|exists:houses,id',
-            'start_date' => 'nullable|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
             'type' => 'nullable|string|max:255',
             'department_approval' => 'nullable|file|mimes:pdf|max:2048',
 
@@ -189,8 +193,8 @@ class ApplicationController extends Controller
             'on_duty_details.*.name' => 'required|string|max:255',
             'on_duty_details.*.gender' => 'required|string',
             'on_duty_details.*.contact' => 'required|string|max:15',
-            'on_duty_details.*.designation' => 'nullable|string|max:255',
-            'on_duty_details.*.department' => 'nullable|string|max:255',
+            'on_duty_details.*.designation' => 'required|string|max:255',
+            'on_duty_details.*.department' => 'required|integer|exists:departments,id',
             'on_duty_details.*.department_approval' => 'nullable|file|mimes:pdf|max:2048',
 
             'family_members' => 'nullable|array',
@@ -209,7 +213,7 @@ class ApplicationController extends Controller
                 'applicant_name' => $validated['applicant_name'],
                 'gender' => $validated['gender'],
                 'designation' => $validated['designation'],
-                'department' => $validated['department'],
+                'department_id' => $validated['department'],
                 'contact' => $validated['contact'],
                 'location' => $validated['location'],
                 'start_date' => $validated['start_date'],
@@ -242,7 +246,7 @@ class ApplicationController extends Controller
                         'gender' => $duty['gender'],
                         'contact' => $duty['contact'],
                         'designation' => $duty['designation'] ?? null,
-                        'department' => $duty['department'] ?? null,
+                        'department_id' => $duty['department'] ?? null,
                         'department_approval' => $approvalPath,
                     ]);
                 }
@@ -275,7 +279,7 @@ class ApplicationController extends Controller
             'applicant_name' => 'required|string|max:255',
             'gender' => 'required|string|in:Male,Female,Other',
             'designation' => 'required|string|max:255',
-            'department' => 'required|string|max:255',
+            'department' => 'required|exists:departments,id',
             'contact' => 'required|string|max:20',
             'location' => 'required|integer|exists:houses,id',
             'start_date' => 'required|date',
@@ -285,7 +289,7 @@ class ApplicationController extends Controller
             'not_on_duty_details.*.name' => 'required|string|max:255',
             'not_on_duty_details.*.gender' => 'required|string|in:Male,Female,Other',
             'not_on_duty_details.*.designation' => 'required|string|max:255',
-            'not_on_duty_details.*.department' => 'required|string|max:255',
+            'not_on_duty_details.*.department' => 'required|exists:departments,id',
             'not_on_duty_details.*.contact' => 'required|string|max:20',
 
             'family_members' => 'nullable|array',
@@ -300,7 +304,7 @@ class ApplicationController extends Controller
                 'applicant_name' => $validated['applicant_name'],
                 'gender' => $validated['gender'],
                 'designation' => $validated['designation'],
-                'department' => $validated['department'],
+                'department_id' => $validated['department'],
                 'contact' => $validated['contact'],
                 'location' => $validated['location'],
                 'start_date' => $validated['start_date'],
@@ -315,7 +319,7 @@ class ApplicationController extends Controller
                         'name' => $detail['name'],
                         'gender' => $detail['gender'],
                         'designation' => $detail['designation'],
-                        'department' => $detail['department'],
+                        'department_id' => $detail['department'],
                         'contact' => $detail['contact'],
                     ]);
                 }
@@ -451,7 +455,7 @@ class ApplicationController extends Controller
             'medical_details.*.category' => 'required|string|max:255',
             'medical_details.*.service' => 'required|string|max:255',
             'medical_details.*.designation' => 'nullable|string|max:255',
-            'medical_details.*.department' => 'nullable|string|max:255',
+            'medical_details.*.department' => 'nullable|exists:departments,id',
             'medical_details.*.file_path' => 'nullable|file|mimes:pdf|max:2048',
             'medical_details.*.existing_file' => 'nullable|string',
 
@@ -468,7 +472,7 @@ class ApplicationController extends Controller
                 'gender' => $mainApplicant['gender'],
                 'contact' => $mainApplicant['contact'],
                 'designation' => $mainApplicant['designation'] ?? null,
-                'department' => $mainApplicant['department'] ?? null,
+                'department_id' => $mainApplicant['department'] ?? null,
                 'location' => $validated['location'],
                 'start_date' => $validated['start_date'],
                 'end_date' => $validated['end_date'],
@@ -496,7 +500,7 @@ class ApplicationController extends Controller
                     'category' => $detail['category'],
                     'service' => $detail['service'],
                     'designation' => $detail['designation'] ?? null,
-                    'department' => $detail['department'] ?? null,
+                    'department_id' => $detail['department'] ?? null,
                     'file_path' => $filePath,
                 ];
             }

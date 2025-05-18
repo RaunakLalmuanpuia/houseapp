@@ -91,7 +91,7 @@ class MedicalController extends Controller
             'attendant_details.*.gender' => 'required_with:attendant_details|in:Male,Female,Other',
             'attendant_details.*.contact' => 'required_with:attendant_details|string',
             'attendant_details.*.designation' => 'nullable|string',
-            'attendant_details.*.department' => 'nullable|string',
+            'attendant_details.*.department' => 'nullable|integer|exists:departments,id',
             'attendant_details.*.file' => 'nullable|file',
         ]);
 
@@ -117,7 +117,7 @@ class MedicalController extends Controller
                 'gender' => $validated['gender'],
                 'contact' => $validated['contact'],
                 'designation' => $validated['designation'] ?? null,
-                'department' => $validated['department'] ?? null,
+                'department_id' => $validated['department'] ?? null,
                 'location' => $validated['location'],
                 'start_date' => $validated['start_date'],
                 'end_date' => $validated['end_date'],
@@ -139,7 +139,7 @@ class MedicalController extends Controller
                 'gender' => $validated['gender'],
                 'contact' =>  $validated['contact'],
                 'designation' => $validated['service'] === 'Non-Govt' ? null : ($validated['designation'] ?? null),
-                'department' => $validated['service'] === 'Non-Govt' ? null : ($validated['department'] ?? null),
+                'department_id' => $validated['service'] === 'Non-Govt' ? null : ($validated['department'] ?? null),
                 'file_path' => $filePath,
             ]);
 
@@ -161,7 +161,7 @@ class MedicalController extends Controller
                         'gender' => $patient['gender'],
                         'contact' => $patient['contact'],
                         'designation' => $patient['service'] === 'Non-Govt' ? null : ($patient['designation'] ?? null),
-                        'department' => $patient['service'] === 'Non-Govt' ? null : ($patient['department'] ?? null),
+                        'department_id' => $patient['service'] === 'Non-Govt' ? null : ($patient['department'] ?? null),
                         'file_path' => $filePath,
                     ]);
 
@@ -185,7 +185,7 @@ class MedicalController extends Controller
                         'gender' => $attendant['gender'],
                         'contact' => $attendant['contact'],
                         'designation' => $attendant['service'] === 'Non-Govt' ? null : ($attendant['designation'] ?? null),
-                        'department' => $attendant['service'] === 'Non-Govt' ? null : ($attendant['department'] ?? null),
+                        'department_id' => $attendant['service'] === 'Non-Govt' ? null : ($attendant['department'] ?? null),
                         'file_path' => $filePath,
                     ]);
                 }
