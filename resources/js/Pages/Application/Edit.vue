@@ -15,17 +15,18 @@ import Medical from "@/Components/EditApplication/Medical.vue";
 
 <template>
     <Head title="Edit Application" />
-    {{application}}
-    <div class="max-w-5xl mx-auto p-6 bg-white shadow rounded-xl">
+<!--    {{application}}-->
+    <div class="max-w-5xl mx-auto p-6 bg-white  rounded-xl">
         <h2 class="text-2xl font-semibold mb-6">Edit Application :: {{application.type}}</h2>
-        <FLAM
-            v-if="application.type === 'FLAM'"
+
+        <OnDuty
+            v-if="application.type === 'ON DUTY'"
             :application="application"
             :house="house"
         />
 
-        <OnDuty
-            v-if="application.type === 'ON DUTY'"
+        <FLAM
+            v-if="application.type === 'FLAM'"
             :application="application"
             :house="house"
         />

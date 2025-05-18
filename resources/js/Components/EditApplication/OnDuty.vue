@@ -10,6 +10,7 @@ const props = defineProps({
 const showUpdatePopup = ref(false)
 
 const form = useForm({
+    application_id: props.application.application_id,
     applicant_name: props.application.applicant_name || '',
     gender: props.application.gender || '',
     contact: props.application.contact || '',
@@ -41,7 +42,7 @@ const addOnDuty = () => {
     form.on_duty_details.push({
         id: null,
         name: '',
-        gender: 'Female',
+        gender: '',
         contact: '',
         designation: '',
         department: '',
@@ -65,7 +66,6 @@ const removeFamily = (index) => {
 const update =(item) => {
     form.post(route('applications.on-duty.update', item), {
         preserveScroll: true,
-
         onStart: () => {
 
         },
@@ -107,119 +107,128 @@ const handleOpenDocument = (item) => {
 </script>
 
 <template>
-    <div class="max-w-5xl mx-auto p-6">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="max-w-5xl mx-auto p-8 bg-white shadow-lg rounded-lg">
+        <h1 class="text-2xl font-bold mb-6 text-gray-800">Application Form</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Basic Fields -->
-
             <div>
-                <label>Type</label>
-                <input v-model="form.type"  disabled class="w-full border p-2 rounded" />
+                <label class="block text-gray-700 font-medium mb-2">Type</label>
+                <input v-model="form.type" disabled class="w-full border border-gray-300 p-3 rounded-md bg-gray-100" />
             </div>
 
             <div>
-                <label>Applicant Name</label>
-                <input v-model="form.applicant_name"  class="w-full border p-2 rounded" />
+                <label class="block text-gray-700 font-medium mb-2">Application ID</label>
+                <input v-model="form.application_id" disabled class="w-full border border-gray-300 p-3 rounded-md bg-gray-100" />
             </div>
 
-
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Applicant Name</label>
+                <input v-model="form.applicant_name" class="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-blue-500" />
+            </div>
 
             <div>
-                <label>Gender</label>
-                <select v-model="form.gender" class="w-full border p-2 rounded">
+                <label class="block text-gray-700 font-medium mb-2">Gender</label>
+                <select v-model="form.gender" class="w-full border border-gray-300 p-3 rounded-md bg-white focus:ring-2 focus:ring-blue-500">
                     <option>Male</option>
                     <option>Female</option>
                 </select>
             </div>
+
             <div>
-                <label>Contact</label>
-                <input v-model="form.contact" class="w-full border p-2 rounded" />
-            </div>
-            <div>
-                <label>Designation</label>
-                <input v-model="form.designation" class="w-full border p-2 rounded" />
-            </div>
-            <div>
-                <label>Department</label>
-                <input v-model="form.department" class="w-full border p-2 rounded" />
+                <label class="block text-gray-700 font-medium mb-2">Contact</label>
+                <input v-model="form.contact" class="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-blue-500" />
             </div>
 
             <div>
-                <label>Location</label>
-                <select v-model="form.location" class="w-full border p-2 rounded">
+                <label class="block text-gray-700 font-medium mb-2">Designation</label>
+                <input v-model="form.designation" class="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-blue-500" />
+            </div>
+
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Department</label>
+                <input v-model="form.department" class="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-blue-500" />
+            </div>
+
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Location</label>
+                <select v-model="form.location" class="w-full border border-gray-300 p-3 rounded-md bg-white focus:ring-2 focus:ring-blue-500">
                     <option value="">Select Location</option>
-                    <option
-                        v-for="loc in house"
-                        :key="loc.id"
-                        :value="loc.id"
-                    >
-                        {{ loc.name }}
-                    </option>
+                    <option v-for="loc in house" :key="loc.id" :value="loc.id">{{ loc.name }}</option>
                 </select>
             </div>
+
             <div>
-                <label>Start Date</label>
-                <input type="date" v-model="form.start_date" class="w-full border p-2 rounded" />
+                <label class="block text-gray-700 font-medium mb-2">Start Date</label>
+                <input type="date" v-model="form.start_date" class="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-blue-500" />
             </div>
+
             <div>
-                <label>End Date</label>
-                <input type="date" v-model="form.end_date" class="w-full border p-2 rounded" />
+                <label class="block text-gray-700 font-medium mb-2">End Date</label>
+                <input type="date" v-model="form.end_date" class="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-blue-500" />
             </div>
+
             <div>
-                <label>Department Approval PDF</label>
-                <input type="file" @change="e => form.department_approval = e.target.files[0]" class="w-full" />
-                <div v-if="props.application.department_approval" @click="handleOpenDocument(props.application.department_approval)" class="mt-1 text-blue-600">
+                <label class="block text-gray-700 font-medium mb-2">Department Approval PDF</label>
+                <input type="file" @change="e => form.department_approval = e.target.files[0]" class="w-full border border-gray-300 p-3 rounded-md" />
+                <div v-if="props.application.department_approval" @click="handleOpenDocument(props.application.department_approval)" class="mt-2 text-blue-600 cursor-pointer">
                     <p class="underline">View Existing PDF</p>
                 </div>
             </div>
 
             <!-- On Duty Members -->
             <div class="md:col-span-2 mt-6">
-                <h2 class="text-lg font-bold mb-2">On Duty Details</h2>
+                <h2 class="text-lg font-bold mb-2">Other On Duty Details</h2>
                 <div v-for="(person, index) in form.on_duty_details" :key="index" class="border p-4 mb-4 rounded-md grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div><label>Name</label><input v-model="person.name" class="w-full border p-2 rounded" /></div>
+                    <div><label class="block text-gray-700 font-medium mb-2">Name</label><input v-model="person.name" class="w-full border p-3 rounded-md" /></div>
                     <div>
-                        <label>Gender</label>
-                        <select v-model="person.gender" class="w-full border p-2 rounded">
+                        <label class="block text-gray-700 font-medium mb-2">Gender</label>
+                        <select v-model="person.gender" class="w-full border p-3 rounded-md bg-white focus:ring-2 focus:ring-blue-500">
                             <option>Male</option>
                             <option>Female</option>
                         </select>
                     </div>
-                    <div><label>Contact</label><input v-model="person.contact" class="w-full border p-2 rounded" /></div>
-                    <div><label>Designation</label><input v-model="person.designation" class="w-full border p-2 rounded" /></div>
-                    <div><label>Department</label><input v-model="person.department" class="w-full border p-2 rounded" /></div>
+                    <div><label class="block text-gray-700 font-medium mb-2">Contact</label><input v-model="person.contact" class="w-full border p-3 rounded-md" /></div>
+                    <div><label class="block text-gray-700 font-medium mb-2">Designation</label><input v-model="person.designation" class="w-full border p-3 rounded-md" /></div>
+                    <div><label class="block text-gray-700 font-medium mb-2">Department</label><input v-model="person.department" class="w-full border p-3 rounded-md" /></div>
                     <div>
-                        <label>Approval PDF</label>
-                        <input type="file" @change="e => person.department_approval = e.target.files[0]" class="w-full" />
-                        <div v-if="person.existing_approval"  @click="handleOpenDocument(person.existing_approval)" class="mt-1 text-blue-600">
+                        <label class="block text-gray-700 font-medium mb-2">Approval PDF</label>
+                        <input type="file" @change="e => person.department_approval = e.target.files[0]" class="w-full border p-3 rounded-md" />
+                        <div v-if="person.existing_approval" @click="handleOpenDocument(person.existing_approval)" class="mt-2 text-blue-600 cursor-pointer">
                             <p class="underline">View Existing PDF</p>
                         </div>
                     </div>
                     <div class="md:col-span-2 text-right">
-                        <button type="button" @click="removeOnDuty(index)" class="text-red-500">Remove</button>
+                        <button type="button" @click="removeOnDuty(index)" class="text-red-500 hover:underline">Remove</button>
                     </div>
                 </div>
-                <button type="button" @click="addOnDuty" class="bg-gray-200 px-3 py-1 rounded">+ Add On Duty</button>
+                <button type="button" @click="addOnDuty" class="bg-blue-200 text-blue-800 px-3 py-2 rounded-md hover:bg-blue-300 transition">+ Add On Duty</button>
             </div>
 
             <!-- Family Members -->
             <div class="md:col-span-2 mt-6">
                 <h2 class="text-lg font-bold mb-2">Family Members</h2>
                 <div v-for="(member, index) in form.family_members" :key="index" class="border p-4 mb-4 rounded-md grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div><label>Name</label><input v-model="member.name" class="w-full border p-2 rounded" /></div>
-                    <div><label>Relation</label><input v-model="member.relation" class="w-full border p-2 rounded" /></div>
+                    <div><label class="block text-gray-700 font-medium mb-2">Name</label><input v-model="member.name" class="w-full border p-3 rounded-md" /></div>
+                    <div><label class="block text-gray-700 font-medium mb-2">Relation</label><input v-model="member.relation" class="w-full border p-3 rounded-md" /></div>
                     <div class="md:col-span-2 text-right">
-                        <button type="button" @click="removeFamily(index)" class="text-red-500">Remove</button>
+                        <button type="button" @click="removeFamily(index)" class="text-red-500 hover:underline">Remove</button>
                     </div>
                 </div>
-                <button type="button" @click="addFamily" class="bg-gray-200 px-3 py-1 rounded">+ Add Family Member</button>
+                <button type="button" @click="addFamily" class="bg-blue-200 text-blue-800 px-3 py-2 rounded-md hover:bg-blue-300 transition">+ Add Family Member</button>
             </div>
 
-            <div class="md:col-span-2 mt-6">
-                <button   @click="update(application)"
-                    type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Update Application</button>
+            <div class="md:col-span-2 mt-6 flex justify-center">
+                <button
+                    @click="update(application)"
+                    type="submit"
+                    class="w-1/2 text-center bg-black text-white px-6 py-3 rounded-md hover:bg-blue-700 transition"
+                >
+                    Update Application
+                </button>
             </div>
         </div>
     </div>
+
 
 
     <!--    Update pop up-->

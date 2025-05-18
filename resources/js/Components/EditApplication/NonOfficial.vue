@@ -75,88 +75,189 @@ const update =(item) => {
 </script>
 
 <template>
-    <div>
-        <label class="block text-sm font-medium mb-1">Application ID</label>
-        <input type="text" v-model="form.application_id" class="w-full border px-3 py-2 rounded" disabled>
-    </div>
-    <div>
-        <label class="block text-sm font-medium mb-1">Type</label>
-        <input type="text" v-model="form.type" class="w-full border px-3 py-2 rounded" disabled>
-    </div>
 
-        <div>
-            <label>Applicant Name</label>
-            <input v-model="form.applicant_name" type="text" class="border p-2 w-full" />
-        </div>
+    <div class="max-w-5xl mx-auto p-8 bg-white shadow-lg rounded-lg">
+        <h1 class="text-2xl font-bold mb-6 text-gray-800">Application Form</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Basic Fields -->
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Type</label>
+                <input v-model="form.type" disabled class="w-full border border-gray-300 p-3 rounded-md bg-gray-100" />
+            </div>
 
-        <div>
-            <label>Gender</label>
-            <select v-model="form.gender" class="border p-2 w-full">
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-            </select>
-        </div>
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Application ID</label>
+                <input v-model="form.application_id" disabled class="w-full border border-gray-300 p-3 rounded-md bg-gray-100" />
+            </div>
 
-        <div>
-            <label>Contact</label>
-            <input v-model="form.contact" type="text" class="border p-2 w-full" />
-        </div>
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Applicant Name</label>
+                <input v-model="form.applicant_name" class="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-blue-500" />
+            </div>
 
-        <div>
-            <label>Location</label>
-            <select v-model="form.location" class="w-full border px-3 py-2 rounded">
-                <option value="">Select Location</option>
-                <option
-                    v-for="loc in house"
-                    :key="loc.id"
-                    :value="loc.id"
-                >
-                    {{ loc.name }}
-                </option>
-            </select>
-        </div>
-
-        <div>
-            <label>Start Date</label>
-            <input v-model="form.start_date" type="date" class="border p-2 w-full" />
-        </div>
-
-        <div>
-            <label>End Date</label>
-            <input v-model="form.end_date" type="date" class="border p-2 w-full" />
-        </div>
-
-        <!-- Non Official Details -->
-        <div>
-            <label class="font-bold">Non-Official Details</label>
-            <div v-for="(detail, index) in form.non_official_details" :key="index" class="border p-3 mb-2 space-y-2">
-                <input v-model="detail.name" placeholder="Name" class="border p-2 w-full" />
-                <select v-model="detail.gender" class="border p-2 w-full">
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Gender</label>
+                <select v-model="form.gender" class="w-full border border-gray-300 p-3 rounded-md bg-white focus:ring-2 focus:ring-blue-500">
+                    <option>Male</option>
+                    <option>Female</option>
                 </select>
-                <input v-model="detail.contact" placeholder="Contact" class="border p-2 w-full" />
-                <button type="button" @click="removeNonOfficial(index)" class="text-red-600">Remove</button>
             </div>
-            <button type="button" @click="addNonOfficial" class="text-blue-600">+ Add Non-Official</button>
-        </div>
 
-        <!-- Family Members -->
-        <div>
-            <label class="font-bold">Family Members</label>
-            <div v-for="(member, index) in form.family_members" :key="index" class="border p-3 mb-2 space-y-2">
-                <input v-model="member.name" placeholder="Name" class="border p-2 w-full" />
-                <input v-model="member.relation" placeholder="Relation" class="border p-2 w-full" />
-                <button type="button" @click="removeFamilyMember(index)" class="text-red-600">Remove</button>
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Contact</label>
+                <input v-model="form.contact" class="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-blue-500" />
             </div>
-            <button type="button" @click="addFamilyMember" class="text-blue-600">+ Add Family Member</button>
-        </div>
 
-        <div>
-            <button @click="update(application)" type="submit" class="bg-blue-600 text-white px-4 py-2">Update Application</button>
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Location</label>
+                <select v-model="form.location" class="w-full border border-gray-300 p-3 rounded-md bg-white focus:ring-2 focus:ring-blue-500">
+                    <option value="">Select Location</option>
+                    <option v-for="loc in house" :key="loc.id" :value="loc.id">{{ loc.name }}</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Start Date</label>
+                <input type="date" v-model="form.start_date" class="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-blue-500" />
+            </div>
+
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">End Date</label>
+                <input type="date" v-model="form.end_date" class="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-blue-500" />
+            </div>
+
+
+            <!-- Other Privaye Members -->
+            <div class="md:col-span-2 mt-6">
+                <h2 class="text-lg font-bold mb-2">Other Private Members</h2>
+                <div v-for="(person, index) in form.non_official_details" :key="index" class="border p-4 mb-4 rounded-md grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div><label class="block text-gray-700 font-medium mb-2">Name</label><input v-model="person.name" class="w-full border p-3 rounded-md" /></div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">Gender</label>
+                        <select v-model="person.gender" class="w-full border p-3 rounded-md bg-white focus:ring-2 focus:ring-blue-500">
+                            <option>Male</option>
+                            <option>Female</option>
+                        </select>
+                    </div>
+                    <div><label class="block text-gray-700 font-medium mb-2">Contact</label><input v-model="person.contact" class="w-full border p-3 rounded-md" /></div>
+
+                    <div class="md:col-span-2 text-right">
+                        <button type="button" @click="removeNonOfficial(index)" class="text-red-500 hover:underline">Remove</button>
+                    </div>
+                </div>
+                <button type="button" @click="addNonOfficial" class="bg-blue-200 text-blue-800 px-3 py-2 rounded-md hover:bg-blue-300 transition">+ Add Private</button>
+            </div>
+
+            <!-- Family Members -->
+            <div class="md:col-span-2 mt-6">
+                <h2 class="text-lg font-bold mb-2">Family Members</h2>
+                <div v-for="(member, index) in form.family_members" :key="index" class="border p-4 mb-4 rounded-md grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div><label class="block text-gray-700 font-medium mb-2">Name</label><input v-model="member.name" class="w-full border p-3 rounded-md" /></div>
+                    <div><label class="block text-gray-700 font-medium mb-2">Relation</label><input v-model="member.relation" class="w-full border p-3 rounded-md" /></div>
+                    <div class="md:col-span-2 text-right">
+                        <button type="button" @click="removeFamilyMember(index)" class="text-red-500 hover:underline">Remove</button>
+                    </div>
+                </div>
+                <button type="button" @click="addFamilyMember" class="bg-blue-200 text-blue-800 px-3 py-2 rounded-md hover:bg-blue-300 transition">+ Add Family Member</button>
+            </div>
+
+            <div class="md:col-span-2 mt-6 flex justify-center">
+                <button
+                    @click="update(application)"
+                    type="submit"
+                    class="w-1/2 text-center bg-black text-white px-6 py-3 rounded-md hover:bg-blue-700 transition"
+                >
+                    Update Application
+                </button>
+            </div>
         </div>
+    </div>
+
+
+
+
+<!--    <div>-->
+<!--        <label class="block text-sm font-medium mb-1">Application ID</label>-->
+<!--        <input type="text" v-model="form.application_id" class="w-full border px-3 py-2 rounded" disabled>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--        <label class="block text-sm font-medium mb-1">Type</label>-->
+<!--        <input type="text" v-model="form.type" class="w-full border px-3 py-2 rounded" disabled>-->
+<!--    </div>-->
+
+<!--        <div>-->
+<!--            <label>Applicant Name</label>-->
+<!--            <input v-model="form.applicant_name" type="text" class="border p-2 w-full" />-->
+<!--        </div>-->
+
+<!--        <div>-->
+<!--            <label>Gender</label>-->
+<!--            <select v-model="form.gender" class="border p-2 w-full">-->
+<!--                <option value="Male">Male</option>-->
+<!--                <option value="Female">Female</option>-->
+<!--                <option value="Other">Other</option>-->
+<!--            </select>-->
+<!--        </div>-->
+
+<!--        <div>-->
+<!--            <label>Contact</label>-->
+<!--            <input v-model="form.contact" type="text" class="border p-2 w-full" />-->
+<!--        </div>-->
+
+<!--        <div>-->
+<!--            <label>Location</label>-->
+<!--            <select v-model="form.location" class="w-full border px-3 py-2 rounded">-->
+<!--                <option value="">Select Location</option>-->
+<!--                <option-->
+<!--                    v-for="loc in house"-->
+<!--                    :key="loc.id"-->
+<!--                    :value="loc.id"-->
+<!--                >-->
+<!--                    {{ loc.name }}-->
+<!--                </option>-->
+<!--            </select>-->
+<!--        </div>-->
+
+<!--        <div>-->
+<!--            <label>Start Date</label>-->
+<!--            <input v-model="form.start_date" type="date" class="border p-2 w-full" />-->
+<!--        </div>-->
+
+<!--        <div>-->
+<!--            <label>End Date</label>-->
+<!--            <input v-model="form.end_date" type="date" class="border p-2 w-full" />-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Non Official Details &ndash;&gt;-->
+<!--        <div>-->
+<!--            <label class="font-bold">Non-Official Details</label>-->
+<!--            <div v-for="(detail, index) in form.non_official_details" :key="index" class="border p-3 mb-2 space-y-2">-->
+<!--                <input v-model="detail.name" placeholder="Name" class="border p-2 w-full" />-->
+<!--                <select v-model="detail.gender" class="border p-2 w-full">-->
+<!--                    <option value="Male">Male</option>-->
+<!--                    <option value="Female">Female</option>-->
+<!--                    <option value="Other">Other</option>-->
+<!--                </select>-->
+<!--                <input v-model="detail.contact" placeholder="Contact" class="border p-2 w-full" />-->
+<!--                <button type="button" @click="removeNonOfficial(index)" class="text-red-600">Remove</button>-->
+<!--            </div>-->
+<!--            <button type="button" @click="addNonOfficial" class="text-blue-600">+ Add Non-Official</button>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Family Members &ndash;&gt;-->
+<!--        <div>-->
+<!--            <label class="font-bold">Family Members</label>-->
+<!--            <div v-for="(member, index) in form.family_members" :key="index" class="border p-3 mb-2 space-y-2">-->
+<!--                <input v-model="member.name" placeholder="Name" class="border p-2 w-full" />-->
+<!--                <input v-model="member.relation" placeholder="Relation" class="border p-2 w-full" />-->
+<!--                <button type="button" @click="removeFamilyMember(index)" class="text-red-600">Remove</button>-->
+<!--            </div>-->
+<!--            <button type="button" @click="addFamilyMember" class="text-blue-600">+ Add Family Member</button>-->
+<!--        </div>-->
+
+<!--        <div>-->
+<!--            <button @click="update(application)" type="submit" class="bg-blue-600 text-white px-4 py-2">Update Application</button>-->
+<!--        </div>-->
 
 
     <div

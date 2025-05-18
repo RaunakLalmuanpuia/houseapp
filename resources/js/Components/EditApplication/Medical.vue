@@ -9,6 +9,8 @@ const props = defineProps({
 const showUpdatePopup = ref(false)
 
 const form = useForm({
+    type: props.application.type,
+    application_id: props.application.application_id,
     applicant_name: props.application.applicant_name,
     gender: props.application.gender,
     contact: props.application.contact,
@@ -95,135 +97,152 @@ const handleOpenDocument = (filePath) => {
 </script>
 
 <template>
-    <div class="container" style="max-width: 800px; margin: auto; padding: 20px;">
-        <h2>Edit Medical Application</h2>
 
-        <div>
-            <!-- Applicant info fields -->
-            <div style="margin-bottom: 1rem;">
-                <label>Applicant Name:</label><br />
-                <input type="text" v-model="form.applicant_name" />
-                <div v-if="form.errors.applicant_name" style="color: red;">{{ form.errors.applicant_name }}</div>
+    <div class="max-w-5xl mx-auto p-8 bg-white shadow-lg rounded-lg">
+        <h1 class="text-2xl font-bold mb-6 text-gray-800">Application Form</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Basic Fields -->
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Type</label>
+                <input v-model="form.type" disabled class="w-full border border-gray-300 p-3 rounded-md bg-gray-100" />
             </div>
 
-            <div style="margin-bottom: 1rem;">
-                <label>Gender:</label><br />
-                <select v-model="form.gender">
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Application ID</label>
+                <input v-model="form.application_id" disabled class="w-full border border-gray-300 p-3 rounded-md bg-gray-100" />
+            </div>
+
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Applicant Name</label>
+                <input v-model="form.applicant_name" class="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-blue-500" />
+            </div>
+
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Gender</label>
+                <select v-model="form.gender" class="w-full border border-gray-300 p-3 rounded-md bg-white focus:ring-2 focus:ring-blue-500">
                     <option>Male</option>
                     <option>Female</option>
-                    <option>Other</option>
                 </select>
             </div>
 
-            <div style="margin-bottom: 1rem;">
-                <label>Contact:</label><br />
-                <input type="text" v-model="form.contact" />
-                <div v-if="form.errors.contact" style="color: red;">{{ form.errors.contact }}</div>
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Contact</label>
+                <input v-model="form.contact" class="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-blue-500" />
             </div>
 
-            <div style="margin-bottom: 1rem;">
-                <label>Designation:</label><br />
-                <input type="text" v-model="form.designation" />
+            <div v-if="form.medical_details[0].service==='Govt'">
+                <label class="block text-gray-700 font-medium mb-2">Designation</label>
+                <input v-model="form.designation" class="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-blue-500" />
             </div>
 
-            <div style="margin-bottom: 1rem;">
-                <label>Department:</label><br />
-                <input type="text" v-model="form.department" />
+            <div  v-if="form.medical_details[0].service==='Govt'">
+                <label class="block text-gray-700 font-medium mb-2">Department</label>
+                <input v-model="form.department" class="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-blue-500" />
             </div>
 
-            <div style="margin-bottom: 1rem;">
-                <label>Location:</label><br />
-                <select v-model="form.location">
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Location</label>
+                <select v-model="form.location" class="w-full border border-gray-300 p-3 rounded-md bg-white focus:ring-2 focus:ring-blue-500">
                     <option value="">Select Location</option>
                     <option v-for="loc in house" :key="loc.id" :value="loc.id">{{ loc.name }}</option>
                 </select>
             </div>
 
-            <div style="margin-bottom: 1rem;">
-                <label>Start Date:</label><br />
-                <input type="date" v-model="form.start_date" />
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Start Date</label>
+                <input type="date" v-model="form.start_date" class="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-blue-500" />
             </div>
 
-            <div style="margin-bottom: 1rem;">
-                <label>End Date:</label><br />
-                <input type="date" v-model="form.end_date" />
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">End Date</label>
+                <input type="date" v-model="form.end_date" class="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-blue-500" />
             </div>
 
-            <hr />
-            <h3>Medical Details</h3>
 
-            <div v-for="(detail, index) in form.medical_details" :key="detail.id ?? index" style="border: 1px solid #ccc; padding: 1rem; margin-bottom: 1rem;">
-                <h4>Person {{ index + 1 }}</h4>
+            <!-- Medical Details -->
+            <div class="md:col-span-2 mt-6">
+                <h2 class="text-lg font-bold mb-2">Medical Details</h2>
+                <div v-for="(person, index) in form.medical_details" :key="index" class="border p-4 mb-4 rounded-md grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">Name</label>
+                        <input v-model="person.name" class="w-full border p-3 rounded-md" />
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">Gender</label>
+                        <select v-model="person.gender" class="w-full border p-3 rounded-md bg-white focus:ring-2 focus:ring-blue-500">
+                            <option>Male</option>
+                            <option>Female</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">Contact</label>
+                        <input v-model="person.contact" class="w-full border p-3 rounded-md" />
+                    </div>
 
-                <label>Name:</label><br />
-                <input type="text" v-model="detail.name" /><br />
 
-                <label>Gender:</label><br />
-                <select v-model="detail.gender">
-                    <option>Male</option>
-                    <option>Female</option>
-                    <option>Other</option>
-                </select><br />
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">Category</label>
+                        <select v-model="person.category" class="w-full border p-3 rounded-md bg-white focus:ring-2 focus:ring-blue-500">
+                            <option>Patient</option>
+                            <option>Attendant</option>
+                        </select>
+                    </div>
 
-                <label>Contact:</label><br />
-                <input type="text" v-model="detail.contact" /><br />
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">Service</label>
+                        <select v-model="person.service" class="w-full border p-3 rounded-md bg-white focus:ring-2 focus:ring-blue-500">
+                            <option>Govt</option>
+                            <option>Non-Govt</option>
+                        </select>
+                    </div>
 
-                <label>Category:</label><br />
-                <select v-model="detail.category">
-                    <option>Patient</option>
-                    <option>Attendant</option>
-                </select><br />
+                    <div v-if="person.service === 'Govt'">
+                        <label class="block text-gray-700 font-medium mb-2">Designation</label>
+                        <input v-model="person.designation" class="w-full border p-3 rounded-md" />
+                    </div>
+                    <div v-if="person.service === 'Govt'">
+                        <label class="block text-gray-700 font-medium mb-2">Department</label>
+                        <input v-model="person.department" class="w-full border p-3 rounded-md" />
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">Approval PDF</label>
 
-                <label>Service:</label><br />
-                <select v-model="detail.service">
-                    <option>Govt</option>
-                    <option>Non-Govt</option>
-                </select><br />
-
-                <div v-if="detail.service === 'Govt'" style="margin-bottom: 0.5rem;">
-                    <label>Designation:</label><br />
-                    <input type="text" v-model="detail.designation" />
+                        <input type="file"
+                               accept="application/pdf"
+                               @change="e => {
+                                person.file_path = e.target.files[0];
+                                person.existing_file = null;
+                                }" class="w-full border p-3 rounded-md" />
+                        <div  v-if="person.existing_file"
+                              @click="handleOpenDocument(person.existing_file)"
+                              class="mt-2 text-blue-600 cursor-pointer">
+                            <p class="underline">View Existing PDF</p>
+                        </div>
+                    </div>
+                    <div class="md:col-span-2 text-right">
+                        <button type="button" @click="removeMedical(index)" class="text-red-500 hover:underline">Remove</button>
+                    </div>
                 </div>
+                <button type="button" @click="addMedical" class="bg-blue-200 text-blue-800 px-3 py-2 rounded-md hover:bg-blue-300 transition">+ Add Attendant/Patient</button>
+            </div>
 
-                <div v-if="detail.service === 'Govt'" style="margin-bottom: 0.5rem;">
-                    <label>Department:</label><br />
-                    <input type="text" v-model="detail.department" />
-                </div>
 
-                <label>Approval PDF</label>
-                <input
-                    type="file"
-                    accept="application/pdf"
-                    @change="e => {
-                        detail.file_path = e.target.files[0];
-                        detail.existing_file = null;
-                    }"
-                    class="w-full"
-                />
-                <div
-                    v-if="detail.existing_file"
-                    @click="handleOpenDocument(detail.existing_file)"
-                    class="mt-1 text-blue-600 cursor-pointer"
+            <div class="md:col-span-2 mt-6 flex justify-center">
+                <button
+                    @click="update()"
+                    type="submit"
+                    class="w-1/2 text-center bg-black text-white px-6 py-3 rounded-md hover:bg-blue-700 transition"
                 >
-                    <p class="underline">View Existing PDF</p>
-                </div>
-
-                <div class="text-right">
-                    <button type="button" @click="removeMedical(index)" :disabled="index === 0" class="text-red-500">Remove</button>
-                </div>
+                    Update Application
+                </button>
             </div>
-
-            <button type="button" @click="addMedical" class="bg-gray-200 px-3 py-1 rounded">+ Add Medical</button>
-
-            <button
-                @click.prevent="update()"
-                type="submit"
-                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-            >
-                Update Application
-            </button>
         </div>
     </div>
+
+
+
+
+
 
     <!-- Update popup could go here -->
     <div
