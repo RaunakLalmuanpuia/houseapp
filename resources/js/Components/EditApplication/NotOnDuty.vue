@@ -83,6 +83,7 @@
                         <select v-model="person.gender" class="w-full border p-3 rounded-md bg-white focus:ring-2 focus:ring-blue-500">
                             <option>Male</option>
                             <option>Female</option>
+                            <option>Other</option>
                         </select>
                     </div>
                     <div><label class="block text-gray-700 font-medium mb-2">Contact</label><input v-model="person.contact" class="w-full border p-3 rounded-md" /></div>
