@@ -32,7 +32,9 @@ class ProfileController extends Controller
         ]);
         $request->user()->update($data);
 
-        return Redirect::route('profile.edit');
+        return redirect()->back()->with('success', 'Profile updated successfully.');
+
+//        return Redirect::route('profile.edit');
     }
 
     public function destroy(Request $request): RedirectResponse
