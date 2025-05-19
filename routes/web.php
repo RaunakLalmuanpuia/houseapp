@@ -37,6 +37,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\DigilockerController;
 
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\ProfileController;
+
 
 
 
@@ -185,9 +187,6 @@ Route::group([], function () {
 });
 
 
-
-
-
 // Admin Applications
 Route::group(['prefix'=>'admin', 'middleware' => ['role:Admin'], ], function () {
     Route::get('/applications/incoming', [AdminApplicationController::class, 'indexIncoming'])->name('admin.application.index_incoming');
@@ -196,7 +195,6 @@ Route::group(['prefix'=>'admin', 'middleware' => ['role:Admin'], ], function () 
     Route::get('/applications/rejected', [AdminApplicationController::class, 'indexRejected'])->name('admin.application.index_rejected');
     Route::get('/applications/{application}/view', [AdminApplicationController::class, 'viewApplication'])->name('admin.application.view');
 });
-
 
 // House Applications
 Route::group(['prefix'=>'house', 'middleware' => ['role:House']], function () {
@@ -228,6 +226,16 @@ Route::group([], function () {
     Route::get('register', [RegisterController::class, 'create'])->name('register.create');
     Route::post('register/send-otp', [RegisterController::class, 'sendOtp'])->name('register.send-otp');
     Route::post('register/confirm-otp', [RegisterController::class, 'confirmOtp'])->name('register.confirm-otp');
+});
+
+
+// Profie
+Route::group(['middleware'=>'auth'], function () {
+
+    Route::get('edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('edit-password', [ProfileController::class, 'editPassword'])->name('profile.edit-password');
+    Route::put('update-password', [ProfileController::class, 'updatePassword'])->name('profile.update-password');
 });
 
 // FAQs

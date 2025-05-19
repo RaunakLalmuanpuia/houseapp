@@ -346,11 +346,20 @@
                             class="absolute right-0 mt-2 w-30 bg-white border border-gray-200 rounded shadow-md z-50"
                         >
                             <a
-                                href="/profile"
+                                @click.prevent="$inertia.get(route('profile.edit'))"
                                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                             >
                                 Profile
                             </a>
+
+                            <a
+                                @click.prevent="$inertia.get(route('profile.edit-password'))"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                            >
+                                Change Password
+                            </a>
+
+
                             <a
                                 href="#"
                                 @click.prevent="$inertia.delete(route('login.destroy'))"
@@ -398,11 +407,19 @@
                             class="absolute right-0 mt-2 w-30 bg-white border border-gray-200 rounded shadow-md z-50"
                         >
                             <a
-                                href="/profile"
+                                @click.prevent="$inertia.get(route('profile.edit'))"
                                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                             >
                                 Profile
                             </a>
+
+                            <a
+                                @click.prevent="$inertia.get(route('profile.edit-password'))"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                            >
+                                Change Password
+                            </a>
+
                             <a
                                 href="#"
                                 @click.prevent="$inertia.delete(route('login.destroy'))"
