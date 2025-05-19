@@ -238,6 +238,7 @@ Route::group(['middleware'=>'auth'], function () {
     Route::put('update-password', [ProfileController::class, 'updatePassword'])->name('profile.update-password');
 });
 
+
 // FAQs
 Route::group(['prefix'=>'admin','middleware' => ['role:Admin']], function () {
 
