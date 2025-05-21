@@ -51,7 +51,7 @@
 </head>
 <body>
 
-<h2>Mizoram House Applications Report</h2>
+<h2>{{$house->name}} Mizoram House Applications Report</h2>
 
 <table>
     <thead>
@@ -66,7 +66,6 @@
         <th>Designation</th>
         <th>Department</th>
         <th>No. of Persons</th>
-        <th>House</th>
         <th>Arrival</th>
         <th>Departure</th>
     </tr>
@@ -84,7 +83,6 @@
             <td>{{ $application->designation ?? '' }}</td>
             <td>{{ $application->department->name ?? '' }}</td>
             <td>2</td>
-            <td>{{ $application->house->name ?? '' }}</td>
             <td>{{ $application->start_date ? date('d-m-Y', strtotime($application->start_date)) : '' }}</td>
             <td>{{ $application->end_date ? date('d-m-Y', strtotime($application->end_date)) : '' }}</td>
         </tr>

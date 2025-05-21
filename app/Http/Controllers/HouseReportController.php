@@ -2,29 +2,39 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\AdminApplicationExport;
+use App\Exports\HouseApplicationExport;
 use App\Models\Application;
 use App\Models\House;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade as PDF;
-class ReportController extends Controller
+
+class HouseReportController extends Controller
 {
+    //
     public function index(){
 
-        $houses = House::all();
-        return Inertia::render('Report/Index', [
-           'houses' => $houses
+        return Inertia::render('HouseReport/Index', [
         ]);
     }
 
     public function jsonIndex(Request $request)
     {
-        $query = Application::query()->with(['house', 'department']);
 
+        $house_id = auth()->user()?->house_id;
+
+        $query = Application::query()
+            ->with(['house', 'department'])
+            ->where('location', $house_id);
         // Apply filters for status, category, dates, etc.
-        $query->when($request->status, fn($q) => $q->where('status', $request->status))
+        $query->when($request->status, function ($q, $status) {
+            // If status is selected, filter by that status
+            $q->where('status', $status);
+            }, function ($q) {
+                // Else, exclude pending
+                $q->where('status', '!=', 'Pending');
+            })
             ->when($request->category, fn($q) => $q->where('type', $request->category))
             ->when($request->start_date, fn($q) => $q->whereDate('start_date', '>=', $request->start_date))
             ->when($request->end_date, fn($q) => $q->whereDate('end_date', '<=', $request->end_date))
@@ -41,15 +51,11 @@ class ReportController extends Controller
                     ->orWhere('type', 'like', "%{$search}%")
                     ->orWhereDate('start_date', 'like', "%{$search}%")  // This might not be very useful for dates
                     ->orWhereDate('end_date', 'like', "%{$search}%")    // Same as above
-                    ->orWhereHas('house', function ($q2) use ($search) {
+                    ->orWhereHas('department', function ($q2) use ($search) {
                         $q2->where('name', 'like', "%{$search}%");
-                    })
-                    ->orWhereHas('department', function ($q3) use ($search) {
-                        $q3->where('name', 'like', "%{$search}%");
                     });
             });
         }
-
         return response()->json([
             'list' => $query->paginate($request->perPage ?? 15),
         ]);
@@ -57,10 +63,21 @@ class ReportController extends Controller
 
     public function export(Request $request)
     {
-//        dd($request);
+
+        $house_id = auth()->user()?->house_id;
+
+        $house = House::where('id', $house_id)->first();
+
         $application = Application::query()
             ->with(['house', 'department'])
-            ->when($request->status, fn($q) => $q->where('status', $request->status))
+            ->where('location', $house_id)
+            ->when($request->status, function ($q, $status) {
+                // If status is selected, filter by that status
+                $q->where('status', $status);
+            }, function ($q) {
+                // Else, exclude pending
+                $q->where('status', '!=', 'Pending');
+            })
             ->when($request->category, fn($q) => $q->where('type', $request->category))
             ->when($request->start_date, fn($q) => $q->whereDate('start_date', '>=', $request->start_date))
             ->when($request->end_date, fn($q) => $q->whereDate('end_date', '<=', $request->end_date))
@@ -68,15 +85,27 @@ class ReportController extends Controller
             ->when($request->gender, fn($q) => $q->where('gender', $request->gender))
             ->get();
 
-        $export = new AdminApplicationExport($application);
+        $export = new HouseApplicationExport($application, $house);
+
         return Excel::download($export, now()->timestamp . '.xlsx');
     }
 
     public function download(Request $request)
     {
+        $house_id = auth()->user()?->house_id;
+
+        $house = House::where('id', $house_id)->first();
+
         $applications = Application::query()
             ->with(['house', 'department'])
-            ->when($request->status, fn($q) => $q->where('status', $request->status))
+            ->where('location', $house_id)
+            ->when($request->status, function ($q, $status) {
+                // If status is selected, filter by that status
+                $q->where('status', $status);
+            }, function ($q) {
+                // Else, exclude pending
+                $q->where('status', '!=', 'Pending');
+            })
             ->when($request->category, fn($q) => $q->where('type', $request->category))
             ->when($request->start_date, fn($q) => $q->whereDate('start_date', '>=', $request->start_date))
             ->when($request->end_date, fn($q) => $q->whereDate('end_date', '<=', $request->end_date))
@@ -84,9 +113,8 @@ class ReportController extends Controller
             ->when($request->gender, fn($q) => $q->where('gender', $request->gender))
             ->get();
         // Generate the PDF from the view
-        $pdf = PDF\Pdf::loadView('reports.admin_report_download', compact(['applications']));
+        $pdf = PDF\Pdf::loadView('reports.house_report_download', compact(['applications', 'house']));
         // Return the generated PDF as a download
         return $pdf->download('report.pdf');
     }
-
 }

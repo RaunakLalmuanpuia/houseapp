@@ -182,7 +182,7 @@
                     </ul>
                 </div>
 
-                <div class="mb-8">
+                <div v-if="admin" class="mb-8">
                     <p class="uppercase font-semibold mb-3 text-gray-400 tracking-wide">Generate Report</p>
                     <ul class="space-y-2">
                         <li>
@@ -190,6 +190,26 @@
                                :class="[
                                 'flex items-center gap-3',
                                 route().current('admin.report.index') ? 'bg-blue-100 text-blue-700 font-semibold rounded px-3 py-2' : 'font-semibold'
+                              ]">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9 13H13V14H9V13ZM9 10.5H15V11.5H9V10.5ZM9 15.5H11.5V16.5H9V15.5Z" fill="black"/>
+                                    <path d="M16.5 6.5H15V6C15 5.73478 14.8946 5.48043 14.7071 5.29289C14.5196 5.10536 14.2652 5 14 5H10C9.73478 5 9.48043 5.10536 9.29289 5.29289C9.10536 5.48043 9 5.73478 9 6V6.5H7.5C7.23478 6.5 6.98043 6.60536 6.79289 6.79289C6.60536 6.98043 6.5 7.23478 6.5 7.5V18C6.5 18.2652 6.60536 18.5196 6.79289 18.7071C6.98043 18.8946 7.23478 19 7.5 19H16.5C16.7652 19 17.0196 18.8946 17.2071 18.7071C17.3946 18.5196 17.5 18.2652 17.5 18V7.5C17.5 7.23478 17.3946 6.98043 17.2071 6.79289C17.0196 6.60536 16.7652 6.5 16.5 6.5ZM10 6H14V8H10V6ZM16.5 18H7.5V7.5H9V9H15V7.5H16.5V18Z" fill="black"/>
+                                </svg>
+
+                                Report
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div v-if="house" class="mb-8">
+                    <p class="uppercase font-semibold mb-3 text-gray-400 tracking-wide">Generate Report</p>
+                    <ul class="space-y-2">
+                        <li>
+                            <a :href="route('house.report.index')"
+                               :class="[
+                                'flex items-center gap-3',
+                                route().current('house.report.index') ? 'bg-blue-100 text-blue-700 font-semibold rounded px-3 py-2' : 'font-semibold'
                               ]">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M9 13H13V14H9V13ZM9 10.5H15V11.5H9V10.5ZM9 15.5H11.5V16.5H9V15.5Z" fill="black"/>

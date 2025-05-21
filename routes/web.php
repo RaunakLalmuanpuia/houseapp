@@ -31,11 +31,12 @@ use App\Http\Controllers\RoomTypeController;
 use App\Http\Controllers\RateCategoryController;
 
 use App\Http\Controllers\ApplicationController;
+
 use App\Http\Controllers\HouseApplicationController;
+use App\Http\Controllers\HouseReportController;
+
 use App\Http\Controllers\UserController;
-
 use App\Http\Controllers\DigilockerController;
-
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ProfileController;
 
@@ -204,12 +205,21 @@ Route::group(['prefix'=>'house', 'middleware' => ['role:House']], function () {
     Route::get('/applications/{application}/view', [HouseApplicationController::class, 'viewApplication'])->name('house.application.view');
 });
 
-//Report
+//Admin Report
 Route::group(['prefix'=>'admin' ,'middleware' => ['role:Admin'] ], function () {
     Route::get('/report', [ReportController::class, 'index'])->name('admin.report.index');
     Route::get('/json-index', [ReportController::class, 'jsonIndex'])->name('admin.report.json-index');
     Route::get('/export', [ReportController::class, 'export'])->name('admin.report.export');
     Route::get('/download', [ReportController::class, 'download'])->name('admin.report.download');
+});
+
+
+//House Report
+Route::group(['prefix'=>'house' ,'middleware' => ['role:House'] ], function () {
+    Route::get('/report', [HouseReportController::class, 'index'])->name('house.report.index');
+    Route::get('/json-index', [HouseReportController::class, 'jsonIndex'])->name('house.report.json-index');
+    Route::get('/export', [HouseReportController::class, 'export'])->name('house.report.export');
+    Route::get('/download', [HouseReportController::class, 'download'])->name('house.report.download');
 });
 
 //Auth
