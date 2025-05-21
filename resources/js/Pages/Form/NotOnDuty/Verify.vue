@@ -20,6 +20,44 @@ const combineOtp = () => {
     form.otp = digits.value.join('');
 };
 
+
+
+
+const otpInput = ref([]); // Vue will bind all refs with same name into array
+const otpRefs = ref([]);
+
+const handleInput = (index, e) => {
+    const value = e.target.value;
+
+    if (value.length > 1) {
+        digits.value = value.slice(0, 4).split('');
+        combineOtp();
+        return;
+    }
+
+    if (value && index < otpRefs.value.length - 1) {
+        otpRefs.value[index + 1]?.focus();
+    }
+
+    combineOtp();
+};
+const handleKeyDown = (index, event) => {
+    if (event.key === 'Backspace') {
+        // If the current input is not empty, just clear it
+        if (digits.value[index]) {
+            digits.value[index] = '';
+            event.preventDefault(); // Prevent default to avoid browser double-deletion
+        } else if (index > 0) {
+            // If it's already empty, move focus to the previous input
+            otpRefs.value[index - 1]?.focus();
+        }
+        combineOtp();
+    }
+};
+
+
+
+
 const showError = ref(false)
 const errorMessage = ref('')
 
@@ -40,6 +78,7 @@ const startTimer = () => {
 
 
 onMounted(() => {
+    otpRefs.value = otpInput.value;
     startTimer();
 });
 function submit() {
@@ -125,6 +164,17 @@ function resendOtp(){
                         <span @click="$inertia.get(route('apply.not-on-duty.step-two'))" class="text-green-600 cursor-pointer">(Edit)</span>
                     </p>
                     <div class="flex justify-center space-x-4 mb-6">
+<!--                        <input-->
+<!--                            v-for="(digit, index) in digits"-->
+<!--                            :key="index"-->
+<!--                            v-model="digits[index]"-->
+<!--                            type="text"-->
+<!--                            maxlength="1"-->
+<!--                            inputmode="numeric"-->
+<!--                            pattern="[0-9]*"-->
+<!--                            class="w-12 h-12 border border-gray-300 rounded-lg text-center text-lg font-normal text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-600"-->
+<!--                            @input="combineOtp"-->
+<!--                        />-->
                         <input
                             v-for="(digit, index) in digits"
                             :key="index"
@@ -134,7 +184,9 @@ function resendOtp(){
                             inputmode="numeric"
                             pattern="[0-9]*"
                             class="w-12 h-12 border border-gray-300 rounded-lg text-center text-lg font-normal text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-600"
-                            @input="combineOtp"
+                            @input="handleInput(index, $event)"
+                            ref="otpInput"
+                            @keydown="handleKeyDown(index, $event)"
                         />
 
                     </div>
