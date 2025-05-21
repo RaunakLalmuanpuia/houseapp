@@ -1,18 +1,18 @@
 <script setup>
 import AuthLayout from "@/Layouts/AuthLayout.vue";
-import { reactive, ref, onMounted } from "vue";
-import { Head } from "@inertiajs/vue3";
-import axios from "axios";
+import {reactive, ref, onMounted} from "vue";
+import {Head, router} from "@inertiajs/vue3";
 
-defineOptions({ layout: AuthLayout });
+defineOptions({layout:AuthLayout})
 
 const props = defineProps(['houses']);
 
-const application = ref([]); // array of results
-const pagination = ref([]);  // pagination links
+const application = ref({ data: [] });
+
+const pagination = ref({ data: [] });
 
 const state = reactive({
-    perPage: 10,
+    perPage: 1,
     search: '',
     filters: {
         status: '',
@@ -24,12 +24,9 @@ const state = reactive({
     }
 });
 
-const clearSearch = () => {
-    state.search = '';
-    fetchData(); // fetch default data after clearing search
-};
+const openDropdownId = ref(null)
 
-const clearFilter = () => {
+const clearSearch = () => {
     state.search = '';
     state.filters = {
         status: '',
@@ -40,84 +37,60 @@ const clearFilter = () => {
         gender: ''
     };
     application.value = []; // clear the current report data
-}
-
-const fetchData = (url = route('admin.report.json-index')) => {
-    axios.get(url, {
-        params: {
-            search: state.search,
-            perPage: state.perPage,
-            ...state.filters,
-        }
-    }).then(res => {
-        const { list } = res.data;
-        application.value = list.data;       // paginated data array
-        pagination.value = list.links;       // pagination links array
-    }).catch(err => {
-        console.error(err?.response?.data?.message || err);
-    });
 };
 
-const handleSearch = () => {
-    // Called on search input enter or button click
-    fetchData();
-};
 
 const navigateToPage = (url) => {
     if (url) {
-        fetchData(url);
+        axios.get(url, {
+            params: {
+                search: state.search,
+                perPage: state.perPage,
+                ...state.filters
+            }
+        }).then(res => {
+            const { list } = res.data;
+            application.value = list.data;
+            pagination.value = list.links;
+        }).catch(err => {
+            console.log(err?.response?.data?.message);
+        });
     }
 };
 
-
-const exportReport = () => {
-    // Make a GET request to the URL with responseType as 'blob'
-    axios.get(route('admin.report.export'), {
-        params: {
-            ...state.filters,
-        },
-        responseType: 'blob' })
-        .then((res) => {
-            // Create an object URL from the response data and trigger a download
-            const fileUrl = window.URL.createObjectURL(new Blob([res.data]));
-            const link = document.createElement('a');
-            link.href = fileUrl;
-            link.setAttribute('download', Date.now() + '.xlsx'); // Set a dynamic file name
-            link.click();
-        })
-        .catch((err) => {
-            console.log(err.response?.data?.message)
-            // Show an error notification if something goes wrong
-        })
-        .finally(() => {
-
-        });
+const generateReport = () => {
+    handleSearch({ ...state.filters, search: state.search, perPage:state.perPage });
 };
 
-const downloadReport = () => {
-    // Make a GET request to the URL with responseType as 'blob'
-    axios.get(route('admin.report.download'), {
-        params: {
-            ...state.filters,
-        },
-        responseType: 'blob' })
-        .then((res) => {
-            const blob = new Blob([res.data], { type: "application/pdf" });
-            const url = window.URL.createObjectURL(blob);
-            let a = document.createElement("a");
-            a.href = url;
-            a.target = "_blank";
-            a.click();
-        })
-        .catch((err) => {
-            console.log(err.response?.data?.message)
-            // Show an error notification if something goes wrong
-        })
-        .finally(() => {
-
-        });
+const handleSearch = (val) => {
+    onRequest({
+        filter: val
+    });
 };
 
+function onRequest(props) {
+    const filter = props.filter;
+
+    axios.get(route('admin.report.json-index'), {
+        params: {
+            ...filter
+        }
+    }).then(res => {
+        // console.log(res);
+        // console.log(res.data.list.links);
+        const { list } = res.data;
+        const {links} = res.data.list;
+
+        application.value = list.data;
+        pagination.value = links;
+
+    }).catch(err => {
+        console.log( err?.response?.data?.message);
+        // q.notify({ type: 'negative', message: err?.response?.data?.message });
+    }).finally(() => {
+        // loading.value = false;
+    });
+}
 
 
 </script>
@@ -175,14 +148,6 @@ const downloadReport = () => {
                             aria-label="Start Date From"
                         />
                         <i class="far fa-calendar-alt absolute right-3 top-1/2 -translate-y-1/2 text-black pointer-events-none"></i>
-                        <button
-                            v-if="state.filters.start_date"
-                            @click="state.filters.start_date = ''"
-                            type="button"
-                            class="absolute right-8 mr-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-black"
-                        >
-                            ✕
-                        </button>
                     </div>
                 </div>
 
@@ -198,14 +163,6 @@ const downloadReport = () => {
                             aria-label="End Date Till"
                         />
                         <i class="far fa-calendar-alt absolute right-3 top-1/2 -translate-y-1/2 text-black pointer-events-none"></i>
-                        <button
-                            v-if="state.filters.end_date"
-                            @click="state.filters.end_date = ''"
-                            type="button"
-                            class="absolute right-8 mr-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-black"
-                        >
-                            ✕
-                        </button>
                     </div>
                 </div>
 
@@ -239,22 +196,21 @@ const downloadReport = () => {
                     </select>
                 </div>
 
-
-
                 <div class="lg:col-span-2 flex items-end justify-start lg:justify-end">
                     <button
-                        @click="fetchData()"
+                        @click="generateReport"
                         type="submit"
                         class="bg-black text-white text-sm font-normal rounded-md py-3 px-8 w-full max-w-[220px]"
                     >
                         Generate Report
                     </button>
                 </div>
-
-
             </div>
         </div>
     </div>
+
+
+
     <div class="ml-6 py-5 bg-white text-gray-900 font-sans ">
         <div id="app" class="mx-auto">
             <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
@@ -262,11 +218,20 @@ const downloadReport = () => {
                     <span class="border-l-4 border-black pl-2">Generated Report</span>
                 </h1>
                 <nav class="flex gap-6 mt-4 sm:mt-0 text-gray-900 text-sm font-normal">
-
                     <button
                         v-if="application.length > 0"
                         type="button"
-                        @click="exportReport"
+                        class="flex items-center gap-2 hover:text-gray-700 focus:outline-none"
+                    >
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4.78594 15.6133C4.36361 15.6133 4.00237 15.4629 3.70224 15.1622C3.40211 14.8614 3.25173 14.5008 3.2511 14.0804V11.8142H1.5339C1.11219 11.8142 0.751276 11.6638 0.451146 11.3631C0.151015 11.0623 0.000633187 10.7014 0 10.2803V6.69963C0 6.16142 0.182674 5.71059 0.548023 5.34714C0.913372 4.98243 1.36388 4.80007 1.89956 4.80007H14.1004C14.6386 4.80007 15.0898 4.98243 15.4539 5.34714C15.818 5.71186 16 6.16269 16 6.69963V10.2803C16 10.702 15.8499 11.0629 15.5498 11.3631C15.2497 11.6632 14.8884 11.8136 14.4661 11.8142H12.7489V14.0794C12.7489 14.5011 12.5985 14.862 12.2978 15.1622C11.997 15.4623 11.6361 15.6127 11.215 15.6133H4.78594ZM1.5339 10.8644H3.2511C3.27579 10.4636 3.43472 10.1198 3.72789 9.83296C4.02105 9.54676 4.37374 9.40366 4.78594 9.40366H11.215C11.6266 9.40366 11.9789 9.54707 12.2721 9.83391C12.5653 10.1201 12.7242 10.4636 12.7489 10.8644H14.4661C14.6364 10.8644 14.7764 10.8096 14.8859 10.7001C14.9954 10.5906 15.0502 10.4506 15.0502 10.2803V6.69963C15.0502 6.43116 14.9594 6.20575 14.7776 6.02339C14.5959 5.84103 14.3702 5.74985 14.1004 5.74985H1.89956C1.63046 5.74985 1.40504 5.84103 1.22332 6.02339C1.04159 6.20575 0.950414 6.43148 0.949781 6.70058V10.2803C0.949781 10.4506 1.00455 10.5906 1.11409 10.7001C1.22363 10.8096 1.36357 10.8644 1.5339 10.8644ZM11.7991 4.80102V2.53485C11.7991 2.36388 11.7444 2.22395 11.6348 2.11504C11.5253 2.0055 11.3853 1.95073 11.215 1.95073H4.78499C4.61467 1.95073 4.47473 2.0055 4.36519 2.11504C4.25565 2.22458 4.20088 2.36452 4.20088 2.53485V4.80007H3.2511V2.53485C3.2511 2.11314 3.40148 1.75191 3.70224 1.45115C4.00237 1.15038 4.36329 1 4.78499 1H11.215C11.6367 1 11.9976 1.15038 12.2978 1.45115C12.5985 1.75191 12.7489 2.11283 12.7489 2.5339V4.80007L11.7991 4.80102ZM13.334 8.12525C13.6031 8.12525 13.8285 8.03407 14.0102 7.85172C14.1919 7.66936 14.2831 7.44394 14.2837 7.17547C14.2844 6.907 14.1932 6.68127 14.0102 6.49828C13.8272 6.31529 13.6018 6.22411 13.334 6.22474C13.0661 6.22537 12.8404 6.31655 12.6568 6.49828C12.4731 6.68 12.3823 6.90573 12.3842 7.17547C12.3861 7.44521 12.4769 7.67062 12.6568 7.85172C12.8366 8.03281 13.0623 8.12399 13.334 8.12525ZM11.7991 14.0785V10.9376C11.7991 10.7666 11.7444 10.6263 11.6348 10.5168C11.5253 10.4073 11.3853 10.3525 11.215 10.3525H4.78499C4.61467 10.3525 4.47473 10.4073 4.36519 10.5168C4.25565 10.627 4.20088 10.7672 4.20088 10.9376V14.0794C4.20088 14.2498 4.25565 14.3897 4.36519 14.4992C4.47473 14.6088 4.61498 14.6635 4.78594 14.6635H11.215C11.3853 14.6635 11.5253 14.6088 11.6348 14.4992C11.7444 14.3897 11.7991 14.2494 11.7991 14.0785ZM1.5339 5.7508H0.949781H15.0502H1.5339Z" fill="black"/>
+                        </svg>
+
+                        Print
+                    </button>
+                    <button
+                        v-if="application.length > 0"
+                        type="button"
                         class="flex items-center gap-2 hover:text-gray-700 focus:outline-none"
                     >
                         <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -278,7 +243,6 @@ const downloadReport = () => {
                     <button
                         v-if="application.length > 0"
                         type="button"
-                        @click="downloadReport"
                         class="flex items-center gap-2 hover:text-gray-700 focus:outline-none"
                     >
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -286,18 +250,6 @@ const downloadReport = () => {
                         </svg>
 
                         Download
-                    </button>
-                    <button
-                        v-if="application.length > 0"
-                        type="button"
-                        @click="clearFilter"
-                        class="flex items-center gap-2 hover:text-gray-700 focus:outline-none"
-                    >
-                        <!--                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">-->
-                        <!--                            <path d="M4.78594 15.6133C4.36361 15.6133 4.00237 15.4629 3.70224 15.1622C3.40211 14.8614 3.25173 14.5008 3.2511 14.0804V11.8142H1.5339C1.11219 11.8142 0.751276 11.6638 0.451146 11.3631C0.151015 11.0623 0.000633187 10.7014 0 10.2803V6.69963C0 6.16142 0.182674 5.71059 0.548023 5.34714C0.913372 4.98243 1.36388 4.80007 1.89956 4.80007H14.1004C14.6386 4.80007 15.0898 4.98243 15.4539 5.34714C15.818 5.71186 16 6.16269 16 6.69963V10.2803C16 10.702 15.8499 11.0629 15.5498 11.3631C15.2497 11.6632 14.8884 11.8136 14.4661 11.8142H12.7489V14.0794C12.7489 14.5011 12.5985 14.862 12.2978 15.1622C11.997 15.4623 11.6361 15.6127 11.215 15.6133H4.78594ZM1.5339 10.8644H3.2511C3.27579 10.4636 3.43472 10.1198 3.72789 9.83296C4.02105 9.54676 4.37374 9.40366 4.78594 9.40366H11.215C11.6266 9.40366 11.9789 9.54707 12.2721 9.83391C12.5653 10.1201 12.7242 10.4636 12.7489 10.8644H14.4661C14.6364 10.8644 14.7764 10.8096 14.8859 10.7001C14.9954 10.5906 15.0502 10.4506 15.0502 10.2803V6.69963C15.0502 6.43116 14.9594 6.20575 14.7776 6.02339C14.5959 5.84103 14.3702 5.74985 14.1004 5.74985H1.89956C1.63046 5.74985 1.40504 5.84103 1.22332 6.02339C1.04159 6.20575 0.950414 6.43148 0.949781 6.70058V10.2803C0.949781 10.4506 1.00455 10.5906 1.11409 10.7001C1.22363 10.8096 1.36357 10.8644 1.5339 10.8644ZM11.7991 4.80102V2.53485C11.7991 2.36388 11.7444 2.22395 11.6348 2.11504C11.5253 2.0055 11.3853 1.95073 11.215 1.95073H4.78499C4.61467 1.95073 4.47473 2.0055 4.36519 2.11504C4.25565 2.22458 4.20088 2.36452 4.20088 2.53485V4.80007H3.2511V2.53485C3.2511 2.11314 3.40148 1.75191 3.70224 1.45115C4.00237 1.15038 4.36329 1 4.78499 1H11.215C11.6367 1 11.9976 1.15038 12.2978 1.45115C12.5985 1.75191 12.7489 2.11283 12.7489 2.5339V4.80007L11.7991 4.80102ZM13.334 8.12525C13.6031 8.12525 13.8285 8.03407 14.0102 7.85172C14.1919 7.66936 14.2831 7.44394 14.2837 7.17547C14.2844 6.907 14.1932 6.68127 14.0102 6.49828C13.8272 6.31529 13.6018 6.22411 13.334 6.22474C13.0661 6.22537 12.8404 6.31655 12.6568 6.49828C12.4731 6.68 12.3823 6.90573 12.3842 7.17547C12.3861 7.44521 12.4769 7.67062 12.6568 7.85172C12.8366 8.03281 13.0623 8.12399 13.334 8.12525ZM11.7991 14.0785V10.9376C11.7991 10.7666 11.7444 10.6263 11.6348 10.5168C11.5253 10.4073 11.3853 10.3525 11.215 10.3525H4.78499C4.61467 10.3525 4.47473 10.4073 4.36519 10.5168C4.25565 10.627 4.20088 10.7672 4.20088 10.9376V14.0794C4.20088 14.2498 4.25565 14.3897 4.36519 14.4992C4.47473 14.6088 4.61498 14.6635 4.78594 14.6635H11.215C11.3853 14.6635 11.5253 14.6088 11.6348 14.4992C11.7444 14.3897 11.7991 14.2494 11.7991 14.0785ZM1.5339 5.7508H0.949781H15.0502H1.5339Z" fill="black"/>-->
-                        <!--                        </svg>-->
-
-                        Clear
                     </button>
                     <div class="flex items-center border border-gray-400 rounded-xl px-4 py-2 w-full max-w-xs mr-4">
                         <input
@@ -407,7 +359,7 @@ const downloadReport = () => {
                 </div>
             </section>
 
-<!--            {{application}}-->
+            <!--            {{application}}-->
 
 
 

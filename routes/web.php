@@ -208,6 +208,8 @@ Route::group(['prefix'=>'house', 'middleware' => ['role:House']], function () {
 Route::group(['prefix'=>'admin' ,'middleware' => ['role:Admin'] ], function () {
     Route::get('/report', [ReportController::class, 'index'])->name('admin.report.index');
     Route::get('/json-index', [ReportController::class, 'jsonIndex'])->name('admin.report.json-index');
+    Route::get('/export', [ReportController::class, 'export'])->name('admin.report.export');
+    Route::get('/download', [ReportController::class, 'download'])->name('admin.report.download');
 });
 
 //Auth
