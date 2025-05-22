@@ -1,59 +1,49 @@
 <script setup>
+import axios from "axios";
+import {onMounted, ref} from "vue";
 
+function toggleFaq(index) {
+    faq.value[index].open = !faq.value[index].open;
+}
+const faq = ref();
+function getFaqs() {
+    axios.get(route('faqs.json_index'))
+        .then(res => {
+            faq.value = res.data.faqs.map(f => ({ ...f, open: false }));
+        })
+        .catch(err => {
+            console.error(err?.response?.data?.message);
+        });
+}
+
+onMounted(() => {
+    getFaqs();
+});
 </script>
 
 <template>
+    <!-- FAQ Section -->
+    <div class="w-full max-w-md bg-white p-4 rounded-lg shadow-md flex flex-col h-[460px]">
+        <p class="text-black font-sans text-[20px] font-bold leading-[24px] tracking-[0.15px]">
+            Mizoram House Online Reservation chungchang a zawhna leh chhana tlanglawn
+        </p>
 
-    <div style="background: #F8F8F8;" class="flex flex-col md:flex-row justify-center items-center p-6 space-y-4 md:space-y-0 md:space-x-4">
-        <div  class="w-full max-w-md bg-card p-4 rounded-lg shadow-md">
-            <p class=" text-black font-sans text-[20px] font-bold leading-[24px] tracking-[0.15px]">
-                Mizoram House Online Reservation chungchang a zawhna leh chhana tlanglawn
-            </p>
-
-            <div class="mt-4 space-y-2">
-                <div class="flex justify-between items-center p-2 border-b border-border">
-                    <p class="text-[#262526] font-sans text-[12px] font-normal leading-[18px]">
-                        Mizoram House Online Reservation hi tu te in nge dil thei?
-                    </p>
-                    <button class="text-primary">+</button>
+        <!-- Scrollable area -->
+        <div class="mt-4 overflow-y-auto">
+            <div v-for="(item, index) in faq" :key="index" class="mb-5">
+                <div class="flex justify-between items-center mb-2 cursor-pointer" @click="toggleFaq(index)">
+                    <p class="text-sm font-normal">{{ index + 1 }}. {{ item.title }}</p>
+                    <svg v-if="item.open" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                    </svg>
+                    <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
                 </div>
-                <div class="flex justify-between items-center p-2 border-b border-border">
-                    <p class="text-[#262526] font-sans text-[12px] font-normal leading-[18px]">
-                        Lorem Ipsum zawhna 1?
-                    </p>
-
-                    <button class="text-primary">+</button>
-                </div>
-                <div class="flex justify-between items-center p-2 border-b border-border">
-                    <p class="text-[#262526] font-sans text-[12px] font-normal leading-[18px]">
-                        Lorem Ipsum zawhna 2?
-                    </p>
-                    <button class="text-primary">+</button>
-                </div>
-                <div class="flex justify-between items-center p-2 border-b border-border">
-                    <p class="text-[#262526] font-sans text-[12px] font-normal leading-[18px]">
-                        Lorem Ipsum zawhna 3?
-                    </p>
-                    <button class="text-primary">+</button>
-                </div>
-                <div class="flex justify-between items-center p-2 border-b border-border">
-                    <p class="text-[#262526] font-sans text-[12px] font-normal leading-[18px]">
-                        Lorem Ipsum zawhna 4?
-                    </p>
-                    <button class="text-primary">+</button>
-                </div>
-                <div class="flex justify-between items-center p-2 border-b border-border">
-                    <p class="text-[#262526] font-sans text-[12px] font-normal leading-[18px]">
-                        Lorem Ipsum zawhna 5?
-                    </p>
-                    <button class="text-primary">+</button>
-                </div>
-                <div class="flex justify-between items-center p-2 border-b border-border">
-                    <p class="text-[#262526] font-sans text-[12px] font-normal leading-[18px]">
-                        Lorem Ipsum zawhna 6?
-                    </p>
-                    <button class="text-primary">+</button>
-                </div>
+                <p v-if="item.open" class="text-gray-500 text-sm font-normal leading-relaxed px-4">
+                    {{ item.content }}
+                </p>
+                <hr class="ml-2 mr-5">
             </div>
         </div>
     </div>

@@ -161,16 +161,18 @@ Route::group(['prefix'=>'status'], function () {
 //Statistics
 
 Route::group(['prefix'=>'statistics'], function () {
+    Route::get('/', [StatisticsController::class, 'getStatistics'])->name('statistics');
+
     Route::get('/reservation', [StatisticsController::class, 'getReservation'])->name('statistics.reservation');
     Route::get('/category-count', [StatisticsController::class, 'getCategory'])->name('statistics.category.count');
     Route::get('/category-percentage', [StatisticsController::class, 'getCategoryPercentage'])->name('statistics.category.percentage');
 
 
-    Route::get('/status', [StatisticsController::class, 'getStats'])->name('statistics.status');
+    Route::get('/status', [StatisticsController::class, 'getStatus'])->name('statistics.status');
     Route::get('/application-count', [StatisticsController::class, 'getApplicationCounts'])->name('statistics.application-count');
 
     //House
-    Route::get('/status/house', [StatisticsController::class, 'getStatsHouse'])->name('house.statistics.status');
+    Route::get('/status/house', [StatisticsController::class, 'getStatusHouse'])->name('house.statistics.status');
     Route::get('/application-count/house', [StatisticsController::class, 'getApplicationCountsHouse'])->name('house.statistics.application-count');
 
 

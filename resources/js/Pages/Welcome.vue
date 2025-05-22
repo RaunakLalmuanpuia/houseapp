@@ -39,10 +39,17 @@ defineProps({
 <!--    Knowledge-->
    <Knowledge/>
 
-<!--    Statistics-->
-    <Statistics/>
+    <div style="background: #F8F8F8;" class="flex flex-col md:flex-row justify-center items-stretch p-6 space-y-4 md:space-y-0 md:space-x-4">
+        <!--    Statistics-->
+        <Statistics/>
 
-<!--    <Faqs/>-->
+        <Faqs/>
+
+    </div>
+
+
+
+
 
     <Footer/>
 

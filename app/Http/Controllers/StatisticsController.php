@@ -10,6 +10,22 @@ use Illuminate\Support\Facades\DB;
 class StatisticsController extends Controller
 {
 
+    public function getStatistics()
+    {
+        return response()->json([
+            'submitted' => Application::count(),
+            'approved' => Application::where('status', 'approved')->count(),
+            'categories' => [
+                'flam' => Application::where('type', 'FLAM')->count(),
+                'on_duty' => Application::where('type', 'ON DUTY')->count(),
+                'not_on_duty' => Application::where('type', 'NOT ON DUTY')->count(),
+                'medical' => Application::where('type', 'MEDICAL')->count(),
+                'private' => Application::where('type', 'PRIVATE')->count(),
+                'study_tour' => Application::where('type', 'STUDY TOUR')->count(),
+            ]
+        ]);
+    }
+
     public function getReservation(Request $request)
     {
 
@@ -98,7 +114,7 @@ class StatisticsController extends Controller
         return response()->json($data);
     }
 
-    public function getStats()
+    public function getStatus()
     {
         $incomingCount = Application::where('status', 'pending')->count();
         $forwardedCount =Application::where('status', 'forwarded')->count();
@@ -133,7 +149,7 @@ class StatisticsController extends Controller
         return response()->json($result);
     }
 
-    public function getStatsHouse()
+    public function getStatusHouse()
     {
         $house_id = auth()->user()?->house_id;
         // Only count applications where location matches the user's house_id
@@ -182,4 +198,8 @@ class StatisticsController extends Controller
 
         return response()->json($result);
     }
+
+
+
+
 }
