@@ -18,7 +18,8 @@ const form = useForm({
     start_date: props.application.start_date || '',
     end_date: props.application.end_date || '',
     non_official_details: props.application.non_official_details ?? [],
-    family_members: props.application.family_members ?? []
+    family_members: props.application.family_members ?? [],
+    number_of_persons: '',
 
 })
 
@@ -41,6 +42,8 @@ const removeFamilyMember = (index) => {
 }
 
 const update =(item) => {
+
+    form.number_of_persons = form.non_official_details.length + form.family_members.length + 1;
     form.put(route('applications.not-official.update', item), {
         onStart: () => {
 

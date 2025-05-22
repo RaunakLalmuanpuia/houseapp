@@ -11,6 +11,7 @@ const application = useStudyTourApplicationStore()
 const form = useForm({
     ...application.$state,
     otp: '',
+    number_of_persons: application.study_tour_details.male + application.study_tour_details.female + 1,
 })
 
 

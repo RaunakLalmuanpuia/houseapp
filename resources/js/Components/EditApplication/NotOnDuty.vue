@@ -223,7 +223,8 @@ const form = useForm({
     })),
 
     // not_on_duty_details: props.application.not_on_duty_details ?? [],
-    family_members: props.application.family_members ?? []
+    family_members: props.application.family_members ?? [],
+    number_of_persons: '',
 })
 const showUpdatePopup = ref(false)
 // Add/Remove Not On Duty
@@ -243,6 +244,7 @@ const removeFamilyMember = index => {
 }
 
 const update =(item) => {
+    form.number_of_persons = form.not_on_duty_details.length + form.family_members.length + 1;
     form.put(route('applications.not-on-duty.update', item), {
         onStart: () => {
 

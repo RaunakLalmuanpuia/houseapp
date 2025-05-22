@@ -32,6 +32,7 @@ const form = useForm({
         file_path: null,           // for new file upload (File object)
         existing_file: m.file_path // existing file path string from DB
     })),
+    number_of_persons:'',
 })
 
 const addMedical = () => {
@@ -55,6 +56,7 @@ const removeMedical = (index) => {
 }
 
 const update = () => {
+    form.number_of_persons = form.medical_details.length + 1;
     form.post(route('applications.medical.update', props.application.id), {
         preserveScroll: true,
         onStart: () => {

@@ -352,7 +352,7 @@ const downloadReport = () => {
                 {{ item.type }}
               </span>
                         </td>
-                        <td class="py-4 px-3 whitespace-nowrap">{{ item.noOfPersons }}</td>
+                        <td class="py-4 px-3 whitespace-nowrap text-center">{{ item.number_of_persons }}</td>
                         <td class="py-4 px-3 whitespace-nowrap max-w-[100px]">{{ item.house.name }}</td>
                         <td class="py-4 px-3 whitespace-nowrap">{{ item.start_date }}</td>
                         <td class="py-4 px-3 whitespace-nowrap">{{ item.end_date }}</td>

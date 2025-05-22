@@ -83,7 +83,7 @@
             <td>{{ $application->gender ?? '' }}</td>
             <td>{{ $application->designation ?? '' }}</td>
             <td>{{ $application->department->name ?? '' }}</td>
-            <td>2</td>
+            <td>{{ $application?->number_of_persons ??'' }}</td>
             <td>{{ $application->house->name ?? '' }}</td>
             <td>{{ $application->start_date ? date('d-m-Y', strtotime($application->start_date)) : '' }}</td>
             <td>{{ $application->end_date ? date('d-m-Y', strtotime($application->end_date)) : '' }}</td>

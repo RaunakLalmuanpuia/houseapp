@@ -24,10 +24,12 @@ const form = useForm({
         male: props.application.study_tour_details?.male || '',
         female: props.application.study_tour_details?.female || '',
         institution_approval: null // File input
-    }
+    },
+    number_of_persons:'',
 })
 
 const update =(item) => {
+    form.number_of_persons = parseInt(form.study_tour_details.male || 0) + parseInt(form.study_tour_details.female || 0) + 1;
     form.post(route('applications.study-tour.update', item), {
         // forceFormData: true,
         onStart: () => {

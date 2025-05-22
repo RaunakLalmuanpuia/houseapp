@@ -58,6 +58,7 @@ class FlamController extends Controller
             'gender' => 'required|string',
             'designation' => 'required|string',
             'contact' => 'required|string',
+            'number_of_persons' => 'required|integer',
             'location' => 'required|integer|exists:houses,id',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',

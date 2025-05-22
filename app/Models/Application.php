@@ -19,6 +19,7 @@ class Application extends Model
         'department_id',
         'department_approval',
         'contact',
+        'number_of_persons',
         'location',
         'start_date',
         'end_date',

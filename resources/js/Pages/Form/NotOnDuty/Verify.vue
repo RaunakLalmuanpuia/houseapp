@@ -11,6 +11,7 @@ const application = useNotOnDutyApplicationStore()
 const form = useForm({
     ...application.$state,
     otp: '',
+    number_of_persons: application.not_on_duty_details.length + application.family_details.length + 1,
 })
 
 

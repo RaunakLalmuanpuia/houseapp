@@ -37,6 +37,7 @@ const form = useForm({
         name: member.name,
         relation: member.relation
     })),
+    number_of_persons: '',
 })
 
 const addOnDuty = () => {
@@ -65,6 +66,7 @@ const removeFamily = (index) => {
 }
 
 const update =(item) => {
+    form.number_of_persons = form.on_duty_details.length + form.family_members.length + 1;
     form.post(route('applications.on-duty.update', item), {
         preserveScroll: true,
         onStart: () => {

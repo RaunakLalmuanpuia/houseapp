@@ -22,7 +22,8 @@ const form = useForm({
     end_date: props.application.end_date,
     reject_reason: props.application.reject_reason,
     flam_details: props.application.flam_details ?? [],
-    family_members: props.application.family_members ?? []
+    family_members: props.application.family_members ?? [],
+    number_of_persons:'',
 })
 
 function addFlam() {
@@ -41,6 +42,7 @@ function removeFamily(index) {
     form.family_members.splice(index, 1)
 }
 const update =(item) => {
+    form.number_of_persons = form.flam_details.length + form.family_members.length + 1;
     form.put(route('applications.flam.update', item), {
         onStart: () => {
 

@@ -11,6 +11,7 @@ const application = useMedicalApplicationStore()
 const form = useForm({
     ...application.$state,
     otp: '',
+    number_of_persons: application.patient_details.length + application.patient_details.length,
 })
 
 
@@ -54,10 +55,8 @@ const handleKeyDown = (index, event) => {
     }
 };
 
-
 const showError = ref(false)
 const errorMessage = ref('')
-
 
 const resendDisabled = ref(true);
 const timer = ref(120);

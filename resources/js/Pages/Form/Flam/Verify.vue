@@ -11,6 +11,7 @@ const application = useFlamApplicationStore()
 const form = useForm({
     ...application.$state,
     otp: '',
+    number_of_persons: application.flam_details.length + application.family_details.length + 1,
 })
 
 
