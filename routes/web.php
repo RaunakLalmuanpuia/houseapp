@@ -39,11 +39,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\DigilockerController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ProfileController;
-
-
-
-
-
+use App\Http\Controllers\StatisticsController;
 
 
 Route::get('/', function () {
@@ -162,6 +158,23 @@ Route::group(['prefix'=>'status'], function () {
 
 });
 
+//Statistics
+
+Route::group(['prefix'=>'statistics'], function () {
+    Route::get('/reservation', [StatisticsController::class, 'getReservation'])->name('statistics.reservation');
+    Route::get('/category-count', [StatisticsController::class, 'getCategory'])->name('statistics.category.count');
+    Route::get('/category-percentage', [StatisticsController::class, 'getCategoryPercentage'])->name('statistics.category.percentage');
+
+
+    Route::get('/status', [StatisticsController::class, 'getStats'])->name('statistics.status');
+    Route::get('/application-count', [StatisticsController::class, 'getApplicationCounts'])->name('statistics.application-count');
+
+    //House
+    Route::get('/status/house', [StatisticsController::class, 'getStatsHouse'])->name('house.statistics.status');
+    Route::get('/application-count/house', [StatisticsController::class, 'getApplicationCountsHouse'])->name('house.statistics.application-count');
+
+
+});
 
 //Application Actions
 Route::group([], function () {
@@ -186,7 +199,6 @@ Route::group([], function () {
     Route::post('/applications/medical/{application}/update', [ApplicationController::class, 'updateMedical'])->middleware('can:Edit Application')->name('applications.medical.update');
 
 });
-
 
 // Admin Applications
 Route::group(['prefix'=>'admin', 'middleware' => ['role:Admin'], ], function () {

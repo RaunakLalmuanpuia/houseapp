@@ -1,26 +1,7 @@
 <template>
     <Head title="Incoming Application" />
     <div class="ml-6">
-        <section class="flex flex-wrap gap-4 mb-4 text-[12px] font-semibold">
-            <div class="w-[190px] h-[78px] bg-[#FFF4E5] text-[#F59E0B] rounded-md px-3 py-2 flex flex-col justify-center">
-                <span class="text-[15px] font-bold leading-none">106</span>
-                <span class="font-normal">Incoming</span>
-            </div>
-            <div class="w-[190px] h-[78px] bg-[#D9F7EE] text-[#10B981] rounded-md px-3 py-2 flex flex-col justify-center">
-                <span class="text-[15px] font-bold leading-none">2,098</span>
-                <span class="font-normal">Approved</span>
-            </div>
-            <div class="w-[190px] h-[78px] bg-[#FEE2E2] text-[#EF4444] rounded-md px-3 py-2 flex flex-col justify-center">
-                <span class="text-[15px] font-bold leading-none">98</span>
-                <span class="font-normal">Rejected</span>
-            </div>
-            <div class="w-[190px] h-[78px] bg-[#DBF2FF] text-[#3B82F6] rounded-md px-3 py-2 flex flex-col justify-center">
-                <span class="text-[15px] font-bold leading-none">23,23,098</span>
-                <span class="font-normal">All Application</span>
-            </div>
-        </section>
-
-
+        <Status/>
     </div>
 
 <!--{{application}}-->
@@ -283,7 +264,7 @@
 import AuthLayout from "@/Layouts/AuthLayout.vue";
 import { ref, computed, reactive } from 'vue';
 import {Head, router} from "@inertiajs/vue3";
-
+import Status from "@/Components/Statistics/Status.vue";
 defineOptions({layout:AuthLayout})
 
 
