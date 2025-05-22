@@ -56,8 +56,23 @@ class HouseReportController extends Controller
                     });
             });
         }
+
+        // Paginate the results
+        $applications = $query->paginate($request->perPage ?? 15);
+
+        // Conditionally load studyTourDetails only for type === STUDY TOUR
+        $applications->getCollection()->load([
+            'studyTourDetails' => fn($q) => $q->select('application_id', 'institution')
+        ]);
+
+        // Unset the relation if the application type is not STUDY TOUR
+        $applications->getCollection()->each(function ($app) {
+            if ($app->type !== 'STUDY TOUR') {
+                $app->unsetRelation('studyTourDetails');
+            }
+        });
         return response()->json([
-            'list' => $query->paginate($request->perPage ?? 15),
+            'list' => $applications,
         ]);
     }
 

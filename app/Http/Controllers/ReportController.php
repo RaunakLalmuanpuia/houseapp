@@ -21,7 +21,7 @@ class ReportController extends Controller
 
     public function jsonIndex(Request $request)
     {
-        $query = Application::query()->with(['house', 'department']);
+        $query = Application::query()->with(['house', 'department','studyTourDetails']);
 
         // Apply filters for status, category, dates, etc.
         $query->when($request->status, fn($q) => $q->where('status', $request->status))
@@ -50,8 +50,23 @@ class ReportController extends Controller
             });
         }
 
+        // Paginate the results
+        $applications = $query->paginate($request->perPage ?? 15);
+
+        // Conditionally load studyTourDetails only for type === STUDY TOUR
+        $applications->getCollection()->load([
+            'studyTourDetails' => fn($q) => $q->select('application_id', 'institution')
+        ]);
+
+        // Unset the relation if the application type is not STUDY TOUR
+        $applications->getCollection()->each(function ($app) {
+            if ($app->type !== 'STUDY TOUR') {
+                $app->unsetRelation('studyTourDetails');
+            }
+        });
+
         return response()->json([
-            'list' => $query->paginate($request->perPage ?? 15),
+            'list' => $applications,
         ]);
     }
 
@@ -59,7 +74,7 @@ class ReportController extends Controller
     {
 //        dd($request);
         $application = Application::query()
-            ->with(['house', 'department'])
+            ->with(['house', 'department','studyTourDetails'])
             ->when($request->status, fn($q) => $q->where('status', $request->status))
             ->when($request->category, fn($q) => $q->where('type', $request->category))
             ->when($request->start_date, fn($q) => $q->whereDate('start_date', '>=', $request->start_date))
@@ -75,7 +90,7 @@ class ReportController extends Controller
     public function download(Request $request)
     {
         $applications = Application::query()
-            ->with(['house', 'department'])
+            ->with(['house', 'department','studyTourDetails'])
             ->when($request->status, fn($q) => $q->where('status', $request->status))
             ->when($request->category, fn($q) => $q->where('type', $request->category))
             ->when($request->start_date, fn($q) => $q->whereDate('start_date', '>=', $request->start_date))

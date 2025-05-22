@@ -90,18 +90,24 @@
                     :key="item.id"
                     :class="index % 2 === 1 ? 'bg-gray-50 border-b border-gray-100' : 'border-b border-gray-200'"
                 >
+<!--                    {{item.study_tour_details}}-->
                     <td class="py-4 px-3 whitespace-nowrap">
                         <label class="flex items-center gap-2 cursor-pointer select-none">
                             <input type="checkbox" class="w-4 h-4" v-model="selectedApplications"
                                    :value="item.id" />
-                            {{ item.application_id }}
                         </label>
                     </td>
                     <td class="py-4 px-3 whitespace-normal max-w-[140px]">{{ item.applicant_name }}</td>
                     <td class="py-4 px-3 whitespace-nowrap">{{ item.contact }}</td>
                     <td class="py-4 px-3 whitespace-nowrap">{{ item.gender }}</td>
                     <td class="py-4 px-3 whitespace-nowrap max-w-[140px]">{{ item.designation ?? 'N/A' }}</td>
-                    <td class="py-4 px-3 whitespace-normal max-w-[140px]">{{ item.department?.name ?? 'N/A' }}</td>
+                    <td class="py-4 px-3 whitespace-normal max-w-[140px]">
+                        {{
+                            item.type === 'STUDY TOUR'
+                                ? item.study_tour_details?.institution || 'N/A'
+                                : item.department?.name || 'N/A'
+                        }}
+                    </td>
                     <td class="py-4 px-3 whitespace-nowrap">
               <span
                   :class="[

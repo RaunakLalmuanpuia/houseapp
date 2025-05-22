@@ -39,8 +39,23 @@ class HouseApplicationController extends Controller
             ->when($type, function ($query, $type) {
                 $query->where('type', $type);
             })
-            ->with(['house','department'])
+            ->with(['house','department','studyTourDetails'])
             ->paginate($perPage);
+
+        // Conditionally eager load studyTourDetails for only STUDY TOUR
+        $pendingApplications->getCollection()->load([
+            'studyTourDetails' => function ($query) {
+                $query->select('application_id', 'institution');
+            }
+        ]);
+
+        // Filter loaded studyTourDetails only for STUDY TOUR type
+        $pendingApplications->getCollection()->each(function ($application) {
+            if ($application->type !== 'STUDY TOUR') {
+                $application->unsetRelation('studyTourDetails');
+            }
+        });
+
 
         return Inertia::render('HouseApplications/Incoming', [
             'application' => $pendingApplications,
@@ -79,8 +94,22 @@ class HouseApplicationController extends Controller
             ->when($type, function ($query, $type) {
                 $query->where('type', $type);
             })
-            ->with(['house','department'])
+            ->with(['house','department','studyTourDetails'])
             ->paginate($perPage);
+
+        // Conditionally eager load studyTourDetails for only STUDY TOUR
+        $pendingApplications->getCollection()->load([
+            'studyTourDetails' => function ($query) {
+                $query->select('application_id', 'institution');
+            }
+        ]);
+
+        // Filter loaded studyTourDetails only for STUDY TOUR type
+        $pendingApplications->getCollection()->each(function ($application) {
+            if ($application->type !== 'STUDY TOUR') {
+                $application->unsetRelation('studyTourDetails');
+            }
+        });
 
         return Inertia::render('HouseApplications/Approved', [
             'application' => $pendingApplications,
@@ -124,6 +153,20 @@ class HouseApplicationController extends Controller
             })
             ->with(['house','department'])
             ->paginate($perPage);
+
+        // Conditionally eager load studyTourDetails for only STUDY TOUR
+        $pendingApplications->getCollection()->load([
+            'studyTourDetails' => function ($query) {
+                $query->select('application_id', 'institution');
+            }
+        ]);
+
+        // Filter loaded studyTourDetails only for STUDY TOUR type
+        $pendingApplications->getCollection()->each(function ($application) {
+            if ($application->type !== 'STUDY TOUR') {
+                $application->unsetRelation('studyTourDetails');
+            }
+        });
 
         return Inertia::render('HouseApplications/Rejected', [
             'application' => $pendingApplications,

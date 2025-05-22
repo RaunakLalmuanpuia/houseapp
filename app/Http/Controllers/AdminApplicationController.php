@@ -16,6 +16,7 @@ class AdminApplicationController extends Controller
         $search = $request->get('search');
         $perPage = $request->get('perPage', 10); // Default to 2 if not provided
         $type = $request->get('type');
+
         $pendingApplications = Application::where('status', 'pending')
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
@@ -29,8 +30,23 @@ class AdminApplicationController extends Controller
             ->when($type, function ($query, $type) {
                 $query->where('type', $type);
             })
-            ->with(['house','department'])
+            ->with(['house', 'department']) // No studyTourDetails here
             ->paginate($perPage);
+
+        // Conditionally eager load studyTourDetails for only STUDY TOUR
+        $pendingApplications->getCollection()->load([
+            'studyTourDetails' => function ($query) {
+                $query->select('application_id', 'institution');
+            }
+        ]);
+
+        // Filter loaded studyTourDetails only for STUDY TOUR type
+        $pendingApplications->getCollection()->each(function ($application) {
+            if ($application->type !== 'STUDY TOUR') {
+                $application->unsetRelation('studyTourDetails');
+            }
+        });
+
 //        dd($pendingApplications);
 
         return Inertia::render('Application/Incoming', [
@@ -61,8 +77,22 @@ class AdminApplicationController extends Controller
             ->when($type, function ($query, $type) {
                 $query->where('type', $type);
             })
-            ->with(['house','department'])
+            ->with(['house','department','studyTourDetails'])
             ->paginate($perPage);
+
+        // Conditionally eager load studyTourDetails for only STUDY TOUR
+        $pendingApplications->getCollection()->load([
+            'studyTourDetails' => function ($query) {
+                $query->select('application_id', 'institution');
+            }
+        ]);
+
+        // Filter loaded studyTourDetails only for STUDY TOUR type
+        $pendingApplications->getCollection()->each(function ($application) {
+            if ($application->type !== 'STUDY TOUR') {
+                $application->unsetRelation('studyTourDetails');
+            }
+        });
 
         return Inertia::render('Application/Forwarded', [
             'application' => $pendingApplications,
@@ -93,8 +123,22 @@ class AdminApplicationController extends Controller
             ->when($type, function ($query, $type) {
                 $query->where('type', $type);
             })
-            ->with(['house','department'])
+            ->with(['house','department','studyTourDetails'])
             ->paginate($perPage);
+
+        // Conditionally eager load studyTourDetails for only STUDY TOUR
+        $pendingApplications->getCollection()->load([
+            'studyTourDetails' => function ($query) {
+                $query->select('application_id', 'institution');
+            }
+        ]);
+
+        // Filter loaded studyTourDetails only for STUDY TOUR type
+        $pendingApplications->getCollection()->each(function ($application) {
+            if ($application->type !== 'STUDY TOUR') {
+                $application->unsetRelation('studyTourDetails');
+            }
+        });
 
         return Inertia::render('Application/Approved', [
             'application' => $pendingApplications,
@@ -125,8 +169,22 @@ class AdminApplicationController extends Controller
             ->when($type, function ($query, $type) {
                 $query->where('type', $type);
             })
-            ->with(['house','department'])
+            ->with(['house','department','studyTourDetails'])
             ->paginate($perPage);
+
+        // Conditionally eager load studyTourDetails for only STUDY TOUR
+        $pendingApplications->getCollection()->load([
+            'studyTourDetails' => function ($query) {
+                $query->select('application_id', 'institution');
+            }
+        ]);
+
+        // Filter loaded studyTourDetails only for STUDY TOUR type
+        $pendingApplications->getCollection()->each(function ($application) {
+            if ($application->type !== 'STUDY TOUR') {
+                $application->unsetRelation('studyTourDetails');
+            }
+        });
 
         return Inertia::render('Application/Rejected', [
             'application' => $pendingApplications,

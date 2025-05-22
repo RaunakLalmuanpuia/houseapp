@@ -89,7 +89,13 @@
                         <td class="py-4 px-3 whitespace-nowrap">{{ item.contact }}</td>
                         <td class="py-4 px-3 whitespace-nowrap">{{ item.gender }}</td>
                         <td class="py-4 px-3 whitespace-nowrap max-w-[140px]">{{ item.designation ?? 'N/A' }}</td>
-                        <td class="py-4 px-3 whitespace-normal max-w-[140px]">{{ item.department?.name ?? 'N/A' }}</td>
+                        <td class="py-4 px-3 whitespace-normal max-w-[140px]">
+                            {{
+                                item.type === 'STUDY TOUR'
+                                    ? item.study_tour_details?.institution || 'N/A'
+                                    : item.department?.name || 'N/A'
+                            }}
+                        </td>
                         <td class="py-4 px-3 whitespace-nowrap">
               <span
                   :class="[
